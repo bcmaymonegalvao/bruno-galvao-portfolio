@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,6 +138,35 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* Badges Section */
+        .badges {
+            background: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge img {
+            height: 28px;
+            border-radius: 4px;
+        }
+
         /* Sections */
         section {
             padding: 80px 0;
@@ -162,6 +191,143 @@
             height: 4px;
             background: linear-gradient(90deg, #667eea, #764ba2);
             border-radius: 2px;
+        }
+
+        /* Projects Section - Now comes early */
+        .projects {
+            background: #f8fafc;
+            padding: 60px 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-header::before {
+            transform: rotate(45deg) translate(20px, 20px);
+        }
+
+        .project-header h4 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-body {
+            padding: 2rem;
+        }
+
+        .project-description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+            color: #4a5568;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+            background: transparent;
+        }
+
+        .project-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .project-link.demo {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .project-link.demo:hover {
+            background: #059669;
+            border-color: #059669;
         }
 
         /* About Section */
@@ -246,80 +412,6 @@
             border-radius: 20px;
             font-size: 0.9rem;
             font-weight: 500;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .project-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 1.5rem;
-        }
-
-        .project-header h4 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-body {
-            padding: 1.5rem;
-        }
-
-        .project-description {
-            color: #4a5568;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-tag {
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .project-link:hover {
-            color: #4c51bf;
         }
 
         /* Contact Section */
@@ -469,6 +561,10 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+
+            .project-links {
+                flex-direction: column;
+            }
         }
 
         /* Smooth scrolling */
@@ -487,6 +583,20 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Pulse animation for project cards */
+        .project-card {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2); }
+        }
+
+        .project-card:hover {
+            animation: none;
+        }
     </style>
 </head>
 <body>
@@ -495,11 +605,11 @@
         <nav class="container">
             <div class="logo">Bruno Galvão</div>
             <ul class="nav-links">
-                <li><a onclick="scrollToSection('hero')">Início</a></li>
-                <li><a onclick="scrollToSection('about')">Sobre</a></li>
-                <li><a onclick="scrollToSection('skills')">Habilidades</a></li>
-                <li><a onclick="scrollToSection('projects')">Projetos</a></li>
-                <li><a onclick="scrollToSection('contact')">Contato</a></li>
+                <li><a onclick="scrollToSection('hero')">Home</a></li>
+                <li><a onclick="scrollToSection('projects')">Projects</a></li>
+                <li><a onclick="scrollToSection('about')">About</a></li>
+                <li><a onclick="scrollToSection('skills')">Skills</a></li>
+                <li><a onclick="scrollToSection('contact')">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -510,14 +620,226 @@
             <div class="hero-content">
                 <h1>Bruno Galvão</h1>
                 <div class="subtitle">Senior Data Scientist</div>
-                <p>Transformando dados em insights acionáveis e soluções escaláveis. Mais de uma década de experiência combinando rigor científico com impacto no negócio.</p>
+                <p>Transforming raw data into actionable insights and scalable solutions. Over a decade of experience combining scientific rigor with real-world business impact.</p>
                 <div class="cta-buttons">
                     <a href="#projects" class="btn btn-primary" onclick="scrollToSection('projects')">
-                        <i class="fas fa-rocket"></i> Ver Projetos
+                        <i class="fas fa-rocket"></i> View Projects
                     </a>
                     <a href="#contact" class="btn btn-secondary" onclick="scrollToSection('contact')">
-                        <i class="fas fa-envelope"></i> Entrar em Contato
+                        <i class="fas fa-envelope"></i> Get In Touch
                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section class="badges">
+        <div class="container">
+            <h3 style="margin-bottom: 2rem; color: #2d3748;">Technologies & Tools</h3>
+            <div class="badges-container">
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="scikit-learn">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white" alt="TensorFlow">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white" alt="Plotly">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white" alt="MicrosoftSQLServer">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/power_bi-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power Bi">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS">
+                </div>
+                <div class="badge">
+                    <img src="https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white" alt="Azure">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects fade-in">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>RAG Pipeline with LangChain</h4>
+                        <p>Advanced Retrieval-Augmented Generation system</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            A sophisticated RAG (Retrieval-Augmented Generation) pipeline built with LangChain for intelligent document processing and question-answering. Features vector databases, semantic search, and LLM integration for enhanced information retrieval.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">OpenAI</span>
+                            <span class="tech-tag">Vector DB</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">RAG</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="project-link demo" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>GDP Prediction Model</h4>
+                        <p>Economic forecasting with machine learning</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Advanced machine learning model for predicting Gross Domestic Product (GDP) trends using economic indicators. Features interactive web interface for scenario analysis and economic forecasting with statistical validation.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Time Series</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Economic Analysis</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/pib_prediction" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://pibprediction-interface-bcmg.streamlit.app/" class="project-link demo" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>Trading Platform</h4>
+                        <p>Financial data analysis and trading interface</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Comprehensive trading platform with real-time financial data analysis, portfolio management, and algorithmic trading strategies. Features interactive charts, risk assessment, and performance analytics for informed investment decisions.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Financial Analysis</span>
+                            <span class="tech-tag">Plotly</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">API Integration</span>
+                            <span class="tech-tag">Portfolio Management</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/plataforma_corretora" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="https://plataformacorretora-brunogalvao.streamlit.app/" class="project-link demo" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>Life Expectancy Prediction</h4>
+                        <p>ML model for health and demographic analysis</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Machine learning model that predicts life expectancy based on various health, economic, and social factors. Uses WHO data to analyze relationships between lifestyle, healthcare quality, and longevity across different countries.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Seaborn</span>
+                            <span class="tech-tag">WHO Data</span>
+                            <span class="tech-tag">Health Analytics</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/Life-Expectancy-Predicting-Model" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>Exploratory Data Analysis</h4>
+                        <p>Comprehensive data exploration techniques</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Collection of advanced exploratory data analysis techniques and methodologies. Demonstrates statistical analysis, data visualization best practices, and insights discovery from complex datasets using Python's data science ecosystem.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Matplotlib</span>
+                            <span class="tech-tag">Seaborn</span>
+                            <span class="tech-tag">Statistical Analysis</span>
+                            <span class="tech-tag">Data Visualization</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/Exploratory-Data-Analysis" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>E-commerce Data Analysis</h4>
+                        <p>Business intelligence for retail insights</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Comprehensive analysis of e-commerce data focusing on customer behavior, sales patterns, and business performance metrics. Includes customer segmentation, sales forecasting, and actionable business recommendations.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Customer Analytics</span>
+                            <span class="tech-tag">Business Intelligence</span>
+                            <span class="tech-tag">Sales Analysis</span>
+                            <span class="tech-tag">Visualization</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/bcmaymonegalvao/ecommerce-data-analysis" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -526,22 +848,23 @@
     <!-- About Section -->
     <section id="about" class="about fade-in">
         <div class="container">
-            <h2 class="section-title">Sobre Mim</h2>
+            <h2 class="section-title">About Me</h2>
             <div class="about-content">
                 <div class="about-image">
                     <img src="https://via.placeholder.com/250x250/667eea/ffffff?text=BG" alt="Bruno Galvão" class="profile-img">
                 </div>
                 <div class="about-text">
-                    <h3>Data Scientist Sênior com Paixão por Inovação</h3>
-                    <p>Sou um Data Scientist Sênior com mais de uma década de experiência transformando dados brutos em insights acionáveis e soluções escaláveis. Minha jornada combina pesquisa acadêmica e expertise da indústria, conectando o pensamento científico rigoroso com o impacto real no negócio.</p>
+                    <h3>Senior Data Scientist with Passion for Innovation</h3>
+                    <p>I am a Senior Data Scientist with over a decade of experience transforming raw data into actionable insights and scalable solutions. My journey blends academic research and industry expertise, bridging the gap between rigorous scientific thinking and real-world business impact.</p>
                     
-                    <p>Com uma sólida base em Matemática, Estatística e Física, me especializo em modelagem estatística, machine learning, inferência causal e MLOps. Atualmente, estou pesquisando IA Generativa e Robótica aplicadas à educação em Matemática e Ciências.</p>
+                    <p>With a strong foundation in Mathematics, Statistics, and Physics, I specialize in statistical modeling, machine learning, causal inference, and MLOps. Currently researching Generative AI and Robotics applied to Math and Science education.</p>
 
-                    <p><strong>Conquistas destacadas:</strong></p>
+                    <p><strong>Key Achievements:</strong></p>
                     <ul style="margin-left: 1.5rem; color: #4a5568;">
-                        <li>Reduzi visitas técnicas improdutivas em 43% através de modelos de ML para análise preditiva</li>
-                        <li>Autor de 130+ relatórios técnicos, gerando 35% de melhoria na eficiência operacional</li>
-                        <li>Liderei e mentorei cientistas de dados júnior, fomentando uma cultura de decisões baseadas em dados</li>
+                        <li>Reduced unproductive technical visits by 43% through ML models for predictive analysis</li>
+                        <li>Authored 130+ technical reports, driving 35% improvement in operational efficiency</li>
+                        <li>Led and mentored junior data scientists, fostering a culture of data-driven decision-making</li>
+                        <li>Designed and implemented experimentation frameworks for product and process optimization</li>
                     </ul>
                 </div>
             </div>
@@ -551,7 +874,7 @@
     <!-- Skills Section -->
     <section id="skills" class="skills fade-in">
         <div class="container">
-            <h2 class="section-title">Habilidades & Expertise</h2>
+            <h2 class="section-title">Skills & Expertise</h2>
             <div class="skills-grid">
                 <div class="skill-category">
                     <h4><i class="fas fa-chart-line"></i> Machine Learning & Analytics</h4>
@@ -562,12 +885,12 @@
                         <span class="skill-tag">NumPy</span>
                         <span class="skill-tag">Deep Learning</span>
                         <span class="skill-tag">NLP</span>
-                        <span class="skill-tag">Sistemas de Recomendação</span>
+                        <span class="skill-tag">Recommendation Systems</span>
                     </div>
                 </div>
                 
                 <div class="skill-category">
-                    <h4><i class="fas fa-database"></i> Dados & Engenharia</h4>
+                    <h4><i class="fas fa-database"></i> Data & Engineering</h4>
                     <div class="skill-tags">
                         <span class="skill-tag">SQL</span>
                         <span class="skill-tag">PostgreSQL</span>
@@ -580,26 +903,27 @@
                 </div>
                 
                 <div class="skill-category">
-                    <h4><i class="fas fa-chart-bar"></i> Visualização & BI</h4>
+                    <h4><i class="fas fa-chart-bar"></i> Visualization & BI</h4>
                     <div class="skill-tags">
                         <span class="skill-tag">Power BI</span>
                         <span class="skill-tag">Streamlit</span>
                         <span class="skill-tag">Matplotlib</span>
                         <span class="skill-tag">Seaborn</span>
+                        <span class="skill-tag">Plotly</span>
                         <span class="skill-tag">Dashboards</span>
                         <span class="skill-tag">Power Apps</span>
                     </div>
                 </div>
                 
                 <div class="skill-category">
-                    <h4><i class="fas fa-flask"></i> Estatística & Experimentação</h4>
+                    <h4><i class="fas fa-flask"></i> Statistics & Experimentation</h4>
                     <div class="skill-tags">
-                        <span class="skill-tag">Teste A/B</span>
-                        <span class="skill-tag">Inferência Causal</span>
-                        <span class="skill-tag">Análise de Sobrevivência</span>
-                        <span class="skill-tag">Séries Temporais</span>
+                        <span class="skill-tag">A/B Testing</span>
+                        <span class="skill-tag">Causal Inference</span>
+                        <span class="skill-tag">Survival Analysis</span>
+                        <span class="skill-tag">Time Series</span>
                         <span class="skill-tag">Uplift Modeling</span>
-                        <span class="skill-tag">Frameworks Contrafactuais</span>
+                        <span class="skill-tag">Counterfactual Frameworks</span>
                     </div>
                 </div>
                 
@@ -616,165 +940,14 @@
                 </div>
                 
                 <div class="skill-category">
-                    <h4><i class="fas fa-graduation-cap"></i> Formação Acadêmica</h4>
+                    <h4><i class="fas fa-graduation-cap"></i> Education & Research</h4>
                     <div class="skill-tags">
-                        <span class="skill-tag">Mestrado em Física</span>
+                        <span class="skill-tag">Master's in Physics</span>
                         <span class="skill-tag">MBA Data Science</span>
-                        <span class="skill-tag">MBA TI</span>
-                        <span class="skill-tag">Licenciatura Física</span>
-                        <span class="skill-tag">Certificações</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects fade-in">
-        <div class="container">
-            <h2 class="section-title">Projetos em Destaque</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Análise Preditiva Operacional</h4>
-                        <p>Redução de 43% em visitas técnicas improdutivas</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Sistema de machine learning para otimização operacional com inferência causal e análise preditiva, resultando em significativa redução de custos operacionais.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Scikit-learn</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">SQL</span>
-                            <span class="tech-tag">Power BI</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Dashboard BI Interativo</h4>
-                        <p>Streamlit & Power BI para insights de negócio</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Desenvolvimento de dashboards interativos que permitiram stakeholders interagirem com insights orientados por dados, melhorando a tomada de decisão.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Streamlit</span>
-                            <span class="tech-tag">Power BI</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">SQL Server</span>
-                            <span class="tech-tag">Matplotlib</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Sistema de Recomendação</h4>
-                        <p>ML para personalização e otimização</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Implementação de sistema de recomendação usando algoritmos de machine learning para personalização de conteúdo e otimização da experiência do usuário.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Collaborative Filtering</span>
-                            <span class="tech-tag">Deep Learning</span>
-                            <span class="tech-tag">PostgreSQL</span>
-                            <span class="tech-tag">AWS</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Framework de Experimentação</h4>
-                        <p>A/B Testing e Inferência Causal</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Desenvolvimento de framework robusto para experimentação, incluindo testes A/B avançados e métodos de inferência causal para otimização de produtos e processos.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Estatística</span>
-                            <span class="tech-tag">Causal Inference</span>
-                            <span class="tech-tag">Scipy</span>
-                            <span class="tech-tag">Streamlit</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>IA Generativa para Educação</h4>
-                        <p>Pesquisa em Matemática e Ciências</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Pesquisa atual sobre aplicação de IA Generativa e Robótica na educação de Matemática e Ciências, explorando novas fronteiras do aprendizado assistido por IA.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">LLMs</span>
-                            <span class="tech-tag">NLP</span>
-                            <span class="tech-tag">Transformers</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Education Tech</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Pipelines MLOps</h4>
-                        <p>Deploy e monitoramento de modelos</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Implementação de pipelines CI/CD para modelos de machine learning, incluindo monitoramento, versionamento e deploy automatizado em arquiteturas cloud.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">MLOps</span>
-                            <span class="tech-tag">Docker</span>
-                            <span class="tech-tag">GitHub Actions</span>
-                            <span class="tech-tag">AWS</span>
-                            <span class="tech-tag">Databricks</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
+                        <span class="skill-tag">MBA IT Governance</span>
+                        <span class="skill-tag">Physics Education</span>
+                        <span class="skill-tag">Research</span>
+                        <span class="skill-tag">Mentoring</span>
                     </div>
                 </div>
             </div>
@@ -784,11 +957,11 @@
     <!-- Contact Section -->
     <section id="contact" class="contact fade-in">
         <div class="container">
-            <h2 class="section-title">Vamos Conversar?</h2>
+            <h2 class="section-title">Let's Connect</h2>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h4>Entre em Contato</h4>
-                    <p>Estou sempre aberto para discutir oportunidades interessantes, projetos de data science ou simplesmente trocar ideias sobre tecnologia e inovação.</p>
+                    <h4>Get In Touch</h4>
+                    <p>I'm always open to discussing interesting opportunities, data science projects, or simply exchanging ideas about technology and innovation.</p>
                     
                     <div class="contact-item">
                         <i class="fab fa-github"></i>
@@ -800,27 +973,35 @@
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span>Entre em contato através do GitHub</span>
+                        <span>Contact me through GitHub</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Brasil</span>
+                        <span>Brazil</span>
                     </div>
                 </div>
                 
                 <div class="contact-form">
-                    <h4>Envie uma Mensagem</h4>
+                    <h4>Send a Message</h4>
                     <form>
                         <div class="form-group">
-                            <label for="subject">Assunto</label>
-                            <input type="text" id="subject" placeholder="Assunto da mensagem">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" placeholder="Your name">
                         </div>
                         <div class="form-group">
-                            <label for="message">Mensagem</label>
-                            <textarea id="message" placeholder="Sua mensagem..."></textarea>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" placeholder="Message subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" placeholder="Your message..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%; background: #667eea; color: white;">
-                            <i class="fas fa-paper-plane"></i> Enviar Mensagem
+                            <i class="fas fa-paper-plane"></i> Send Message
                         </button>
                     </form>
                 </div>
@@ -842,8 +1023,8 @@
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
-            <p>&copy; 2025 Bruno Galvão. Todos os direitos reservados.</p>
-            <p>Transformando dados em soluções inovadoras | Senior Data Scientist</p>
+            <p>&copy; 2025 Bruno Galvão. All rights reserved.</p>
+            <p>Transforming data into innovative solutions | Senior Data Scientist</p>
         </div>
     </footer>
 
@@ -899,15 +1080,15 @@
             
             // Simple validation
             if (!name || !email || !subject || !message) {
-                alert('Por favor, preencha todos os campos.');
+                alert('Please fill in all fields.');
                 return;
             }
             
             // Create mailto link
-            const mailtoLink = `mailto:contato@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMensagem:\n${message}`)}`;
+            const mailtoLink = `mailto:contact@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
             
             // Show success message
-            alert('Obrigado pela mensagem! Redirecionando para seu cliente de email...');
+            alert('Thank you for your message! Redirecting to your email client...');
             
             // Open email client
             window.location.href = mailtoLink;
@@ -943,26 +1124,7 @@
         // Add floating animation to skill cards
         document.querySelectorAll('.skill-category, .project-card').forEach((card, index) => {
             card.style.animationDelay = `${index * 0.1}s`;
-            card.classList.add('float-animation');
         });
-
-        // Add CSS for floating animation
-        const floatingStyle = document.createElement('style');
-        floatingStyle.textContent = `
-            .float-animation {
-                animation: float 6s ease-in-out infinite;
-            }
-            
-            @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-10px); }
-            }
-            
-            .float-animation:nth-child(even) {
-                animation-direction: reverse;
-            }
-        `;
-        document.head.appendChild(floatingStyle);
 
         // Parallax effect for hero section
         window.addEventListener('scroll', function() {
@@ -1034,14 +1196,28 @@
                 }, 100);
             });
         });
+
+        // Project card hover effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'none';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.animation = 'pulse-glow 3s ease-in-out infinite';
+            });
+        });
+
+        // Badge hover effects
+        document.querySelectorAll('.badge img').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.2) saturate(1.3)';
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                this.style.filter = 'none';
+            });
+        });
     </script>
 </body>
-</html>-group">
-                            <label for="name">Nome</label>
-                            <input type="text" id="name" placeholder="Seu nome">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="seu.email@exemplo.com">
-                        </div>
-                        <div class="form
+</html>
