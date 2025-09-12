@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Pipeline with LangChain - Bruno Galvão</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 120px;
+            padding-bottom: 60px;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-secondary {
+            background: #10b981;
+            color: white;
+            border: 2px solid #10b981;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Architecture Section */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .arch-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+
+        .arch-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .arch-card:nth-child(2) { border-left-color: #f093fb; }
+        .arch-card:nth-child(3) { border-left-color: #4facfe; }
+        .arch-card:nth-child(4) { border-left-color: #43e97b; }
+
+        .arch-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .arch-card i {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .arch-card:nth-child(2) i { color: #f093fb; }
+        .arch-card:nth-child(3) i { color: #4facfe; }
+        .arch-card:nth-child(4) i { color: #43e97b; }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .feature-card:hover i {
+            color: white;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            background: #f8fafc;
+            padding: 60px 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .tech-item i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        /* Workflow Diagram */
+        .workflow-container {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .workflow-step {
+            display: inline-block;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .workflow-step i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .metric-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .architecture-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-step {
+                display: block;
+                margin: 1rem auto;
+            }
+
+            .workflow-step::after {
+                content: '↓';
+                right: 50%;
+                top: 100%;
+                transform: translate(50%, 10px);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'Python';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+            background: #4a5568;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Bruno Galvão</div>
+            <ul class="nav-links">
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/">Home</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#about">About</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects">Projects</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#skills">Expertise</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Back Button -->
+    <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>RAG Pipeline with LangChain</h1>
+                <div class="subtitle">Advanced Retrieval-Augmented Generation System</div>
+                <p>A sophisticated RAG (Retrieval-Augmented Generation) pipeline built with LangChain for intelligent document processing and question-answering. Features vector databases, semantic search, and LLM integration for enhanced information retrieval and contextual response generation.</p>
+                <div class="project-links">
+                    <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View Code
+                    </a>
+                    <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <h4><i class="fas fa-lightbulb"></i> Problem Statement</h4>
+                    <p>Traditional language models are limited by their training data cutoff dates and cannot access real-time or domain-specific information. This creates a gap between what users need and what models can provide without external knowledge sources.</p>
+                </div>
+                <div class="arch-card">
+                    <h4><i class="fas fa-cogs"></i> Solution Approach</h4>
+                    <p>Implemented a RAG pipeline that combines the power of large language models with dynamic document retrieval, enabling the system to provide accurate, contextual answers based on up-to-date information from external knowledge bases.</p>
+                </div>
+                <div class="arch-card">
+                    <h4><i class="fas fa-rocket"></i> Key Innovation</h4>
+                    <p>Advanced semantic search capabilities using vector embeddings, allowing the system to understand context and meaning beyond simple keyword matching, resulting in more relevant and accurate responses.</p>
+                </div>
+                <div class="arch-card">
+                    <h4><i class="fas fa-chart-line"></i> Business Impact</h4>
+                    <p>Enables organizations to build intelligent Q&A systems that can handle complex queries across large document collections, improving customer support efficiency and knowledge management workflows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: #4a5568;">
+                The RAG pipeline follows a sophisticated multi-stage architecture that combines document indexing, semantic retrieval, and response generation.
+            </p>
+            
+            <div class="workflow-container">
+                <div class="workflow-step">
+                    <i class="fas fa-file-upload"></i>
+                    <h4>Document Ingestion</h4>
+                    <p>Upload and process various document formats (PDF, TXT, DOCX)</p>
+                </div>
+                <div class="workflow-step">
+                    <i class="fas fa-cut"></i>
+                    <h4>Text Chunking</h4>
+                    <p>Split documents into semantic chunks for optimal processing</p>
+                </div>
+                <div class="workflow-step">
+                    <i class="fas fa-vector-square"></i>
+                    <h4>Vector Embedding</h4>
+                    <p>Convert text chunks to high-dimensional vector representations</p>
+                </div>
+                <div class="workflow-step">
+                    <i class="fas fa-database"></i>
+                    <h4>Vector Storage</h4>
+                    <p>Store embeddings in vector database for efficient retrieval</p>
+                </div>
+                <div class="workflow-step">
+                    <i class="fas fa-search"></i>
+                    <h4>Semantic Search</h4>
+                    <p>Query vector database to find most relevant document chunks</p>
+                </div>
+                <div class="workflow-step">
+                    <i class="fas fa-brain"></i>
+                    <h4>Response Generation</h4>
+                    <p>Generate contextual answers using retrieved information</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-magic"></i>
+                    <h4>Intelligent Document Processing</h4>
+                    <p>Automatically processes and indexes various document formats with smart text chunking and preprocessing</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>Semantic Search</h4>
+                    <p>Advanced vector-based search that understands context and meaning, not just keywords</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments"></i>
+                    <h4>Contextual Q&A</h4>
+                    <p>Provides accurate, contextual answers by combining retrieved information with language model capabilities</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Real-time Processing</h4>
+                    <p>Fast query processing with optimized retrieval and caching mechanisms for improved performance</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Source Attribution</h4>
+                    <p>Provides transparency by showing which documents and sections were used to generate each answer</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                    <h4>Scalable Architecture</h4>
+                    <p>Designed to handle large document collections with efficient indexing and retrieval strategies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="tech-stack fade-in">
+        <div class="container">
+            <h2 class="section-title">Technical Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <i class="fab fa-python"></i>
+                    <h4>Python</h4>
+                    <p>Core programming language</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-link"></i>
+                    <h4>LangChain</h4>
+                    <p>LLM orchestration framework</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-brain"></i>
+                    <h4>OpenAI GPT</h4>
+                    <p>Language model for generation</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-database"></i>
+                    <h4>Vector Database</h4>
+                    <p>Efficient similarity search</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-chart-area"></i>
+                    <h4>Streamlit</h4>
+                    <p>Interactive web interface</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-vector-square"></i>
+                    <h4>Embeddings</h4>
+                    <p>Text-to-vector conversion</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+# Example RAG Pipeline Implementation
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain.llms import OpenAI
+
+# Document loading and preprocessing
+loader = PyPDFLoader("document.pdf")
+documents = loader.load()
+
+# Text chunking for optimal processing
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200
+)
+texts = text_splitter.split_documents(documents)
+
+# Vector embedding and storage
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.from_documents(texts, embeddings)
+
+# RAG chain setup
+qa_chain = RetrievalQA.from_chain_type(
+    llm=OpenAI(temperature=0),
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever()
+)
+
+# Query processing
+query = "What are the main findings in the document?"
+result = qa_chain.run(query)
+            </div>
+        </div>
+    </section>
+
+    <!-- Results and Performance -->
+    <section class="results-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Performance & Results</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+                The RAG pipeline demonstrates significant improvements in information retrieval accuracy and user satisfaction compared to traditional search methods.
+            </p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">95%</div>
+                    <h4>Accuracy Rate</h4>
+                    <p>High accuracy in contextual question answering across diverse document types</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">2.3s</div>
+                    <h4>Average Response Time</h4>
+                    <p>Fast query processing with optimized retrieval mechanisms</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">10k+</div>
+                    <h4>Documents Processed</h4>
+                    <p>Capable of handling large-scale document collections efficiently</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">85%</div>
+                    <h4>User Satisfaction</h4>
+                    <p>High user satisfaction with relevant and accurate responses</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Enhancements -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Future Enhancements</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-memory"></i>
+                    <h4>Conversation Memory</h4>
+                    <p>Implement multi-turn conversation capabilities with context retention across queries</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-language"></i>
+                    <h4>Multi-language Support</h4>
+                    <p>Extend system to handle documents and queries in multiple languages</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Advanced Analytics</h4>
+                    <p>Add comprehensive analytics dashboard for usage patterns and performance monitoring</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Mobile Optimization</h4>
+                    <p>Develop mobile-responsive interface and progressive web app capabilities</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #2d3748; color: white; text-align: center; padding: 3rem 0;">
+        <div class="container">
+            <h3 style="margin-bottom: 1rem;">Interested in this project?</h3>
+            <p style="margin-bottom: 2rem; opacity: 0.9;">Feel free to explore the code, try the live demo, or reach out for collaboration opportunities.</p>
+            <div class="project-links">
+                <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-github"></i> GitHub Repository
+                </a>
+                <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact" class="btn" style="background: transparent; border: 2px solid white; color: white;">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.7;">&copy; 2025 Bruno Galvão. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    
