@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bruno Galvão - Senior Data Scientist</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -778,14 +778,44 @@
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
         }
-
+        /* Importar a fonte Orbitron futurista */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap');
+        
+        /* Neon Synthwave Geral */
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 6px #ff00cc,
+                0 0 12px #ff00cc,
+                0 0 20px #3333ff,
+                0 0 40px #00f0ff;
+        }
+        
+        /* Neon mais suave (para summary ou subtítulos) */
+        .neon-sub {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            background: linear-gradient(90deg, #00f0ff, #ff00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 3px #ff00cc,
+                0 0 6px #00f0ff,
+                0 0 12px #3333ff;
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <nav class="container">
-            <div class="logo">Bruno Galvão</div>
+            <div class="logo neon-text">Bruno Galvão</div>
             <ul class="nav-links">
                 <li><a onclick="scrollToSection('hero')">Home</a></li>
                 <li><a onclick="scrollToSection('about')">About</a></li>
@@ -810,8 +840,8 @@
     <section id="hero" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Bruno Galvão</h1>
-                <div class="subtitle">Senior Data Scientist</div>
+                <h1 class="neon-text">Bruno Galvão</h1>
+                <div class="subtitle neon-sub">Senior Data Scientist</div>
                 <p>Transforming raw data into actionable insights and scalable solutions. Over a decade of experience combining scientific rigor with real-world business impact.</p>
                 <div class="cta-buttons">
                     <a href="#about" class="btn btn-primary" onclick="scrollToSection('about')">
@@ -832,7 +862,7 @@
     <section class="professional-summary fade-in">
         <div class="container">
             <div class="summary-content">
-                <h2>Professional Summary</h2>
+                <h2 class="section-title neon-sub">Professional Summary</h2>
                 <p>I'm a Data Scientist with over 10 years of experience at BB Tecnologia e Serviços, where I apply data science to solve complex business problems and drive operational excellence.</p>
                 
                 <p>My expertise spans data visualization, predictive modeling, causal inference, NLP, deep learning, computer vision, pipeline automation, MLOps, large language models (LLMs), and artificial intelligence.</p>
