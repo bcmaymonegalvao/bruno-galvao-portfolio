@@ -145,11 +145,17 @@
             background: white;
             color: #667eea;
         }
-
+        
         .btn-secondary {
-            background: transparent;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border: 2px solid white;
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
 
         .btn:hover {
