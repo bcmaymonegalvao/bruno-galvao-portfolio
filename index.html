@@ -77,7 +77,26 @@
             text-align: center;
             color: white;
             padding-top: 80px;
+            position: relative; /* necessário pro overlay funcionar */
+            background: url("Background.webp") center/cover no-repeat;
+            overflow: hidden;
         }
+        
+        /* Overlay transparente por cima da imagem */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); /* preto 40% transparente */
+            z-index: 1;
+        }
+        
+        /* Mantém o conteúdo acima do overlay */
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
 
         .hero-content h1 {
             font-size: 3.5rem;
