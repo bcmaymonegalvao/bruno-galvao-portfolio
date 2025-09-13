@@ -145,17 +145,18 @@
             background: white;
             color: #667eea;
         }
-        
         .btn-secondary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #43e97b, #38f9d7); /* verde → aqua */
             color: white;
             border: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(56, 249, 215, 0.3);
         }
         
         .btn-secondary:hover {
-            background: linear-gradient(135deg, #764ba2, #667eea);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #38f9d7, #43e97b); /* inverte no hover */
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(56, 249, 215, 0.45);
         }
 
         .btn:hover {
@@ -266,7 +267,11 @@
             transition: all 0.4s ease;
             border: 3px solid transparent;
         }
-
+        .project-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
         .project-card:hover {
             transform: translateY(-20px);
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
@@ -975,7 +980,7 @@
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <a href="rag_pipeline_project.html" class="project-card">
                     <div class="project-header">
                         <h4>RAG Pipeline with LangChain</h4>
                         <p>Advanced Retrieval-Augmented Generation system</p>
@@ -992,16 +997,9 @@
                             <span class="tech-tag">Streamlit</span>
                             <span class="tech-tag">RAG</span>
                         </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="project-link demo" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                        </div>
                     </div>
-                </div>
+                </a>
+
 
                 <div class="project-card">
                     <div class="project-header">
