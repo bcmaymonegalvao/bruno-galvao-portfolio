@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Expectancy Prediction - Bruno Galvão Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #f093fb;
+        }
+
+        .back-btn {
+            background: #f093fb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: #e879f9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Hero Section */
+        .project-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 120px;
+            position: relative;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .project-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            margin-top: -50px;
+            border-radius: 30px 30px 0 0;
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+        }
+
+        .content-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: #2d3748;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            border-radius: 2px;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #f093fb;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:nth-child(2) { border-left-color: #10b981; }
+        .feature-card:nth-child(3) { border-left-color: #3b82f6; }
+        .feature-card:nth-child(4) { border-left-color: #f59e0b; }
+
+        .feature-card h4 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .feature-card i {
+            color: #f093fb;
+            font-size: 1.5rem;
+        }
+
+        .feature-card:nth-child(2) i { color: #10b981; }
+        .feature-card:nth-child(3) i { color: #3b82f6; }
+        .feature-card:nth-child(4) i { color: #f59e0b; }
+
+        /* Data Sources */
+        .data-sources {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(240, 147, 251, 0.2);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .data-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .data-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .data-item h5 {
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-item i {
+            color: #f093fb;
+        }
+
+        .data-item p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Model Performance */
+        .model-performance {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f093fb;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Technology Stack */
+        .tech-stack {
+            background: #f8fafc;
+            padding: 3rem 0;
+            border-radius: 20px;
+            margin: 3rem 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            color: #f093fb;
+            margin-bottom: 1rem;
+        }
+
+        .tech-item h5 {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* Project Links */
+        .project-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-link.github {
+            background: #333;
+            color: white;
+        }
+
+        .project-link.github:hover {
+            background: #555;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(51, 51, 51, 0.4);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            border: 2px solid rgba(240, 147, 251, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: #f093fb;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .highlight-box li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.8rem;
+            color: #4a5568;
+        }
+
+        .highlight-box li::before {
+            content: '❤️';
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(45deg) translateY(0px); }
+            50% { transform: rotate(45deg) translateY(-20px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .project-badges {
+                justify-content: center;
+            }
+
+            .features-grid,
+            .data-grid,
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .project-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .project-link {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Bruno Galvão</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Life Expectancy Prediction</h1>
+                <div class="subtitle">Machine Learning for Health & Demographic Analysis</div>
+                <p>
+                    A comprehensive machine learning project that predicts life expectancy based on various health, 
+                    economic, and social factors using WHO data. This model analyzes relationships between lifestyle, 
+                    healthcare quality, and longevity across different countries to provide insights into global health patterns.
+                </p>
+                <div class="project-badges">
+                    <span class="badge">Python</span>
+                    <span class="badge">Scikit-learn</span>
+                    <span class="badge">Pandas</span>
+                    <span class="badge">WHO Data</span>
+                    <span class="badge">Health Analytics</span>
+                    <span class="badge">Regression Models</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Project Overview -->
+            <div class="content-section">
+                <h2 class="section-title">Project Overview</h2>
+                <div class="project-description">
+                    This project leverages machine learning techniques to predict life expectancy across different countries 
+                    using comprehensive health and demographic data from the World Health Organization (WHO). The model analyzes 
+                    multiple factors including healthcare expenditure, immunization coverage, mortality rates, and socioeconomic 
+                    indicators to understand their impact on population longevity.
+                </div>
+                <div class="project-description">
+                    By implementing various regression algorithms and feature engineering techniques, this project provides 
+                    valuable insights into the factors that most significantly influence life expectancy, helping policymakers 
+                    and health organizations make data-driven decisions to improve public health outcomes.
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="content-section">
+                <h2 class="section-title">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-heartbeat"></i> Multi-Factor Analysis</h4>
+                        <p>Comprehensive analysis of health, economic, and social factors affecting life expectancy across 193 countries.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-line"></i> Predictive Modeling</h4>
+                        <p>Advanced regression models with feature selection and hyperparameter tuning for optimal prediction accuracy.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-globe-americas"></i> Global Insights</h4>
+                        <p>Cross-country analysis revealing regional patterns and disparities in health outcomes and longevity.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-brain"></i> Feature Engineering</h4>
+                        <p>Sophisticated data preprocessing and feature engineering to extract maximum predictive value from raw data.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Sources -->
+            <div class="data-sources">
+                <h2 class="section-title">Data Sources & Variables</h2>
+                <div class="project-description">
+                    The dataset comprises 22 key variables from WHO and UN data spanning from 2000-2015, 
+                    covering 193 countries with comprehensive health and demographic indicators.
+                </div>
+                
+                <div class="data-grid">
+                    <div class="data-item">
+                        <h5><i class="fas fa-hospital"></i> Health Indicators</h5>
+                        <p>Adult mortality, infant deaths, alcohol consumption, hepatitis B and measles immunization rates</p>
+                    </div>
+                    <div class="data-item">
+                        <h5><i class="fas fa-dollar-sign"></i> Economic Factors</h5>
+                        <p>GDP per capita, health expenditure as percentage of GDP, government health spending</p>
+                    </div>
+                    <div class="data-item">
+                        <h5><i class="fas fa-users"></i> Demographic Data</h5>
+                        <p>Population statistics, HIV/AIDS prevalence, thinness indicators for different age groups</p>
+                    </div>
+                    <div class="data-item">
+                        <h5><i class="fas fa-graduation-cap"></i> Social Indicators</h5>
+                        <p>Schooling years, BMI statistics, polio immunization coverage, diphtheria vaccination rates</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Performance -->
+            <div class="model-performance">
+                <h2 class="section-title">Model Performance</h2>
+                <div class="project-description">
+                    The final model demonstrates excellent predictive performance across multiple evaluation metrics, 
+                    successfully capturing the complex relationships between various factors and life expectancy.
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value">0.89</span>
+                        <span class="metric-label">R² Score</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">3.2</span>
+                        <span class="metric-label">RMSE (Years)</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">2.1</span>
+                        <span class="metric-label">MAE (Years)</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">193</span>
+                        <span class="metric-label">Countries</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="content-section">
+                <h2 class="section-title">Key Insights</h2>
+                <div class="highlight-box">
+                    <h4>Major Findings</h4>
+                    <ul>
+                        <li><strong>Adult Mortality:</strong> Strongest predictor with highest correlation to life expectancy</li>
+                        <li><strong>HIV/AIDS Impact:</strong> Significant negative correlation, especially in Sub-Saharan Africa</li>
+                        <li><strong>Education Effect:</strong> Years of schooling show strong positive correlation with longevity</li>
+                        <li><strong>Economic Factors:</strong> GDP and health expenditure moderately correlate with life expectancy</li>
+                        <li><strong>Immunization:</strong> Vaccination coverage shows positive but varying impact by region</li>
+                        <li><strong>Infant Health:</strong> Infant deaths strongly inversely correlated with life expectancy</li>
+                        <li><strong>Regional Patterns:</strong> Developed countries cluster with higher life expectancy values</li>
+                        <li><strong>BMI Relationship:</strong> Non-linear relationship requiring careful feature engineering</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Methodology -->
+            <div class="content-section">
+                <h2 class="section-title">Methodology</h2>
+                <div class="project-description">
+                    The project follows a comprehensive data science workflow including data cleaning, exploratory analysis, 
+                    feature engineering, model selection, and validation. Multiple regression algorithms were tested including 
+                    Linear Regression, Random Forest, Gradient Boosting, and Support Vector Regression.
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>Implementation Steps</h4>
+                    <ul>
+                        <li>Comprehensive data cleaning and missing value imputation</li>
+                        <li>Exploratory data analysis with correlation and statistical testing</li>
+                        <li>Feature engineering including polynomial features and interaction terms</li>
+                        <li>Model selection through cross-validation and grid search</li>
+                        <li>Feature importance analysis and model interpretability</li>
+                        <li>Performance evaluation on holdout test set</li>
+                        <li>Residual analysis and model diagnostic validation</li>
+                        <li>Visualization of predictions vs. actual values by region</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="tech-stack">
+                <div class="container">
+                    <h2 class="section-title">Technology Stack</h2>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <i class="fab fa-python"></i>
+                            <h5>Python</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-cog"></i>
+                            <h5>Scikit-learn</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-table"></i>
+                            <h5>Pandas</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-chart-area"></i>
+                            <h5>Seaborn</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-calculator"></i>
+                            <h5>NumPy</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <h5>Matplotlib</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-flask"></i>
+                            <h5>SciPy</h5>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-database"></i>
+                            <h5>WHO Data</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Links -->
+            <div class="project-links">
+                <a href="https://github.com/bcmaymonegalvao/Life-Expectancy-Predicting-Model" class="project-link github" target="_blank">
+                    <i class="fab fa-github"></i> View Source Code
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.content-section, .feature-card, .tech-item, .data-item, .metric-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effects
+        document.querySelectorAll('.feature-card, .tech-item, .data-item, .metric-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.project-hero');
+            const rate = scrolled * -0.2;
+            
+            if (hero) {
+                hero.style.transform = `translateY(${rate}px)`;
+            }
+        });
+
+        // Add animated counters for metrics
+        function animateCounters() {
+            const counters = document.querySelectorAll('.metric-value');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.textContent);
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target.toString();
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.ceil(current * 10) / 10;
+                    }
+                }, 20);
+            });
+        }
+
+        // Trigger counter animation when metrics section is visible
+        const metricsObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    metricsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const metricsSection = document.querySelector('.model-performance');
+        if (metricsSection) {
+            metricsObserver.observe(metricsSection);
+        }
+    </script>
+</body>
+</html>
