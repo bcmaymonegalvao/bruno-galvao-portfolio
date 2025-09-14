@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploratory Data Analysis | Bruno Galvão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --text-color: #333;
+            --light-text: #f3f4f6;
+            --dark-bg: #1f2937;
+            --light-bg: #f9fafb;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            padding: 8rem 5% 5rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Project Details */
+        .project-details {
+            padding: 5rem 5%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--text-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .project-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        .project-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .project-image img:hover {
+            transform: scale(1.05);
+        }
+        
+        .project-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .project-info p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Technologies Used */
+        .technologies {
+            background-color: var(--light-bg);
+            padding: 5rem 5%;
+        }
+        
+        .tech-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            min-width: 150px;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tech-item i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Project Links */
+        .project-links {
+            padding: 5rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+        }
+        
+        .link-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .link-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .link-btn:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 3rem 5% 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .footer-section p {
+            margin-bottom: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .project-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .link-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tech-list {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html">Bruno <span>Galvão</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html#home">Home</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html#projects">Projects</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html#about">About</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Exploratory Data Analysis</h1>
+        <p>A comprehensive analysis of the Titanic dataset to uncover patterns and insights about passenger survival rates.</p>
+        <a href="https://github.com/bcmaymonegalvao/Exploratory-Data-Analysis" class="btn">View on GitHub</a>
+    </section>
+
+    <!-- Project Details -->
+    <section class="project-details">
+        <div class="container">
+            <div class="section-title">
+                <h2>Project Overview</h2>
+                <p>This project involves an in-depth exploratory data analysis of the famous Titanic dataset, examining factors that influenced passenger survival rates.</p>
+            </div>
+            
+            <div class="project-content">
+                <div class="project-image">
+                    <img src="https://raw.githubusercontent.com/bcmaymonegalvao/bruno-galvao-portfolio/main/images/eda-project.jpg" alt="Exploratory Data Analysis Visualization">
+                </div>
+                <div class="project-info">
+                    <h3>About the Analysis</h3>
+                    <p>This exploratory data analysis delves into the Titanic dataset to understand the factors that contributed to passenger survival. The analysis includes data cleaning, feature engineering, visualization, and statistical analysis.</p>
+                    <p>Key findings reveal correlations between survival rates and factors such as passenger class, gender, age, and fare paid. The analysis provides valuable insights into one of history's most tragic maritime disasters.</p>
+                    <p>The project showcases strong data manipulation and visualization skills using Python's data science ecosystem, including Pandas, NumPy, Matplotlib, and Seaborn.</p>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Data Visualization</h4>
+                    <p>Created insightful visualizations to represent patterns and correlations in the data.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-calculator"></i>
+                    <h4>Statistical Analysis</h4>
+                    <p>Performed statistical tests to validate hypotheses about factors affecting survival.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-database"></i>
+                    <h4>Data Cleaning</h4>
+                    <p>Handled missing values, outliers, and inconsistent data to ensure analysis accuracy.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Insightful Conclusions</h4>
+                    <p>Drew meaningful conclusions from the data that provide value beyond the numbers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Used -->
+    <section class="technologies">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technologies Used</h2>
+                <p>The tools and libraries that powered this analysis</p>
+            </div>
+            
+            <div class="tech-list">
+                <div class="tech-item">
+                    <i class="fab fa-python"></i>
+                    <h4>Python</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-table"></i>
+                    <h4>Pandas</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-chart-area"></i>
+                    <h4>Matplotlib</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <h4>Seaborn</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-calculator"></i>
+                    <h4>NumPy</h4>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-code"></i>
+                    <h4>Jupyter</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Links -->
+    <section class="project-links">
+        <div class="container">
+            <h2>Explore the Project</h2>
+            <p>Check out the full analysis and code on GitHub</p>
+            
+            <div class="link-buttons">
+                <a href="https://github.com/bcmaymonegalvao/Exploratory-Data-Analysis" class="link-btn">
+                    <i class="fab fa-github"></i> Project Repository
+                </a>
+                <a href="https://github.com/bcmaymonegalvao/Exploratory-Data-Analysis/blob/main/Titanic-Survivors-EDA.ipynb" class="link-btn">
+                    <i class="fas fa-book"></i> View Notebook
+                </a>
+                <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/index.html#projects" class="link-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Bruno Galvão</h3>
+                    <p>Data Analyst and Developer passionate about transforming data into insights and building innovative solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Me</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-envelope"></i> email@example.com</p>
+                    <p><i class="fas fa-phone"></i> +55 (XX) XXXXX-XXXX</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Bruno Galvão. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
