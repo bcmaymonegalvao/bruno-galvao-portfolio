@@ -1028,7 +1028,7 @@ python train_model.py
 <span class="keyword">import</span> numpy <span class="keyword">as</span> np
 <span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> <span class="function">RandomForestRegressor</span>, <span class="function">GradientBoostingRegressor</span>
 <span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> <span class="function">LinearRegression</span>
-<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> <span class="function">train_test_split</span>, <span class="function">cross_val_score</span>
+<span class="keyword极from</span> sklearn.model_selection <span class="keyword">import</span> <span class="function">train_test_split</span>, <span class="function">cross_val_score</span>
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> <span class="function">mean_absolute_error</span>, <span class="function">r2_score</span>
 <span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> <span class="function">StandardScaler</span>
 
@@ -1040,13 +1040,13 @@ python train_model.py
     <span class="comment"># Feature engineering</span>
     data[<span class="string">'inflation_lag'</span>] = data[<span class="string">'inflation'</span>].<span class="function">shift</span>(1)
     data[<span class="string">'unemployment_ma'</span>] = data[<span class="string">'unemployment'</span>].<span class="function">rolling</span>(4).<span class="function">mean</span>()
-    data[<span class="string">'trade_balance_pct'</span>] = data[<span class="string">'exports'</span>] / data[<span class="string">'imports'</span>] * 100
+    data[极span class="string">'trade_balance_pct'</span>] = data[<span class="string">'exports'</span>] / data[<span class="string">'imports'</span>] * 100
     
     <span class="keyword">return</span> data.<span class="function">dropna</span>()
 
 <span class="comment"># GDP Prediction Model</span>
 <span class="keyword">class</span> <span class="function">GDPPredictor</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+    <span class="keyword">极f</span> <span class="function">__init__</span>(self):
         self.models = {
             <span class="string">'rf'</span>: <span class="function">RandomForestRegressor</span>(n_estimators=100, random_state=42),
             <span class="string">'gb'</span>: <span class="function">GradientBoostingRegressor</span>(n_estimators=100, random_state=42),
@@ -1076,8 +1076,43 @@ python train_model.py
         
         <span class="comment"># Evaluate performance</span>
         y_pred = self.best_model.<span class="function">predict</span>(X_test)
-        mae = <span class="function">mean_absolute_error</span>(y_
-                    
+        mae = <span class="function">mean_absolute_error</span>(y_test, y_pred)
+        r2 = <span class="function">r2_score</span>(y_test, y_pred)
+        
+        <span class="keyword">print</span>(<span class="string">f"Best model: {type(self.best_model).__name__}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"MAE: {mae:.4f}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"R² Score: {r2:.4f}"</span>)
+        
+        <span class="keyword">return</span> mae, r2
+    
+    <span class="keyword">def</span> <span class="function">predict</span>(self, X):
+        <span class="string">"""Make predictions using the trained model"""</span>
+        X_scaled = self.scaler.<span class="function">transform</span>(X)
+        <span class="keyword">return</span> self.best_model.<span class="function">predict</span>(X_scaled)
+
+<span class="comment"># Example usage</span>
+<span class="keyword">if</span> <span class="string">__name__</span> == <span class="string">"__main__"</span>:
+    <span class="comment"># Load data</span>
+    data = <span class="function">load_economic_data</span>(<span class="string">"economic_data.csv"</span>)
+    
+    <span class="comment"># Prepare features and target</span>
+    features = [<span class="string">'inflation'</span>, <span class="string">'unemployment'</span>, <span class="string">'inflation_lag'</span>, <span class="string">'unemployment_ma'</span>, <span class="string">'trade_balance_pct'</span>]
+    X = data[features]
+    y = data[<span class="string">'gdp_growth'</span>]
+    
+    <span class="comment"># Train model</span>
+    predictor = <span class="function">GDPPredictor</span>()
+    mae, r2 = predictor.<span class="function">train</span>(X, y)
+    
+    <span class="comment"># Make predictions</span>
+    latest_data = X.<span class="function">iloc</span>[-1:].<span class="function">copy</span>()
+    prediction = predictor.<span class="function">predict</span>(latest_data)
+    <span class="keyword">print</span>(<span class="string">f"Predicted GDP growth: {prediction[0]:.2f}%"</span>)
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Footer -->
     <footer style="background: #2d3748; color: white; text-align: center; padding: 4rem 0;">
         <div class="container">
