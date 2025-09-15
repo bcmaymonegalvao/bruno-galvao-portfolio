@@ -935,6 +935,149 @@ python train_model.py
         </div>
     </section>
 
+    <!-- Project Philosophy -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">Comprehensive economic forecasting solution combining traditional econometric methods with modern machine learning techniques for accurate GDP prediction and economic trend analysis.</p>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h4><i class="fas fa-chart-line"></i> Economic Modeling</h4>
+                    <p>Advanced statistical models incorporating multiple economic indicators including inflation, unemployment, trade balance, and fiscal policy metrics for comprehensive GDP analysis.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-brain"></i> Machine Learning</h4>
+                    <p>Leverages ensemble methods, time series analysis, and regression techniques to capture complex economic relationships and improve prediction accuracy.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-globe"></i> Multi-Country Support</h4>
+                    <p>Designed to work with economic data from multiple countries and regions, allowing for comparative analysis and cross-national economic forecasting.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-desktop"></i> Interactive Interface</h4>
+                    <p>User-friendly Streamlit web application with real-time predictions, scenario analysis, and comprehensive data visualizations for economic insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Methodology & Approach</h2>
+            <p class="section-subtitle">The prediction pipeline follows established econometric principles combined with modern data science techniques for robust and reliable economic forecasting.</p>
+            
+            <div class="workflow-container">
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>Data Collection</h4>
+                        <p>Comprehensive gathering of economic indicators from reliable sources including World Bank, IMF, and national statistical agencies with proper data validation and cleaning.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>Feature Engineering</h4>
+                        <p>Creation of derived economic indicators, lag features, seasonal adjustments, and transformation of raw economic data into predictive features.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>Model Training</h4>
+                        <p>Implementation of multiple algorithms including Random Forest, Gradient Boosting, and Linear Regression with cross-validation and hyperparameter optimization.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h4>Validation</h4>
+                        <p>Rigorous model validation using out-of-sample testing, backtesting on historical data, and statistical significance testing of predictions.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <h4>Deployment</h4>
+                        <p>Interactive web application deployment with real-time prediction capabilities, scenario modeling, and comprehensive result visualization.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">6</div>
+                        <h4>Monitoring</h4>
+                        <p>Continuous model performance monitoring, prediction accuracy tracking, and automated retraining capabilities for maintained reliability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Implementation Details</h2>
+            <p class="section-subtitle">Core implementation showcasing the machine learning pipeline for GDP prediction with feature engineering and model selection.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">GDP Prediction Pipeline</div>
+                    <button class="copy-btn" onclick="copyCode()">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                </div>
+                <div class="code-block" id="codeContent">
+<span class="comment"># Import required libraries</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> <span class="function">RandomForestRegressor</span>, <span class="function">GradientBoostingRegressor</span>
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> <span class="function">LinearRegression</span>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> <span class="function">train_test_split</span>, <span class="function">cross_val_score</span>
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> <span class="function">mean_absolute_error</span>, <span class="function">r2_score</span>
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> <span class="function">StandardScaler</span>
+
+<span class="comment"># Load and prepare economic data</span>
+<span class="keyword">def</span> <span class="function">load_economic_data</span>(file_path):
+    <span class="string">"""Load and preprocess economic indicators data"""</span>
+    data = pd.<span class="function">read_csv</span>(file_path)
+    
+    <span class="comment"># Feature engineering</span>
+    data[<span class="string">'inflation_lag'</span>] = data[<span class="string">'inflation'</span>].<span class="function">shift</span>(1)
+    data[<span class="string">'unemployment_ma'</span>] = data[<span class="string">'unemployment'</span>].<span class="function">rolling</span>(4).<span class="function">mean</span>()
+    data[<span class="string">'trade_balance_pct'</span>] = data[<span class="string">'exports'</span>] / data[<span class="string">'imports'</span>] * 100
+    
+    <span class="keyword">return</span> data.<span class="function">dropna</span>()
+
+<span class="comment"># GDP Prediction Model</span>
+<span class="keyword">class</span> <span class="function">GDPPredictor</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        self.models = {
+            <span class="string">'rf'</span>: <span class="function">RandomForestRegressor</span>(n_estimators=100, random_state=42),
+            <span class="string">'gb'</span>: <span class="function">GradientBoostingRegressor</span>(n_estimators=100, random_state=42),
+            <span class="string">'lr'</span>: <span class="function">LinearRegression</span>()
+        }
+        self.scaler = <span class="function">StandardScaler</span>()
+        self.best_model = None
+    
+    <span class="keyword">def</span> <span class="function">train</span>(self, X, y):
+        <span class="string">"""Train multiple models and select the best performer"""</span>
+        X_scaled = self.scaler.<span class="function">fit_transform</span>(X)
+        X_train, X_test, y_train, y_test = <span class="function">train_test_split</span>(X_scaled, y, test_size=0.2)
+        
+        best_score = -np.inf
+        
+        <span class="keyword">for</span> name, model <span class="keyword">in</span> self.models.<span class="function">items</span>():
+            <span class="comment"># Cross-validation</span>
+            cv_scores = <span class="function">cross_val_score</span>(model, X_train, y_train, cv=5, scoring=<span class="string">'r2'</span>)
+            mean_score = cv_scores.<span class="function">mean</span>()
+            
+            <span class="keyword">if</span> mean_score > best_score:
+                best_score = mean_score
+                self.best_model = model
+                
+        <span class="comment"># Train best model</span>
+        self.best_model.<span class="function">fit</span>(X_train, y_train)
+        
+        <span class="comment"># Evaluate performance</span>
+        y_pred = self.best_model.<span class="function">predict</span>(X_test)
+        mae = <span class="function">mean_absolute_error</span>(y_
+                    
     <!-- Footer -->
     <footer style="background: #2d3748; color: white; text-align: center; padding: 4rem 0;">
         <div class="container">
@@ -1097,149 +1240,3 @@ python train_model.py
     </script>
 </body>
 </html>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Philosophy -->
-    <section class="content-section fade-in">
-        <div class="container">
-            <h2 class="section-title">Project Overview</h2>
-            <p class="section-subtitle">Comprehensive economic forecasting solution combining traditional econometric methods with modern machine learning techniques for accurate GDP prediction and economic trend analysis.</p>
-            <div class="overview-grid">
-                <div class="overview-card">
-                    <h4><i class="fas fa-chart-line"></i> Economic Modeling</h4>
-                    <p>Advanced statistical models incorporating multiple economic indicators including inflation, unemployment, trade balance, and fiscal policy metrics for comprehensive GDP analysis.</p>
-                </div>
-                <div class="overview-card">
-                    <h4><i class="fas fa-brain"></i> Machine Learning</h4>
-                    <p>Leverages ensemble methods, time series analysis, and regression techniques to capture complex economic relationships and improve prediction accuracy.</p>
-                </div>
-                <div class="overview-card">
-                    <h4><i class="fas fa-globe"></i> Multi-Country Support</h4>
-                    <p>Designed to work with economic data from multiple countries and regions, allowing for comparative analysis and cross-national economic forecasting.</p>
-                </div>
-                <div class="overview-card">
-                    <h4><i class="fas fa-desktop"></i> Interactive Interface</h4>
-                    <p>User-friendly Streamlit web application with real-time predictions, scenario analysis, and comprehensive data visualizations for economic insights.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- System Architecture -->
-    <section class="content-section fade-in">
-        <div class="container">
-            <h2 class="section-title">Methodology & Approach</h2>
-            <p class="section-subtitle">The prediction pipeline follows established econometric principles combined with modern data science techniques for robust and reliable economic forecasting.</p>
-            
-            <div class="workflow-container">
-                <div class="workflow-steps">
-                    <div class="workflow-step">
-                        <div class="step-number">1</div>
-                        <h4>Data Collection</h4>
-                        <p>Comprehensive gathering of economic indicators from reliable sources including World Bank, IMF, and national statistical agencies with proper data validation and cleaning.</p>
-                    </div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">2</div>
-                        <h4>Feature Engineering</h4>
-                        <p>Creation of derived economic indicators, lag features, seasonal adjustments, and transformation of raw economic data into predictive features.</p>
-                    </div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">3</div>
-                        <h4>Model Training</h4>
-                        <p>Implementation of multiple algorithms including Random Forest, Gradient Boosting, and Linear Regression with cross-validation and hyperparameter optimization.</p>
-                    </div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">4</div>
-                        <h4>Validation</h4>
-                        <p>Rigorous model validation using out-of-sample testing, backtesting on historical data, and statistical significance testing of predictions.</p>
-                    </div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">5</div>
-                        <h4>Deployment</h4>
-                        <p>Interactive web application deployment with real-time prediction capabilities, scenario modeling, and comprehensive result visualization.</p>
-                    </div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">6</div>
-                        <h4>Monitoring</h4>
-                        <p>Continuous model performance monitoring, prediction accuracy tracking, and automated retraining capabilities for maintained reliability.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Implementation -->
-    <section class="content-section fade-in">
-        <div class="container">
-            <h2 class="section-title">Implementation Details</h2>
-            <p class="section-subtitle">Core implementation showcasing the machine learning pipeline for GDP prediction with feature engineering and model selection.</p>
-            
-            <div class="code-container">
-                <div class="code-header">
-                    <div class="code-title">GDP Prediction Pipeline</div>
-                    <button class="copy-btn" onclick="copyCode()">
-                        <i class="fas fa-copy"></i> Copy Code
-                    </button>
-                </div>
-                <div class="code-block" id="codeContent">
-<span class="comment"># Import required libraries</span>
-<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
-<span class="keyword">import</span> numpy <span class="keyword">as</span> np
-<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> <span class="function">RandomForestRegressor</span>, <span class="function">GradientBoostingRegressor</span>
-<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> <span class="function">LinearRegression</span>
-<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> <span class="function">train_test_split</span>, <span class="function">cross_val_score</span>
-<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> <span class="function">mean_absolute_error</span>, <span class="function">r2_score</span>
-<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> <span class="function">StandardScaler</span>
-
-<span class="comment"># Load and prepare economic data</span>
-<span class="keyword">def</span> <span class="function">load_economic_data</span>(file_path):
-    <span class="string">"""Load and preprocess economic indicators data"""</span>
-    data = pd.<span class="function">read_csv</span>(file_path)
-    
-    <span class="comment"># Feature engineering</span>
-    data[<span class="string">'inflation_lag'</span>] = data[<span class="string">'inflation'</span>].<span class="function">shift</span>(1)
-    data[<span class="string">'unemployment_ma'</span>] = data[<span class="string">'unemployment'</span>].<span class="function">rolling</span>(4).<span class="function">mean</span>()
-    data[<span class="string">'trade_balance_pct'</span>] = data[<span class="string">'exports'</span>] / data[<span class="string">'imports'</span>] * 100
-    
-    <span class="keyword">return</span> data.<span class="function">dropna</span>()
-
-<span class="comment"># GDP Prediction Model</span>
-<span class="keyword">class</span> <span class="function">GDPPredictor</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self):
-        self.models = {
-            <span class="string">'rf'</span>: <span class="function">RandomForestRegressor</span>(n_estimators=100, random_state=42),
-            <span class="string">'gb'</span>: <span class="function">GradientBoostingRegressor</span>(n_estimators=100, random_state=42),
-            <span class="string">'lr'</span>: <span class="function">LinearRegression</span>()
-        }
-        self.scaler = <span class="function">StandardScaler</span>()
-        self.best_model = None
-    
-    <span class="keyword">def</span> <span class="function">train</span>(self, X, y):
-        <span class="string">"""Train multiple models and select the best performer"""</span>
-        X_scaled = self.scaler.<span class="function">fit_transform</span>(X)
-        X_train, X_test, y_train, y_test = <span class="function">train_test_split</span>(X_scaled, y, test_size=0.2)
-        
-        best_score = -np.inf
-        
-        <span class="keyword">for</span> name, model <span class="keyword">in</span> self.models.<span class="function">items</span>():
-            <span class="comment"># Cross-validation</span>
-            cv_scores = <span class="function">cross_val_score</span>(model, X_train, y_train, cv=5, scoring=<span class="string">'r2'</span>)
-            mean_score = cv_scores.<span class="function">mean</span>()
-            
-            <span class="keyword">if</span> mean_score > best_score:
-                best_score = mean_score
-                self.best_model = model
-                
-        <span class="comment"># Train best model</span>
-        self.best_model.<span class="function">fit</span>(X_train, y_train)
-        
-        <span class="comment"># Evaluate performance</span>
-        y_pred = self.best_model.<span class="function">predict</span>(X_test)
-        mae = <span class="function">mean_absolute_error</span>(y_
