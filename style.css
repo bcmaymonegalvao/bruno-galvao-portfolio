@@ -1,16 +1,20 @@
-/* ===== Plasma Theme inspired by Matplotlib ===== */
+/* ==========================================================
+   Bruno Galvão Portfolio - Plasma Colormap Theme (2025)
+   ========================================================== */
 
+/* === Plasma palette (Matplotlib inspired) === */
 :root {
     --plasma-dark: #0d083b;
     --plasma-mid: #7b1fa2;
     --plasma-light: #f06292;
-    --plasma-bright: #ffb300;
+    --plasma-accent: #ffb300;
     --plasma-yellow: #ffea00;
+    --neutral-bg: #f8fafc;
     --text-dark: #2d3748;
     --text-light: #f9fafb;
 }
 
-/* ===== Base Reset ===== */
+/* === Global reset === */
 * {
     margin: 0;
     padding: 0;
@@ -21,11 +25,17 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-dark);
     line-height: 1.6;
-    background: linear-gradient(135deg, var(--plasma-dark), var(--plasma-mid), var(--plasma-light));
+    background: linear-gradient(135deg, var(--plasma-dark), var(--plasma-mid));
     min-height: 100vh;
 }
 
-/* ===== Header & Nav ===== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* === Header === */
 header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
@@ -47,44 +57,47 @@ nav {
 .logo {
     font-size: 1.6rem;
     font-weight: bold;
-    background: linear-gradient(90deg, var(--plasma-light), var(--plasma-yellow));
+    background: linear-gradient(90deg, var(--plasma-light), var(--plasma-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
     list-style: none;
+    gap: 2rem;
 }
 
 .nav-links a {
-    color: #4a5568;
-    font-weight: 500;
     text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
     transition: color 0.3s ease;
+    cursor: pointer;
 }
 
 .nav-links a:hover {
     color: var(--plasma-light);
 }
 
-/* ===== Hero Section ===== */
+/* === Hero Section === */
 .hero {
     min-height: 100vh;
-    background: url("Background.webp") center/cover no-repeat;
     display: flex;
     align-items: center;
-    justify-content: center;
+    text-align: center;
     color: white;
+    padding-top: 80px;
     position: relative;
+    background: url("Background.webp") center/cover no-repeat;
+    overflow: hidden;
 }
 
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0,0,0,0.45);
 }
 
 .hero .container {
@@ -100,29 +113,30 @@ nav {
 }
 
 .hero-content .subtitle {
-    font-size: 1.6rem;
-    color: var(--plasma-light);
+    font-size: 1.5rem;
     margin-bottom: 1rem;
+    color: var(--plasma-light);
 }
 
 .hero-content p {
-    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto 2rem;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-/* ===== Buttons ===== */
+/* === Buttons === */
 .btn {
-    padding: 12px 28px;
+    padding: 12px 30px;
     border: none;
     border-radius: 50px;
     font-weight: 600;
-    transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .btn-primary {
@@ -131,27 +145,113 @@ nav {
 }
 
 .btn-secondary {
-    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-yellow));
+    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-accent));
     color: white;
     box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
 }
 
-.btn-secondary:hover {
-    transform: translateY(-3px) scale(1.05);
-    background: linear-gradient(135deg, var(--plasma-yellow), var(--plasma-light));
+.btn-floating {
+    background: var(--plasma-accent);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 179, 0, 0.4);
 }
 
-/* ===== Cards and Sections ===== */
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* === Sections === */
+section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-dark);
+    position: relative;
+}
+
 .section-title::after {
-    background: linear-gradient(90deg, var(--plasma-light), var(--plasma-yellow));
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--plasma-light), var(--plasma-accent));
+    border-radius: 2px;
+}
+
+/* === About === */
+.about {
+    background: var(--neutral-bg);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+}
+
+.profile-img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 6px solid var(--plasma-light);
+    object-fit: cover;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* === Projects === */
+.projects {
+    background: white;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
 }
 
 .project-card:hover {
     transform: translateY(-15px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
     border-color: var(--plasma-light);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
 }
 
+.project-header {
+    color: white;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-accent));
+}
+
+.project-body {
+    padding: 2rem;
+}
+
+/* === Footer === */
 footer {
     background: var(--plasma-dark);
     color: var(--text-light);
@@ -159,8 +259,48 @@ footer {
     padding: 2rem 0;
 }
 
-/* ===== Animations ===== */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: var(--plasma-mid);
+    color: white;
+    border-radius: 50%;
+    margin: 0 0.4rem;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    transform: scale(1.15);
+    background: var(--plasma-light);
+}
+
+/* === Animations === */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .about-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
 }
