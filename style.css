@@ -2,7 +2,7 @@
    Bruno Galvão Portfolio - Plasma Colormap Theme (2025)
    ========================================================== */
 
-/* === Plasma palette (Matplotlib inspired) === */
+/* === Plasma palette === */
 :root {
     --plasma-dark: #0d083b;
     --plasma-mid: #7b1fa2;
@@ -14,7 +14,7 @@
     --text-light: #f9fafb;
 }
 
-/* === Global reset === */
+/* === Reset === */
 * {
     margin: 0;
     padding: 0;
@@ -24,9 +24,9 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-dark);
-    line-height: 1.6;
     background: linear-gradient(135deg, var(--plasma-dark), var(--plasma-mid));
-    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .container {
@@ -47,6 +47,7 @@ header {
     transition: all 0.3s ease;
 }
 
+/* === Navigation === */
 nav {
     display: flex;
     justify-content: space-between;
@@ -69,9 +70,9 @@ nav {
 }
 
 .nav-links a {
-    text-decoration: none;
     color: var(--text-dark);
     font-weight: 500;
+    text-decoration: none;
     transition: color 0.3s ease;
     cursor: pointer;
 }
@@ -85,19 +86,22 @@ nav {
     min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    color: white;
-    padding-top: 80px;
     position: relative;
-    background: url("BackgroundV2.PNG") center/cover no-repeat;
-    overflow: hidden;
+    color: white;
+    background: linear-gradient(135deg, var(--plasma-dark), var(--plasma-mid));
+    background-image: url("BackgroundV2.PNG");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: rgba(0, 0, 0, 0.45);
 }
 
 .hero .container {
@@ -119,23 +123,22 @@ nav {
 }
 
 .hero-content p {
-    font-size: 1.1rem;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto 2rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* === Buttons === */
 .btn {
-    padding: 12px 30px;
-    border: none;
+    padding: 12px 28px;
     border-radius: 50px;
     font-weight: 600;
+    border: none;
     cursor: pointer;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    text-decoration: none;
     transition: all 0.3s ease;
 }
 
@@ -158,12 +161,12 @@ nav {
 
 .btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* === Sections === */
 section {
     padding: 80px 0;
+    position: relative;
 }
 
 .section-title {
@@ -202,13 +205,26 @@ section {
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
 }
 
-.profile-img {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    border: 6px solid var(--plasma-light);
-    object-fit: cover;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+/* === Badges === */
+.badges {
+    background: white;
+}
+
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.badge img {
+    height: 35px;
+    transition: all 0.3s ease;
+}
+
+.badge img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
 }
 
 /* === Projects === */
@@ -222,33 +238,87 @@ section {
     gap: 2rem;
 }
 
-.project-card {
+/* === Professional Summary === */
+.professional-summary {
+    background: transparent;
+}
+
+.professional-summary .container {
     background: white;
+    padding: 3rem;
     border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
-    transition: all 0.4s ease;
-    border: 2px solid transparent;
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.project-card:hover {
-    transform: translateY(-15px);
-    border-color: var(--plasma-light);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+/* === Skills (Areas of Expertise) === */
+.skills {
+    background: var(--neutral-bg);
 }
 
-.project-header {
-    color: white;
-    padding: 2.5rem;
-    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-accent));
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
 }
 
-.project-body {
+.skill-category {
+    background: white;
     padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-8px);
+}
+
+.skill-category h4 {
+    margin-bottom: 1rem;
+    color: var(--plasma-light);
+}
+
+.skill-list {
+    list-style: none;
+}
+
+.skill-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+/* === Contact === */
+.contact {
+    background: white;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: var(--neutral-bg);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info a {
+    color: var(--plasma-mid);
+    text-decoration: none;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.contact-form button {
+    margin-top: 1rem;
 }
 
 /* === Footer === */
@@ -261,23 +331,23 @@ footer {
 
 .social-link {
     display: inline-flex;
-    align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    align-items: center;
+    width: 48px;
+    height: 48px;
     background: var(--plasma-mid);
-    color: white;
     border-radius: 50%;
-    margin: 0 0.4rem;
+    margin: 0 0.5rem;
+    color: white;
     transition: all 0.3s ease;
 }
 
 .social-link:hover {
-    transform: scale(1.15);
     background: var(--plasma-light);
+    transform: scale(1.1);
 }
 
-/* === Animations === */
+/* === Animation === */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -290,17 +360,17 @@ footer {
 }
 
 /* === Responsive === */
-@media (max-width: 768px) {
-    .about-content {
+@media (max-width: 900px) {
+    .about-content,
+    .contact-content {
         grid-template-columns: 1fr;
-        text-align: center;
     }
 
     .projects-grid {
         grid-template-columns: 1fr;
     }
 
-    .hero-content h1 {
-        font-size: 2.5rem;
+    .skills-grid {
+        grid-template-columns: 1fr;
     }
 }
