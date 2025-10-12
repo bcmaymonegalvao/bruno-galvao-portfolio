@@ -81,51 +81,6 @@ nav {
     color: var(--plasma-light);
 }
 
-/* === Hero Section - Gradient + Image Fix === */
-.hero {
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    padding-top: 80px;
-
-    /* Plasma gradient animation */
-    background: linear-gradient(
-        120deg,
-        #0d083b,
-        #7b1fa2,
-        #f06292,
-        #ffb300,
-        #ffea00
-    );
-    background-size: 300% 300%;
-    animation: plasmaShift 18s ease infinite;
-
-    /* Image overlay (ensure it's visible above gradient) */
-    background-image: url("./BackgroundV2.PNG"),
-                      linear-gradient(120deg, #0d083b, #7b1fa2);
-    background-blend-mode: overlay;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-}
-
-.hero .container {
-    position: relative;
-    z-index: 2;
-}
-
 /* === Buttons === */
 .btn {
     padding: 12px 28px;
@@ -187,22 +142,6 @@ section {
     border-radius: 2px;
 }
 
-/* === About Section - Profile Image Refinement === */
-.profile-img {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    border: 6px solid #2d004d; /* deep purple border */
-    object-fit: cover;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.profile-img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 15px 40px rgba(123, 31, 162, 0.5);
-}
-
 /* === Badges === */
 .badges {
     background: white;
@@ -223,100 +162,6 @@ section {
 .badge img:hover {
     transform: scale(1.1);
     filter: brightness(1.2);
-}
-
-/* === Projects === */
-.projects {
-    background: white;
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 2rem;
-}
-
-/* === Professional Summary === */
-.professional-summary {
-    background: transparent;
-}
-
-.professional-summary .container {
-    background: white;
-    padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* === Skills (Areas of Expertise) === */
-.skills {
-    background: var(--neutral-bg);
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-}
-
-.skill-category {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.skill-category:hover {
-    transform: translateY(-8px);
-}
-
-.skill-category h4 {
-    margin-bottom: 1rem;
-    color: var(--plasma-light);
-}
-
-.skill-list {
-    list-style: none;
-}
-
-.skill-list li {
-    padding: 0.4rem 0;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95rem;
-}
-
-/* === Contact === */
-.contact {
-    background: white;
-}
-
-.contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    background: var(--neutral-bg);
-    padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-}
-
-.contact-info a {
-    color: var(--plasma-mid);
-    text-decoration: none;
-}
-
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 0.3rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.contact-form button {
-    margin-top: 1rem;
 }
 
 /* === Footer === */
@@ -439,4 +284,297 @@ footer {
 .section-title {
     animation: titleGlow 8s ease-in-out infinite;
 }
+/* =============================
+   ABOUT SECTION FIX
+   ============================= */
+.about {
+    background: var(--neutral-bg);
+    position: relative;
+    z-index: 2;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+}
+
+.profile-img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 6px solid #4a148c; /* Roxo escuro sólido */
+    object-fit: cover;
+    box-shadow: 0 10px 35px rgba(74, 20, 140, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.04);
+}
+
+.about-text h3 {
+    color: var(--plasma-mid);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.about-text p {
+    color: #444;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.about-text ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* =============================
+   PROJECTS SECTION FIX
+   ============================= */
+.projects {
+    background: var(--neutral-bg);
+}
+
+.project-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--plasma-light);
+    box-shadow: 0 20px 50px rgba(240, 98, 146, 0.3);
+}
+
+.project-header {
+    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-accent));
+    color: white;
+    padding: 2rem;
+}
+
+.project-body {
+    padding: 2rem;
+    color: #333;
+}
+
+.project-description {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.project-tech .tech-tag {
+    background: var(--neutral-bg);
+    color: var(--plasma-mid);
+    border-radius: 8px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+    margin-right: 0.3rem;
+    display: inline-block;
+}
+
+/* =============================
+   PROFESSIONAL SUMMARY
+   ============================= */
+.professional-summary {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.professional-summary .container {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    color: #333;
+    line-height: 1.8;
+}
+
+.professional-summary h2 {
+    text-align: center;
+    color: var(--plasma-mid);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.professional-summary p {
+    margin-bottom: 1rem;
+    text-align: justify;
+    font-size: 1.05rem;
+}
+
+/* =============================
+   AREAS OF EXPERTISE
+   ============================= */
+.skills {
+    background: var(--neutral-bg);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.skill-category {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.skill-category:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(240, 98, 146, 0.3);
+}
+
+.skill-category h4 {
+    color: var(--plasma-light);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.skill-category h4 i {
+    color: var(--plasma-accent);
+    transition: transform 0.3s ease;
+}
+
+.skill-category:hover h4 i {
+    transform: rotate(15deg);
+}
+
+.skill-list {
+    list-style: none;
+    color: #444;
+}
+
+.skill-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+/* =============================
+   LET’S CONNECT
+   ============================= */
+.contact {
+    background: linear-gradient(135deg, #faf9fc, #fff);
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.contact h4 {
+    color: var(--plasma-mid);
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    gap: 0.5rem;
+}
+
+.contact-item i {
+    color: var(--plasma-accent);
+}
+
+.contact-info a {
+    color: var(--plasma-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: var(--plasma-accent);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.contact-form button {
+    width: 100%;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, var(--plasma-light), var(--plasma-accent));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(255, 179, 0, 0.3);
+}
+
+/* =============================
+   HERO IMAGE FIX
+   ============================= */
+.hero {
+    background-image: linear-gradient(120deg, #0d083b, #7b1fa2, #f06292),
+                      url("BackgroundV2.PNG");
+    background-blend-mode: overlay;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* =============================
+   RESPONSIVE FIXES
+   ============================= */
+@media (max-width: 900px) {
+    .about-content,
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-grid,
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-text {
+        text-align: center;
+    }
+}
+
 
