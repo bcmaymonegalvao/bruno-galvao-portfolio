@@ -356,6 +356,86 @@ nav {
     color: white;
 }
 
+/* =============================
+   TECHNOLOGY & TOOLS (BADGES)
+   ============================= */
+.badges {
+    background: var(--neutral-bg);
+    padding: 80px 0;
+}
+
+.badges .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.badges h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+    background: linear-gradient(90deg, var(--plasma-light), var(--plasma-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    row-gap: 2rem;
+    padding: 1rem;
+    max-width: 900px;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.badge:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(240, 98, 146, 0.3);
+}
+
+.badge img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.1));
+    transition: all 0.3s ease;
+}
+
+.badge img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.15);
+}
+
+@media (max-width: 768px) {
+    .badges-container {
+        gap: 1rem;
+        row-gap: 1.5rem;
+    }
+    .badge {
+        padding: 0.6rem 1rem;
+    }
+    .badge img {
+        height: 32px;
+    }
+}
+
 /* === Footer === */
 footer {
     background: var(--plasma-dark);
