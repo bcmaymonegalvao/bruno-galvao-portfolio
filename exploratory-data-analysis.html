@@ -16,7 +16,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: #f8fafc;
+            /* base color aligned with index.html */
+            background: white;
             overflow-x: hidden;
         }
 
@@ -312,11 +313,24 @@
 
         .tech-item i { font-size: 2.5rem; margin-bottom: 1rem; color: #667eea; }
 
-        /* Performance Metrics */
-        .metrics-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 0; text-align: center; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; margin-top: 3rem; }
-        .metric-card { background: rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
-        .metric-number { font-size: 3.5rem; font-weight: bold; margin-bottom: 1rem; color: #fff; display: block; }
+    /* Performance Metrics */
+    /* make metrics section light so numbers are always readable */
+    .metrics-section { background: #f8fafc; color: #1f2937; padding: 80px 0; text-align: center; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .metric-card { background: white; border-radius: 12px; padding: 1rem 1.2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border-left: 4px solid rgba(102,126,234,0.9); transition: all 0.2s ease; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .metric-number { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.35rem; color: #1f2937; display: block; }
+    .metric-label { font-size: 0.95rem; color: #4a5568; }
+
+    /* Explanation / commentary section (readable, by topic) */
+    .explain-section { background: white; border-radius: 12px; padding: 1.2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.04); margin-top: 1rem; color:#1f2937; }
+    .explain-section h4 { margin: 0 0 0.4rem 0; font-size: 1.05rem; color: #2d3748; }
+    .explain-section p { margin: 0 0 0.6rem 0; color:#4a5568; line-height:1.6; }
+
+    /* Simplified result boxes (title + number) */
+    .result-summary-grid { display:flex; gap:0.9rem; flex-wrap:wrap; margin-top:1.2rem; }
+    .result-box { flex:1 1 140px; background:white; border-radius:10px; padding:0.9rem 1rem; text-align:center; box-shadow:0 8px 22px rgba(0,0,0,0.06); }
+    .result-box .value { font-weight:800; font-size:1.4rem; color:#111827; }
+    .result-box .title { font-size:0.9rem; color:#6b7280; margin-top:0.35rem; }
 
         /* Results visuals */
         .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:1.2rem; margin-top:1.6rem; }
@@ -569,48 +583,25 @@ fig.write_html('age_distribution.html')
             <h2 class="section-title">Results & Performance</h2>
             <p class="section-subtitle">Key findings and system performance metrics.</p>
 
-            <!-- Explanatory comments: how the Streamlit app displays results and how to interpret them -->
-            <div class="comment-block" aria-hidden="false">
-                <span class="comment-line">// HOW TO READ THESE RESULTS (from the Titanic Streamlit app)</span>
-                <span class="comment-line">// 1) Accuracy: overall fraction of correct predictions. High accuracy can be misleading on imbalanced classes.</span>
-                <span class="comment-line">// 2) Precision: of the passengers predicted as 'survived', how many actually survived. Important when false positives are costly.</span>
-                <span class="comment-line">// 3) Recall (Sensitivity): of all actual survivors, how many the model correctly identified. Important when missing positives is costly.</span>
-                <span class="comment-line">// 4) F1 Score: harmonic mean of precision and recall — use it when you need a balance between precision and recall.</span>
-                <span class="comment-line">// 5) ROC AUC: area under ROC curve; shows separability between classes across thresholds (1.0 is perfect, 0.5 is random).</span>
-                <span class="comment-line">// 6) Sample Size: number of test samples used to compute metrics; smaller samples increase variance in metrics.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// Confusion Matrix: rows = actual classes, columns = predicted classes.</span>
-                <span class="comment-line">//    - True Negatives (TN): correctly predicted 'No' (did not survive).</span>
-                <span class="comment-line">//    - False Positives (FP): predicted 'Yes' but actual 'No' — overestimates survivors.</span>
-                <span class="comment-line">//    - False Negatives (FN): predicted 'No' but actual 'Yes' — missed survivors (costly if we want to rescue).</span>
-                <span class="comment-line">//    - True Positives (TP): correctly predicted 'Yes' (survived).</span>
-                <span class="comment-line">// Interpretation tip: look at FN vs FP tradeoff depending on the application goal.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// ROC Curve: plots TPR (recall) vs FPR for different thresholds. Use it to choose an operating threshold that balances recall and FPR.</span>
-                <span class="comment-line">// AUC close to 1.0 indicates good separability; compare AUC across models to choose the best one.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// Feature Importance: indicates which input variables the RandomForest used most to split the data.</span>
-                <span class="comment-line">//    - Higher importance means the model relied more on that feature to make decisions.</span>
-                <span class="comment-line">//    - Use feature importance to guide further data collection or to interpret model behavior.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// Classification Report: per-class precision, recall, f1 and support. Check 'support' to see class imbalance influence.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// Practical notes:</span>
-                <span class="comment-line">//  - If recall is prioritized (e.g., catching true survivors), lower threshold to increase recall at cost of precision.</span>
-                <span class="comment-line">//  - If precision is prioritized (e.g., avoiding false survivor alerts), raise threshold to increase precision.</span>
-                <span class="comment-line">//  - Always examine confusion matrix and ROC together; numerical metrics alone can hide specific error patterns.</span>
-                <span class="comment-line">//  - Consider cross-validation and confidence intervals for more robust metric estimates.</span>
-                <span class="comment-line">//  - The visualizations below (confusion matrix, ROC curve, feature importance) are illustrative snapshots generated by the app.</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// How this HTML page maps to the Streamlit app:</span>
-                <span class="comment-line">//  - Top metrics (Accuracy/Precision/Recall/F1/ROC AUC/Sample Size) replicate the values computed in the Streamlit 'Métricas do Modelo' tab.</span>
-                <span class="comment-line">//  - Confusion matrix and ROC plots are simplified static SVG representations here; the Streamlit app renders Matplotlib/Seaborn plots with exact numbers.</span>
-                <span class="comment-line">//  - Feature importance shown here is a compact bar-like representation; in the app, a horizontal bar chart is generated for better resolution.</span>
-                <span class="comment-line">//  - Classification report table here is an excerpt; consult the live app or saved metrics file to view the full report object (JSON/pickle).</span>
-                <span class="comment-line">//</span>
-                <span class="comment-line">// Notes for maintainers:</span>
-                <span class="comment-line">//  - Metrics are saved to 'titanic_metrics.pkl' by the app; to keep this page fully up-to-date, export metrics to JSON and load them here during build/deploy.</span>
-                <span class="comment-line">//  - If you want dynamic integration, add a small script to fetch a '/metrics.json' file produced by the app and inject values into the DOM.</span>
+            <!-- Explanatory content: organized by topic for readability -->
+            <div class="explain-section" aria-hidden="false">
+                <h4>Overview</h4>
+                <p>This section summarizes how the model metrics and visualizations are generated in the Titanic Streamlit app and how to interpret them. The values shown on this page are snapshots produced by the app; for the most up-to-date numbers consult the live demo or the exported metrics file.</p>
+
+                <h4>Key Metrics</h4>
+                <p>Accuracy is the fraction of correct predictions (use cautiously on imbalanced data). Precision measures how many of the predicted positives were actually positive. Recall (sensitivity) measures how many of the actual positives were identified. F1 is the harmonic mean of precision and recall. ROC AUC captures model separability across thresholds.</p>
+
+                <h4>Confusion Matrix & ROC</h4>
+                <p>The confusion matrix (Actual × Predicted) decomposes errors into true negatives, false positives, false negatives and true positives — inspect FN vs FP depending on your objectives. The ROC curve plots True Positive Rate vs False Positive Rate across thresholds; AUC close to 1.0 is desirable.</p>
+
+                <h4>Feature Importance</h4>
+                <p>Feature importance (e.g., from RandomForest) shows which variables the model relied on most. Use it to guide feature engineering, data collection priorities, or to investigate potential bias in predictions.</p>
+
+                <h4>Classification Report & Practical Notes</h4>
+                <p>The classification report lists per-class precision, recall, f1 and support; examine support to understand imbalance effects. Practical guidance: lower threshold to increase recall (catch more positives) or raise it to increase precision (fewer false positives). Combine numeric metrics with the confusion matrix and ROC for a complete view.</p>
+
+                <h4>Integration & Maintenance</h4>
+                <p>For maintainers: the app saves metrics to 'titanic_metrics.pkl'. To keep this page synchronized, export metrics as JSON (e.g. 'metrics.json') during the app pipeline and load them at build or runtime to inject numbers into the DOM.</p>
             </div>
 
             <div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin-top:1.5rem;">
@@ -640,91 +631,31 @@ fig.write_html('age_distribution.html')
                 </div>
             </div>
 
-            <!-- Detailed results: confusion matrix, ROC, feature importance and classification report -->
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-top:1.6rem; align-items:start;">
-                <div class="result-card" style="text-align:left;">
-                    <h5 style="margin-top:0;">Confusion Matrix</h5>
-                    <!-- Small confusion table (example values) -->
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:0.8rem;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th style="text-align:center;">Pred: No</th>
-                                <th style="text-align:center;">Pred: Yes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight:600;">Actual: No</td>
-                                <td style="text-align:center; padding:8px;">480</td>
-                                <td style="text-align:center; padding:8px;">40</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600;">Actual: Yes</td>
-                                <td style="text-align:center; padding:8px;">80</td>
-                                <td style="text-align:center; padding:8px;">291</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div style="display:flex; gap:0.8rem; align-items:center; margin-bottom:0.6rem;">
-                        <div style="flex:1;">
-                            <small style="color:#718096;">Accuracy</small>
-                            <div style="font-weight:700;">82%</div>
-                        </div>
-                        <div style="flex:1;">
-                            <small style="color:#718096;">ROC AUC</small>
-                            <div style="font-weight:700;">0.86</div>
-                        </div>
-                    </div>
-
-                    <h5 style="margin-bottom:0.4rem;">ROC Curve (sample)</h5>
-                    <svg viewBox="0 0 100 60" preserveAspectRatio="none" style="width:100%; height:80px; background:#f7fafc; border-radius:6px;">
-                        <polyline fill="none" stroke="#e2e8f0" stroke-width="0.8" points="0,60 100,0" />
-                        <polyline fill="none" stroke="#ff7f0e" stroke-width="2" points="0,55 10,45 20,32 30,25 40,18 50,14 60,10 70,6 80,4 90,2 100,0" />
-                    </svg>
+            <!-- Simplified results: compact containers with title + number -->
+            <div class="result-summary-grid" aria-label="Summary metrics">
+                <div class="result-box">
+                    <div class="value">82%</div>
+                    <div class="title">Accuracy</div>
                 </div>
-
-                <div style="text-align:left;">
-                    <div class="result-card" style="margin-bottom:1rem;">
-                        <h5 style="margin-top:0;">Feature Importance</h5>
-                        <div class="feature-list">
-                            <div style="margin:0.5rem 0;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Sex</span><strong>24%</strong></div>
-                                <div style="background:#edf2ff; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:24%; height:100%; background:#667eea;"></div></div>
-                            </div>
-                            <div style="margin:0.5rem 0;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Fare</span><strong>19%</strong></div>
-                                <div style="background:#fff0f6; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:19%; height:100%; background:#ff4d4f;"></div></div>
-                            </div>
-                            <div style="margin:0.5rem 0;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Age</span><strong>15%</strong></div>
-                                <div style="background:#f0fff4; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:15%; height:100%; background:#43e97b;"></div></div>
-                            </div>
-                            <div style="margin:0.5rem 0;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Pclass</span><strong>12%</strong></div>
-                                <div style="background:#fef9e7; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:12%; height:100%; background:#f6ad55;"></div></div>
-                            </div>
-                            <div style="margin:0.5rem 0;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>FamilySize</span><strong>9%</strong></div>
-                                <div style="background:#f1f5f9; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:9%; height:100%; background:#94a3b8;"></div></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="result-card">
-                        <h5 style="margin-top:0;">Classification Report (excerpt)</h5>
-                        <table style="width:100%; border-collapse:collapse; font-size:0.95rem;">
-                            <thead>
-                                <tr style="text-align:left; color:#4a5568;"><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>0 (No)</td><td>0.84</td><td>0.92</td><td>0.88</td><td>520</td></tr>
-                                <tr><td>1 (Yes)</td><td>0.78</td><td>0.63</td><td>0.70</td><td>371</td></tr>
-                                <tr style="font-weight:700;"><td>macro avg</td><td>0.81</td><td>0.78</td><td>0.79</td><td>891</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="result-box">
+                    <div class="value">78%</div>
+                    <div class="title">Precision</div>
+                </div>
+                <div class="result-box">
+                    <div class="value">72%</div>
+                    <div class="title">Recall</div>
+                </div>
+                <div class="result-box">
+                    <div class="value">75%</div>
+                    <div class="title">F1 Score</div>
+                </div>
+                <div class="result-box">
+                    <div class="value">0.86</div>
+                    <div class="title">ROC AUC</div>
+                </div>
+                <div class="result-box">
+                    <div class="value">891</div>
+                    <div class="title">Sample Size</div>
                 </div>
             </div>
         </div>
