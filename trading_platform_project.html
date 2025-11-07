@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Platform - Bruno Galvão Portfolio</title>
+    <title>Trading Platform - Bruno Galvão</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -16,8 +16,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: #f8fafc;
+            overflow-x: hidden;
         }
 
         .container {
@@ -26,7 +26,6 @@
             padding: 0 20px;
         }
 
-        /* Header */
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -55,7 +54,6 @@
             display: flex;
             list-style: none;
             gap: 2rem;
-            align-items: center;
         }
 
         .nav-links a {
@@ -67,53 +65,55 @@
         }
 
         .nav-links a:hover {
-            color: #667eea;
+            color: #4facfe;
         }
 
         .back-btn {
-            background: #667eea;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: white;
+            color: #0070f3;
+            border: 2px solid #4facfe;
+            border-radius: 50px;
+            padding: 12px 25px;
             text-decoration: none;
             transition: all 0.3s ease;
-            display: inline-flex;
+            z-index: 999;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
         }
 
         .back-btn:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            transform: translateX(-5px);
         }
 
-        /* Hero Section */
-        .project-hero {
-            min-height: 60vh;
+        .hero {
+            min-height: 70vh;
             display: flex;
             align-items: center;
             text-align: center;
             color: white;
             padding-top: 120px;
+            padding-bottom: 60px;
             position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             overflow: hidden;
         }
 
-        .project-hero::before {
-            content: '';
+        .hero::before {
+            content: "";
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            animation: float 6s ease-in-out infinite;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.12);
+            z-index: 1;
         }
 
-        .hero-content {
+        .hero .container {
             position: relative;
             z-index: 2;
         }
@@ -125,312 +125,399 @@
         }
 
         .hero-content .subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
             opacity: 0.9;
             animation: fadeInUp 1s ease 0.2s both;
         }
 
         .hero-content p {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            opacity: 0.9;
             animation: fadeInUp 1s ease 0.4s both;
         }
 
-        .project-badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.8rem;
-            margin-top: 2rem;
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .badge:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Main Content */
-        .main-content {
-            background: white;
-            margin-top: -50px;
-            border-radius: 30px 30px 0 0;
-            position: relative;
-            z-index: 1;
-            padding: 80px 0;
-        }
-
-        .content-section {
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            color: #2d3748;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
-        .project-description {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #4a5568;
-            margin-bottom: 2rem;
-        }
-
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .feature-card {
-            background: #f8fafc;
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-card:nth-child(2) { border-left-color: #f093fb; }
-        .feature-card:nth-child(3) { border-left-color: #4facfe; }
-        .feature-card:nth-child(4) { border-left-color: #43e97b; }
-
-        .feature-card h4 {
-            color: #2d3748;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .feature-card i {
-            color: #667eea;
-            font-size: 1.5rem;
-        }
-
-        .feature-card:nth-child(2) i { color: #f093fb; }
-        .feature-card:nth-child(3) i { color: #4facfe; }
-        .feature-card:nth-child(4) i { color: #43e97b; }
-
-        /* Tech Stack */
-        .tech-stack {
-            background: #f8fafc;
-            padding: 3rem 0;
-            border-radius: 20px;
-            margin: 3rem 0;
-        }
-
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .tech-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .tech-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .tech-item i {
-            font-size: 2.5rem;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .tech-item h5 {
-            color: #2d3748;
-            font-weight: 600;
-        }
-
-        /* Project Links */
         .project-links {
             display: flex;
             gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 3rem 0;
+            animation: fadeInUp 1s ease 0.6s both;
         }
 
-        .project-link {
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 0.8rem;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .project-link.github {
-            background: #333;
+        .btn-primary {
+            background: white;
+            color: #0b87f0;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
             color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
         }
 
-        .project-link.github:hover {
-            background: #555;
+        .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(51, 51, 51, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
-        .project-link.demo {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
-        .project-link.demo:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        .content-section {
+            background: white;
+            padding: 80px 0;
         }
 
-        /* Screenshots Section */
-        .screenshots {
-            margin: 4rem 0;
+        .content-section:nth-child(even) {
+            background: #f8fafc;
         }
 
-        .screenshot-placeholder {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            height: 400px;
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #1a365d;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .overview-card {
+            background: white;
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            margin: 2rem 0;
+            padding: 2.5rem;
+            box-shadow: 0 15px 50px rgba(15, 97, 255, 0.08);
+            transition: all 0.4s ease;
+            border-left: 6px solid #4facfe;
             position: relative;
             overflow: hidden;
         }
 
-        .screenshot-placeholder::before {
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+            border-radius: 50%;
+            transform: translate(25px, -25px);
+        }
+
+        .overview-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(15, 97, 255, 0.18);
+        }
+
+        .overview-card:nth-child(2) { border-left-color: #00c9ff; }
+        .overview-card:nth-child(3) { border-left-color: #24a9fe; }
+        .overview-card:nth-child(4) { border-left-color: #19e6ff; }
+
+        .overview-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a365d;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .overview-card i {
+            font-size: 1.8rem;
+            color: #0ea5e9;
+        }
+
+        .overview-card:nth-child(2) i { color: #38bdf8; }
+        .overview-card:nth-child(3) i { color: #2563eb; }
+        .overview-card:nth-child(4) i { color: #0ea5e9; }
+
+        .overview-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #475569;
+            position: relative;
+            z-index: 2;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: left;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(15, 97, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
             content: '';
             position: absolute;
             top: -50%;
             right: -50%;
             width: 100%;
             height: 200%;
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.06), rgba(0, 242, 254, 0.06));
             transform: rotate(45deg);
-            animation: shimmer 3s ease-in-out infinite;
+            transition: all 0.3s ease;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(15, 97, 255, 0.15);
         }
 
-        @keyframes float {
-            0%, 100% { transform: rotate(45deg) translateY(0px); }
-            50% { transform: rotate(45deg) translateY(-20px); }
+        .feature-card:hover::before {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
         }
 
-        @keyframes shimmer {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #38bdf8;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .project-badges {
-                justify-content: center;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .tech-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
-
-            .project-links {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .project-link {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
+        .feature-card h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: #1e293b;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Additional styling for better visual hierarchy */
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
+        .feature-card p {
+            color: #475569;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .data-sources {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .data-item {
+            background: white;
             padding: 2rem;
-            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(15, 97, 255, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.06), rgba(0, 242, 254, 0.06));
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .data-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(15, 97, 255, 0.15);
+        }
+
+        .data-item:hover::before {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+        }
+
+        .data-item h5 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .data-item i {
+            color: #38bdf8;
+            font-size: 1.5rem;
+        }
+
+        .data-item p {
+            color: #475569;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .metrics-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .metric-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 97, 255, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(15, 97, 255, 0.15);
+            border-color: #4facfe;
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #38bdf8;
+        }
+
+        .tech-item h4 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .tech-item p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+            border: 2px solid rgba(79, 172, 254, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
         }
 
         .highlight-box h4 {
-            color: #667eea;
-            margin-bottom: 1rem;
+            color: #2563eb;
+            margin-bottom: 1.5rem;
         }
 
         .highlight-box ul {
@@ -442,207 +529,351 @@
             position: relative;
             padding-left: 2rem;
             margin-bottom: 0.8rem;
-            color: #4a5568;
+            color: #475569;
+            font-size: 1.05rem;
         }
 
         .highlight-box li::before {
             content: '✓';
             position: absolute;
             left: 0;
-            color: #10b981;
+            color: #0ea5e9;
             font-weight: bold;
             font-size: 1.2rem;
+        }
+
+        .cta-section {
+            padding: 80px 0;
+            background: #ffffff;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.15), rgba(0, 242, 254, 0.15));
+            border-radius: 25px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(15, 97, 255, 0.15);
+        }
+
+        .cta-box h3 {
+            font-size: 2.2rem;
+            color: #1e293b;
+        }
+
+        .cta-box p {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 700px;
+        }
+
+        footer {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .project-links {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .back-btn {
+                left: 10px;
+                top: 90px;
+                padding: 10px 18px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar ao portfólio</a>
+
     <header>
         <nav class="container">
             <div class="logo">Bruno Galvão</div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#projects">Projects</a></li>
-                <li><a href="index.html#skills">Skills</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
-                <li><a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a></li>
+                <li><a href="index.html#about">Sobre</a></li>
+                <li><a href="index.html#projects">Projetos</a></li>
+                <li><a href="index.html#skills">Habilidades</a></li>
+                <li><a href="index.html#contact">Contato</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="project-hero">
+    <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <h1>Trading Platform</h1>
-                <div class="subtitle">Comprehensive Financial Analysis & Trading Interface</div>
+                <div class="subtitle">Análises financeiras em tempo real e automação de estratégias</div>
                 <p>
-                    A sophisticated trading platform built with Python and Streamlit, featuring real-time financial data analysis, 
-                    portfolio management, and algorithmic trading strategies. Designed for both professional traders and investment enthusiasts 
-                    seeking data-driven insights and automated trading capabilities.
+                    Plataforma desenvolvida em Python e Streamlit que centraliza dados de mercado, gestão de portfólios
+                    e execução de estratégias quantitativas. A solução combina integrações com múltiplas APIs financeiras,
+                    análises avançadas e monitoramento contínuo para apoiar decisões de investimento.
                 </p>
-                <div class="project-badges">
-                    <span class="badge">Python</span>
-                    <span class="badge">Streamlit</span>
-                    <span class="badge">Financial Analysis</span>
-                    <span class="badge">Portfolio Management</span>
-                    <span class="badge">Real-time Data</span>
-                    <span class="badge">Algorithmic Trading</span>
+                <div class="project-links">
+                    <a href="https://github.com/bcmaymonegalvao/plataforma_corretora" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-github"></i> Código-fonte
+                    </a>
+                    <a href="https://plataformacorretora-brunogalvao.streamlit.app/" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-external-link-alt"></i> Acessar demo
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="main-content">
+    <section class="content-section fade-in">
         <div class="container">
-            <!-- Project Overview -->
-            <div class="content-section">
-                <h2 class="section-title">Project Overview</h2>
-                <div class="project-description">
-                    The Trading Platform is a comprehensive financial analysis tool that combines real-time market data processing 
-                    with sophisticated portfolio management capabilities. Built using modern Python technologies, this platform 
-                    serves as a one-stop solution for traders and investors looking to make data-informed decisions in financial markets.
+            <h2 class="section-title">Visão Geral</h2>
+            <p class="section-subtitle">Uma aplicação web completa para traders e analistas que precisam acompanhar o mercado, testar hipóteses e gerenciar riscos com agilidade.</p>
+
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h4><i class="fas fa-bullseye"></i> Objetivo Principal</h4>
+                    <p>Oferecer um ambiente unificado de negociação com dashboards interativos, ferramentas de análise técnica e módulos de automação de operações.</p>
                 </div>
-                <div class="project-description">
-                    The platform integrates multiple financial APIs to provide real-time stock prices, market indicators, and 
-                    economic data, while offering advanced analytical tools including technical indicators, risk assessment models, 
-                    and performance analytics. Its intuitive web interface makes complex financial analysis accessible to users 
-                    of all experience levels.
+                <div class="overview-card">
+                    <h4><i class="fas fa-layer-group"></i> Escopo Funcional</h4>
+                    <p>Monitoramento de cotações, cálculo de indicadores, gestão de carteiras multiativos, simulação de cenários e execução de estratégias automatizadas.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-users"></i> Público-alvo</h4>
+                    <p>Investidores individuais, analistas de mercado e equipes quantitativas que buscam insights rápidos a partir de dados confiáveis e atualizados.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-chart-line"></i> Benefícios</h4>
+                    <p>Decisões suportadas por dados em tempo real, redução do tempo de análise, padronização de estratégias e rastreabilidade completa de resultados.</p>
                 </div>
             </div>
 
-            <!-- Key Features -->
-            <div class="content-section">
-                <h2 class="section-title">Key Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h4><i class="fas fa-chart-line"></i> Real-time Market Data</h4>
-                        <p>Live stock prices, market indices, and economic indicators with automatic updates and historical data analysis.</p>
+            <div class="data-sources">
+                <h3 style="text-align:center; color:#0f172a; font-size:2rem;">Integrações e Fontes de Dados</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <h5><i class="fas fa-signal"></i> APIs de Mercado</h5>
+                        <p>Coleta de preços em tempo real, volumes e book de ofertas a partir de serviços como Alpha Vantage, Yahoo Finance e plataformas de corretoras.</p>
                     </div>
-                    <div class="feature-card">
-                        <h4><i class="fas fa-briefcase"></i> Portfolio Management</h4>
-                        <p>Comprehensive portfolio tracking, performance analysis, and risk assessment with detailed reporting capabilities.</p>
+                    <div class="data-item">
+                        <h5><i class="fas fa-database"></i> Histórico Consolidado</h5>
+                        <p>Armazenamento de séries temporais para cálculos de indicadores, análises de correlação e validação de estratégias quantitativas.</p>
                     </div>
-                    <div class="feature-card">
-                        <h4><i class="fas fa-robot"></i> Algorithmic Trading</h4>
-                        <p>Automated trading strategies with backtesting capabilities and customizable risk management parameters.</p>
+                    <div class="data-item">
+                        <h5><i class="fas fa-bell"></i> Eventos &amp; Notícias</h5>
+                        <p>Integração com calendários econômicos, relatórios de ganhos e alertas customizados para antecipar movimentos relevantes do mercado.</p>
                     </div>
-                    <div class="feature-card">
-                        <h4><i class="fas fa-analytics"></i> Advanced Analytics</h4>
-                        <p>Technical indicators, statistical analysis, and predictive modeling for informed investment decisions.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technical Implementation -->
-            <div class="content-section">
-                <h2 class="section-title">Technical Implementation</h2>
-                <div class="highlight-box">
-                    <h4>Core Technologies & Architecture</h4>
-                    <ul>
-                        <li><strong>Frontend:</strong> Streamlit framework for interactive web interface</li>
-                        <li><strong>Data Processing:</strong> Pandas and NumPy for efficient data manipulation</li>
-                        <li><strong>Visualization:</strong> Plotly for interactive charts and real-time plotting</li>
-                        <li><strong>Financial Data:</strong> Integration with multiple financial APIs (Yahoo Finance, Alpha Vantage)</li>
-                        <li><strong>Analysis:</strong> SciPy and scikit-learn for statistical analysis and modeling</li>
-                        <li><strong>Performance:</strong> Caching mechanisms for optimized data retrieval</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Technology Stack -->
-            <div class="tech-stack">
-                <div class="container">
-                    <h2 class="section-title">Technology Stack</h2>
-                    <div class="tech-grid">
-                        <div class="tech-item">
-                            <i class="fab fa-python"></i>
-                            <h5>Python</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-chart-area"></i>
-                            <h5>Streamlit</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-table"></i>
-                            <h5>Pandas</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-chart-line"></i>
-                            <h5>Plotly</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-calculator"></i>
-                            <h5>NumPy</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-flask"></i>
-                            <h5>SciPy</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-exchange-alt"></i>
-                            <h5>Financial APIs</h5>
-                        </div>
-                        <div class="tech-item">
-                            <i class="fas fa-database"></i>
-                            <h5>Data Analysis</h5>
-                        </div>
+                    <div class="data-item">
+                        <h5><i class="fas fa-lock"></i> Segurança</h5>
+                        <p>Autenticação segura e armazenamento cifrado de chaves de API, garantindo conformidade com políticas de corretoras e provedores de dados.</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Platform Capabilities -->
-            <div class="content-section">
-                <h2 class="section-title">Platform Capabilities</h2>
-                <div class="project-description">
-                    The Trading Platform offers a comprehensive suite of financial analysis tools designed to empower users 
-                    with actionable market insights. From basic stock screening to advanced algorithmic trading strategies, 
-                    the platform caters to diverse trading styles and investment approaches.
-                </div>
-                
-                <div class="highlight-box">
-                    <h4>Advanced Features</h4>
-                    <ul>
-                        <li>Multi-asset portfolio optimization with modern portfolio theory</li>
-                        <li>Risk metrics calculation including VaR, Sharpe ratio, and beta analysis</li>
-                        <li>Technical analysis with 20+ indicators (RSI, MACD, Bollinger Bands, etc.)</li>
-                        <li>Backtesting engine for strategy validation and optimization</li>
-                        <li>Real-time alerts and notifications for market events</li>
-                        <li>Correlation analysis and sector performance comparison</li>
-                        <li>Economic calendar integration with earnings and events tracking</li>
-                        <li>Custom dashboard creation with personalized metrics</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Screenshots/Demo -->
-            <div class="content-section">
-                <h2 class="section-title">Platform Interface</h2>
-                <div class="screenshot-placeholder">
-                    <div>
-                        <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                        Interactive Trading Dashboard
-                        <br><small style="opacity: 0.8;">Live demo available via the link below</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Links -->
-            <div class="project-links">
-                <a href="https://github.com/bcmaymonegalvao/plataforma_corretora" class="project-link github" target="_blank">
-                    <i class="fab fa-github"></i> View Source Code
-                </a>
-                <a href="https://plataformacorretora-brunogalvao.streamlit.app/" class="project-link demo" target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Arquitetura da Solução</h2>
+            <p class="section-subtitle">Pipelines resilientes conectam aquisição de dados, processamento analítico e visualização interativa.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h4>Camada de Dados</h4>
+                    <p>Coleta contínua via APIs REST, normalização de séries temporais, caching inteligente e agendamentos para sincronização de dados críticos.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h4>Motor Analítico</h4>
+                    <p>Implementação de indicadores técnicos, cálculos de risco (VaR, Sharpe, beta) e modelos de otimização com suporte a backtesting parametrizável.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-desktop"></i>
+                    <h4>Interface Streamlit</h4>
+                    <p>Dashboards responsivos com filtros dinâmicos, gráficos interativos Plotly e painéis modulares para personalização por usuário.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Fluxo Operacional</h4>
+                <ul>
+                    <li>Agendadores coletam dados de ativos e indicadores macroeconômicos em intervalos configuráveis.</li>
+                    <li>Processos assíncronos atualizam portfólios, calculando métricas de risco e performance em tempo real.</li>
+                    <li>Backtests são executados sob demanda com logs detalhados e exportação de relatórios comparativos.</li>
+                    <li>Alertas automáticos são disparados quando condições de entrada ou saída são atingidas.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Funcionalidades em Destaque</h2>
+            <p class="section-subtitle">Recursos pensados para acelerar a análise e execução de estratégias em diferentes horizontes de tempo.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-chart-area"></i>
+                    <h4>Dashboard Operacional</h4>
+                    <p>Visualização consolidada de ativos, watchlists personalizadas, heatmaps setoriais e comparação com benchmarks globais.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h4>Gestão de Portfólio</h4>
+                    <p>Balanceamento automático, rebalanceamento baseado em alocação alvo, cálculo de exposição e controle de limites de risco.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-flask"></i>
+                    <h4>Laboratório Quantitativo</h4>
+                    <p>Criação de estratégias customizadas, simulação de parâmetros, avaliação de drawdown e análise de sensibilidade.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Alertas Multicanal</h4>
+                    <p>Notificações por e-mail e push com gatilhos configuráveis, incluindo cruzamento de médias móveis, rompimentos e eventos fundamentais.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h4>Repositório de Estratégias</h4>
+                    <p>Catálogo de modelos com versionamento, documentação integrada e templates para rápida criação de novas abordagens.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Compliance &amp; Logs</h4>
+                    <p>Auditoria detalhada das operações, registro de parâmetros utilizados e trilhas de auditoria para validação regulatória.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="metrics-section fade-in">
+        <div class="container">
+            <h2 class="section-title" style="color:white;">Confiabilidade &amp; Performance</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.85);">Indicadores que demonstram a robustez da plataforma no suporte ao ciclo completo de negociação.</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">1.2s</div>
+                    <div class="metric-label">Atualização de Dados</div>
+                    <div class="metric-description">Tempo médio para refletir novas cotações e indicadores após a captura via API.</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">99.3%</div>
+                    <div class="metric-label">Disponibilidade</div>
+                    <div class="metric-description">Infraestrutura monitorada com alertas pró-ativos garantindo alta disponibilidade.</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">20+</div>
+                    <div class="metric-label">Indicadores</div>
+                    <div class="metric-description">Biblioteca completa de métricas técnicas e de risco, customizáveis por ativo.</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">5</div>
+                    <div class="metric-label">Portfólios</div>
+                    <div class="metric-description">Gestão simultânea de carteiras, com segmentação por estratégia ou perfil de risco.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Stack Tecnológico</h2>
+            <p class="section-subtitle">Tecnologias que possibilitam processamento ágil, visualizações ricas e integração segura com o ecossistema financeiro.</p>
+
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <i class="fab fa-python"></i>
+                    <h4>Python &amp; Pandas</h4>
+                    <p>Manipulação eficiente de séries temporais, cálculos estatísticos e preparação de dados para análises avançadas.</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-stream"></i>
+                    <h4>Streamlit</h4>
+                    <p>Construção de interface responsiva com componentes interativos, filtros e atualizações em tempo real.</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Plotly</h4>
+                    <p>Gráficos dinâmicos com zoom, seleção de faixas de tempo e indicadores sobrepostos para análise técnica.</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-cloud"></i>
+                    <h4>Integrações Cloud</h4>
+                    <p>Serviços de nuvem para agendamento, armazenamento e distribuição, facilitando escalabilidade horizontal.</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-lock"></i>
+                    <h4>Auth &amp; Segurança</h4>
+                    <p>Proteção com tokens, criptografia em repouso e monitoramento de acesso para conformidade com LGPD.</p>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-drafting-compass"></i>
+                    <h4>DevOps</h4>
+                    <p>CI/CD, testes automatizados e observabilidade com logs estruturados e métricas expostas por API.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section fade-in">
+        <div class="container">
+            <div class="cta-box">
+                <h3>Pronto para elevar suas operações?</h3>
+                <p>Explore o repositório para entender a arquitetura, adapte as estratégias aos seus ativos e utilize a demo para experimentar dashboards e análises em tempo real.</p>
+                <div class="project-links">
+                    <a href="https://github.com/bcmaymonegalvao/plataforma_corretora" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-github"></i> Repositório GitHub
+                    </a>
+                    <a href="https://plataformacorretora-brunogalvao.streamlit.app/" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-play"></i> Executar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Desenvolvido por Bruno Galvão · Trading Platform Project
+    </footer>
 
     <script>
-        // Header scroll effect
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
@@ -654,17 +885,6 @@
             }
         });
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -673,40 +893,17 @@
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, observerOptions);
 
-        // Observe elements for animation
-        document.querySelectorAll('.content-section, .feature-card, .tech-item').forEach(el => {
+        document.querySelectorAll('.fade-in').forEach(el => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.transform = 'translateY(40px)';
             observer.observe(el);
-        });
-
-        // Add hover effects
-        document.querySelectorAll('.feature-card, .tech-item').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(-5px) scale(1)';
-            });
-        });
-
-        // Parallax effect for hero
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.project-hero');
-            const rate = scrolled * -0.2;
-            
-            if (hero) {
-                hero.style.transform = `translateY(${rate}px)`;
-            }
         });
     </script>
 </body>
