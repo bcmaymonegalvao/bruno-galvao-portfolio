@@ -70,6 +70,10 @@
     .result-card h5 { margin-bottom:0.4rem; color:#2d3748; }
     .result-card p { color:#4a5568; font-size:0.95rem; }
 
+    /* Comment / explanation block (visible to users) */
+    .comment-block { background:#f1f5f9; color:#1f2937; padding:1rem 1.2rem; border-radius:10px; font-family: 'Courier New', monospace; font-size:0.95rem; line-height:1.5; margin-top:1rem; border-left:4px solid #667eea; }
+    .comment-line { display:block; white-space:pre-wrap; }
+
         /* Back buttons */
         .back-hero { display:inline-flex; align-items:center; gap:0.6rem; text-decoration:none; color:white; background:rgba(0,0,0,0.12); padding:8px 14px; border-radius:999px; font-weight:600; }
         .back-fixed { position:fixed; right:20px; bottom:20px; background:#2d3748; color:white; padding:12px 18px; border-radius:999px; text-decoration:none; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
@@ -233,6 +237,50 @@ fig.write_html('age_distribution.html')
         <div class="container">
             <h2 class="section-title">Results & Performance</h2>
             <p class="section-subtitle">Key findings and system performance metrics.</p>
+
+            <!-- Explanatory comments: how the Streamlit app displays results and how to interpret them -->
+            <div class="comment-block" aria-hidden="false">
+                <span class="comment-line">// HOW TO READ THESE RESULTS (from the Titanic Streamlit app)</span>
+                <span class="comment-line">// 1) Accuracy: overall fraction of correct predictions. High accuracy can be misleading on imbalanced classes.</span>
+                <span class="comment-line">// 2) Precision: of the passengers predicted as 'survived', how many actually survived. Important when false positives are costly.</span>
+                <span class="comment-line">// 3) Recall (Sensitivity): of all actual survivors, how many the model correctly identified. Important when missing positives is costly.</span>
+                <span class="comment-line">// 4) F1 Score: harmonic mean of precision and recall — use it when you need a balance between precision and recall.</span>
+                <span class="comment-line">// 5) ROC AUC: area under ROC curve; shows separability between classes across thresholds (1.0 is perfect, 0.5 is random).</span>
+                <span class="comment-line">// 6) Sample Size: number of test samples used to compute metrics; smaller samples increase variance in metrics.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// Confusion Matrix: rows = actual classes, columns = predicted classes.</span>
+                <span class="comment-line">//    - True Negatives (TN): correctly predicted 'No' (did not survive).</span>
+                <span class="comment-line">//    - False Positives (FP): predicted 'Yes' but actual 'No' — overestimates survivors.</span>
+                <span class="comment-line">//    - False Negatives (FN): predicted 'No' but actual 'Yes' — missed survivors (costly if we want to rescue).</span>
+                <span class="comment-line">//    - True Positives (TP): correctly predicted 'Yes' (survived).</span>
+                <span class="comment-line">// Interpretation tip: look at FN vs FP tradeoff depending on the application goal.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// ROC Curve: plots TPR (recall) vs FPR for different thresholds. Use it to choose an operating threshold that balances recall and FPR.</span>
+                <span class="comment-line">// AUC close to 1.0 indicates good separability; compare AUC across models to choose the best one.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// Feature Importance: indicates which input variables the RandomForest used most to split the data.</span>
+                <span class="comment-line">//    - Higher importance means the model relied more on that feature to make decisions.</span>
+                <span class="comment-line">//    - Use feature importance to guide further data collection or to interpret model behavior.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// Classification Report: per-class precision, recall, f1 and support. Check 'support' to see class imbalance influence.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// Practical notes:</span>
+                <span class="comment-line">//  - If recall is prioritized (e.g., catching true survivors), lower threshold to increase recall at cost of precision.</span>
+                <span class="comment-line">//  - If precision is prioritized (e.g., avoiding false survivor alerts), raise threshold to increase precision.</span>
+                <span class="comment-line">//  - Always examine confusion matrix and ROC together; numerical metrics alone can hide specific error patterns.</span>
+                <span class="comment-line">//  - Consider cross-validation and confidence intervals for more robust metric estimates.</span>
+                <span class="comment-line">//  - The visualizations below (confusion matrix, ROC curve, feature importance) are illustrative snapshots generated by the app.</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// How this HTML page maps to the Streamlit app:</span>
+                <span class="comment-line">//  - Top metrics (Accuracy/Precision/Recall/F1/ROC AUC/Sample Size) replicate the values computed in the Streamlit 'Métricas do Modelo' tab.</span>
+                <span class="comment-line">//  - Confusion matrix and ROC plots are simplified static SVG representations here; the Streamlit app renders Matplotlib/Seaborn plots with exact numbers.</span>
+                <span class="comment-line">//  - Feature importance shown here is a compact bar-like representation; in the app, a horizontal bar chart is generated for better resolution.</span>
+                <span class="comment-line">//  - Classification report table here is an excerpt; consult the live app or saved metrics file to view the full report object (JSON/pickle).</span>
+                <span class="comment-line">//</span>
+                <span class="comment-line">// Notes for maintainers:</span>
+                <span class="comment-line">//  - Metrics are saved to 'titanic_metrics.pkl' by the app; to keep this page fully up-to-date, export metrics to JSON and load them here during build/deploy.</span>
+                <span class="comment-line">//  - If you want dynamic integration, add a small script to fetch a '/metrics.json' file produced by the app and inject values into the DOM.</span>
+            </div>
 
             <div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin-top:1.5rem;">
                 <div class="metric-card">
