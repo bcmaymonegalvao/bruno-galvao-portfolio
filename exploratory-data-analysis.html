@@ -234,57 +234,118 @@ fig.write_html('age_distribution.html')
             <h2 class="section-title">Results & Performance</h2>
             <p class="section-subtitle">Key findings and system performance metrics.</p>
 
-            <div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-top:1.5rem;">
+            <div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin-top:1.5rem;">
                 <div class="metric-card">
-                    <div class="metric-number">95%</div>
-                    <div class="metric-label">Analysis Accuracy</div>
+                    <div class="metric-number">82%</div>
+                    <div class="metric-label">Accuracy</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-number">15+</div>
-                    <div class="metric-label">Visualization Types</div>
+                    <div class="metric-number">78%</div>
+                    <div class="metric-label">Precision</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-number">100K+</div>
-                    <div class="metric-label">Records Processed</div>
+                    <div class="metric-number">72%</div>
+                    <div class="metric-label">Recall</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">75%</div>
+                    <div class="metric-label">F1 Score</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">0.86</div>
+                    <div class="metric-label">ROC AUC</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">891</div>
+                    <div class="metric-label">Sample Size</div>
                 </div>
             </div>
 
-            <!-- Visual result cards with mini SVG charts -->
-            <div class="result-grid">
-                <div class="result-card">
-                    <!-- Sparkline / line -->
-                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
-                        <polyline fill="none" stroke="#667eea" stroke-width="2" points="0,20 10,18 20,12 30,10 40,8 50,12 60,7 70,9 80,5 90,6 100,3" />
+            <!-- Detailed results: confusion matrix, ROC, feature importance and classification report -->
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-top:1.6rem; align-items:start;">
+                <div class="result-card" style="text-align:left;">
+                    <h5 style="margin-top:0;">Confusion Matrix</h5>
+                    <!-- Small confusion table (example values) -->
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:0.8rem;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th style="text-align:center;">Pred: No</th>
+                                <th style="text-align:center;">Pred: Yes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:600;">Actual: No</td>
+                                <td style="text-align:center; padding:8px;">480</td>
+                                <td style="text-align:center; padding:8px;">40</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:600;">Actual: Yes</td>
+                                <td style="text-align:center; padding:8px;">80</td>
+                                <td style="text-align:center; padding:8px;">291</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="display:flex; gap:0.8rem; align-items:center; margin-bottom:0.6rem;">
+                        <div style="flex:1;">
+                            <small style="color:#718096;">Accuracy</small>
+                            <div style="font-weight:700;">82%</div>
+                        </div>
+                        <div style="flex:1;">
+                            <small style="color:#718096;">ROC AUC</small>
+                            <div style="font-weight:700;">0.86</div>
+                        </div>
+                    </div>
+
+                    <h5 style="margin-bottom:0.4rem;">ROC Curve (sample)</h5>
+                    <svg viewBox="0 0 100 60" preserveAspectRatio="none" style="width:100%; height:80px; background:#f7fafc; border-radius:6px;">
+                        <polyline fill="none" stroke="#e2e8f0" stroke-width="0.8" points="0,60 100,0" />
+                        <polyline fill="none" stroke="#ff7f0e" stroke-width="2" points="0,55 10,45 20,32 30,25 40,18 50,14 60,10 70,6 80,4 90,2 100,0" />
                     </svg>
-                    <h5>Distribution (example)</h5>
-                    <p>Distribution shows skew and multimodality across the primary variable.</p>
                 </div>
 
-                <div class="result-card">
-                    <!-- Bar mini chart -->
-                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
-                        <rect x="6" y="10" width="10" height="20" fill="#f093fb" />
-                        <rect x="22" y="6" width="10" height="24" fill="#4facfe" />
-                        <rect x="38" y="2" width="10" height="28" fill="#43e97b" />
-                        <rect x="54" y="12" width="10" height="18" fill="#f6ad55" />
-                        <rect x="70" y="8" width="10" height="22" fill="#667eea" />
-                    </svg>
-                    <h5>Correlation Snapshot</h5>
-                    <p>Example correlation magnitudes across selected variable pairs.</p>
-                </div>
+                <div style="text-align:left;">
+                    <div class="result-card" style="margin-bottom:1rem;">
+                        <h5 style="margin-top:0;">Feature Importance</h5>
+                        <div class="feature-list">
+                            <div style="margin:0.5rem 0;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Sex</span><strong>24%</strong></div>
+                                <div style="background:#edf2ff; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:24%; height:100%; background:#667eea;"></div></div>
+                            </div>
+                            <div style="margin:0.5rem 0;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Fare</span><strong>19%</strong></div>
+                                <div style="background:#fff0f6; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:19%; height:100%; background:#ff4d4f;"></div></div>
+                            </div>
+                            <div style="margin:0.5rem 0;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Age</span><strong>15%</strong></div>
+                                <div style="background:#f0fff4; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:15%; height:100%; background:#43e97b;"></div></div>
+                            </div>
+                            <div style="margin:0.5rem 0;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>Pclass</span><strong>12%</strong></div>
+                                <div style="background:#fef9e7; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:12%; height:100%; background:#f6ad55;"></div></div>
+                            </div>
+                            <div style="margin:0.5rem 0;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.95rem;"><span>FamilySize</span><strong>9%</strong></div>
+                                <div style="background:#f1f5f9; height:8px; border-radius:6px; overflow:hidden; margin-top:6px;"><div style="width:9%; height:100%; background:#94a3b8;"></div></div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="result-card">
-                    <!-- Donut chart -->
-                    <svg viewBox="0 0 36 36" class="circular-chart donut" aria-hidden="true">
-                        <path class="circle-bg" d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3.8"/>
-                        <path class="circle" stroke="#43e97b" stroke-width="3.8" stroke-dasharray="65,35" d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"/>
-                    </svg>
-                    <h5>Segment Share</h5>
-                    <p>Proportion of the dominant segment found during clustering.</p>
+                    <div class="result-card">
+                        <h5 style="margin-top:0;">Classification Report (excerpt)</h5>
+                        <table style="width:100%; border-collapse:collapse; font-size:0.95rem;">
+                            <thead>
+                                <tr style="text-align:left; color:#4a5568;"><th>Class</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0 (No)</td><td>0.84</td><td>0.92</td><td>0.88</td><td>520</td></tr>
+                                <tr><td>1 (Yes)</td><td>0.78</td><td>0.63</td><td>0.70</td><td>371</td></tr>
+                                <tr style="font-weight:700;"><td>macro avg</td><td>0.81</td><td>0.78</td><td>0.79</td><td>891</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
