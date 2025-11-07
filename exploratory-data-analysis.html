@@ -4,466 +4,182 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exploratory Data Analysis - Bruno Galvão</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            min-height: 100vh;
             color: #333;
+            background: #f8fafc;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: white;
-        }
+        /* Header */
+        header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.06); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav { display:flex; justify-content:space-between; align-items:center; padding: 1rem 0; }
+        .logo { font-size: 1.25rem; font-weight:700; color:#2d3748; }
+        .nav-links { display:flex; list-style:none; gap:1.5rem; }
+        .nav-links a { text-decoration:none; color:#4a5568; font-weight:500; }
+        .nav-links a:hover { color:#667eea; }
 
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+        /* Hero */
+        .hero { min-height: 48vh; display:flex; align-items:center; color:white; padding-top:100px; padding-bottom:40px; position:relative; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .hero::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.05); z-index:1; }
+        .hero .container { position:relative; z-index:2; }
+        .hero h1 { font-size: 2.8rem; margin-bottom:0.5rem; }
+        .hero .subtitle { font-size:1.1rem; opacity:0.95; margin-bottom:1.2rem; }
+        .project-links { display:flex; gap:1rem; flex-wrap:wrap; }
 
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .btn { padding: 12px 26px; border-radius: 50px; text-decoration:none; font-weight:600; display:inline-flex; gap:0.6rem; align-items:center; }
+        .btn-primary { background:white; color:#fa709a; }
+        .btn-secondary { background:#fff3; color:white; border:2px solid rgba(255,255,255,0.3); }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
+        /* Content Sections */
+        .content-section { background: white; padding: 70px 0; }
+        .content-section:nth-child(even) { background: #f8fafc; }
+        .section-title { text-align:center; font-size:2rem; margin-bottom:0.6rem; color:#2d3748; }
+        .section-subtitle { text-align:center; color:#718096; max-width:900px; margin: 0 auto 2.5rem; }
 
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 5px solid #fa709a;
-        }
+        .overview-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:2rem; margin-bottom:2.5rem; }
+        .overview-card { background:white; border-radius:16px; padding:1.8rem; box-shadow:0 12px 40px rgba(0,0,0,0.06); border-left:6px solid #fa709a; transition:all 0.3s ease; }
+        .overview-card h4 { font-size:1.2rem; margin-bottom:0.8rem; color:#2d3748; display:flex; gap:0.75rem; align-items:center; }
+        .overview-card p { color:#4a5568; line-height:1.6; }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
+        .workflow-steps { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:1.5rem; margin-top:1.5rem; }
+        .workflow-step { background:#fff; padding:1.6rem; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.06); text-align:left; }
+        .step-number { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#fa709a,#fee140); color:white; font-weight:700; margin-bottom:0.8rem; }
 
-        .card h2 {
-            color: #fa709a;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        .features-grid, .tech-grid, .metrics-grid { display:grid; gap:1.5rem; }
+        .features-grid { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
+        .feature-card { background:white; padding:1.6rem; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.06); }
 
-        .card h3 {
-            color: #e85d75;
-            font-size: 1.4rem;
-            margin: 1.5rem 0 1rem 0;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
+        .code-container { background:#2d3748; border-radius:12px; padding:1.6rem; color:#e2e8f0; overflow-x:auto; }
+        .code-block { font-family: 'Courier New', monospace; white-space:pre-wrap; }
 
-        .card p {
-            margin-bottom: 1rem;
-            color: #666;
-            line-height: 1.7;
-        }
+        .metrics-section { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color:white; padding:60px 0; text-align:center; }
+        .metric-card { background: rgba(255,255,255,0.12); padding:1.4rem; border-radius:12px; backdrop-filter: blur(6px); }
 
-        .card ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .card li {
-            margin-bottom: 0.5rem;
-            color: #666;
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #fa709a20 0%, #fee14020 100%);
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            border-left: 4px solid #fa709a;
-        }
-
-        .tech-stack {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .tech-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            transition: background 0.3s ease;
-        }
-
-        .tech-item:hover {
-            background: #e9ecef;
-        }
-
-        .tech-item strong {
-            color: #fa709a;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .metric {
-            background: linear-gradient(135deg, #fa709a, #fee140);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .code-snippet {
-            background: #2d3748;
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            margin: 1rem 0;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #fa709a, #fee140);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(250, 112, 154, 0.4);
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .section-divider {
-            text-align: center;
-            margin: 3rem 0 2rem 0;
-        }
-
-        .section-divider h2 {
-            color: white;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-divider p {
-            color: white;
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .card {
-                padding: 1.5rem;
-            }
-            
-            .tech-stack {
-                grid-template-columns: 1fr;
-            }
-
-            .two-column {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .workflow-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .workflow-step {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 1.5rem;
-            position: relative;
-            border-top: 4px solid #fa709a;
-        }
-
-        .step-number {
-            position: absolute;
-            top: -15px;
-            left: 20px;
-            background: linear-gradient(135deg, #fa709a, #fee140);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
+        @media (max-width:768px) {
+            .hero h1 { font-size:1.8rem; }
+            .nav-links { display:none; }
+            .overview-grid, .features-grid, .workflow-steps { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">← Back</a>
-    
-    <div class="container">
-        <header class="header">
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Bruno Galvão</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn" style="position:fixed; top:100px; left:20px; z-index:999; background:white; color:#fa709a; border:2px solid #fa709a; padding:10px 18px; border-radius:50px; text-decoration:none; font-weight:600;"> <i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
             <h1>🔍 Exploratory Data Analysis</h1>
-            <p>A comprehensive Python-based EDA framework that reveals valuable insights through interactive visualizations, statistical techniques, and advanced pattern recognition methods for complex datasets.</p>
-        </header>
-
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zM7 11h2v2H7v-2zm4 0h6v2h-6v-2zM7 15h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
-                    </svg>
-                    Project Overview
-                </h2>
-                <p>This project demonstrates a complete Exploratory Data Analysis (EDA) workflow, applying statistical techniques and visualization methods to extract meaningful insights from complex datasets. The focus is on identifying patterns, outliers, and relationships between variables using modern Python tools.</p>
-                
-                <div class="highlight">
-                    <strong>Core Mission:</strong> Develop a robust EDA pipeline that enables deep data understanding through informative visualizations, descriptive statistics, and automated pattern detection for data-driven decision making.
-                </div>
+            <div class="subtitle">A comprehensive Python-based EDA framework with interactive visualizations, statistical techniques, and automated pattern detection for complex datasets.</div>
+            <div class="project-links">
+                <a href="#" class="btn btn-primary"><i class="fab fa-github"></i> View Source</a>
+                <a href="https://exploratory-data-analysis-titanic.streamlit.app/" target="_blank" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
             </div>
         </div>
+    </section>
 
-        <div class="section-divider">
-            <h2>🎯 Key Features</h2>
-            <p>Comprehensive analysis capabilities designed for maximum insight extraction</p>
-        </div>
+    <!-- Project Overview -->
+    <section id="projects" class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">Complete EDA workflow to discover patterns, outliers and relationships using modern Python tools.</p>
 
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M9 11H7v6h2v-6zm4 2h-2v4h2v-4zm4-4h-2v8h2V9zm2-7H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                    </svg>
-                    Statistical Analysis Engine
-                </h2>
-                <p>Advanced statistical computing framework that calculates comprehensive descriptive statistics, identifies data distributions, and performs automated outlier detection using robust statistical methods.</p>
-                
-                <div class="two-column">
-                    <div>
-                        <h3>📊 Descriptive Statistics</h3>
-                        <p>Automated calculation of central tendency measures, dispersion metrics, skewness, and kurtosis for all numerical variables with detailed distribution analysis.</p>
-                    </div>
-                    <div>
-                        <h3>🔍 Outlier Detection</h3>
-                        <p>Multi-method outlier identification using IQR, Z-score, and isolation forest techniques with customizable sensitivity parameters.</p>
-                    </div>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h4><i class="fas fa-chart-bar"></i> Core Mission</h4>
+                    <p>Develop a robust EDA pipeline that enables deep data understanding through informative visualizations, descriptive statistics, and automated pattern detection for data-driven decision making.</p>
                 </div>
 
-                <div class="metrics-grid">
-                    <div class="metric">
-                        <div class="metric-value">20+</div>
-                        <div class="metric-label">Statistical Measures</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">5</div>
-                        <div class="metric-label">Outlier Methods</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Data Coverage</div>
-                    </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-cogs"></i> Statistical Engine</h4>
+                    <p>Automated descriptive statistics, distribution analysis, and multi-method outlier detection (IQR, Z-score, IsolationForest).</p>
+                </div>
+
+                <div class="overview-card">
+                    <h4><i class="fas fa-eye"></i> Visualization Suite</h4>
+                    <p>Interactive plots and dashboards built with Matplotlib, Seaborn and Plotly supporting zoom, pan and hover tooltips for deeper exploration.</p>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    Interactive Visualization Suite
-                </h2>
-                <p>Comprehensive visualization toolkit featuring interactive plots, statistical charts, and dynamic dashboards built with industry-standard plotting libraries for maximum insight clarity.</p>
-
-                <h3>📈 Chart Types Available</h3>
-                <ul>
-                    <li><strong>Distribution Analysis:</strong> Histograms, density plots, box plots, and violin plots</li>
-                    <li><strong>Correlation Analysis:</strong> Heatmaps, scatter matrices, and pair plots</li>
-                    <li><strong>Time Series:</strong> Line charts, seasonal decomposition, and trend analysis</li>
-                    <li><strong>Categorical Data:</strong> Bar charts, count plots, and proportion analysis</li>
-                </ul>
-
-                <div class="highlight">
-                    <strong>Interactive Features:</strong> All visualizations support zoom, pan, hover tooltips, and customizable color schemes for enhanced data exploration experience.
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h4>Data Ingestion</h4>
+                    <p>Load CSV/JSON/Excel with type inference and validation.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h4>Profiling</h4>
+                    <p>Missing values, duplicates, and data-types report generation.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h4>Univariate & Bivariate</h4>
+                    <p>Distribution plots, correlation heatmaps and pairwise analysis.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h4>Multivariate</h4>
+                    <p>Dimensionality reduction and clustering for pattern discovery.</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <h4>Reporting</h4>
+                    <p>Automated HTML/interactive reports with recommendations.</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="section-divider">
-            <h2>⚙️ Technical Implementation</h2>
-            <p>Modern Python ecosystem with optimized performance and scalability</p>
-        </div>
+    <!-- Technical Implementation -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Technical Implementation</h2>
+            <p class="section-subtitle">Modern Python stack optimized for analysis and reproducibility.</p>
 
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    Technology Stack
-                </h2>
-
-                <p>Carefully selected Python libraries optimized for performance, flexibility, and educational value in data analysis workflows.</p>
-
-                <div class="tech-stack">
-                    <div class="tech-item">
-                        <strong>Pandas</strong>
-                        High-performance data manipulation and analysis
-                    </div>
-                    <div class="tech-item">
-                        <strong>NumPy</strong>
-                        Numerical computing foundation with optimized operations
-                    </div>
-                    <div class="tech-item">
-                        <strong>Matplotlib</strong>
-                        Publication-quality static visualizations
-                    </div>
-                    <div class="tech-item">
-                        <strong>Seaborn</strong>
-                        Statistical data visualization with beautiful defaults
-                    </div>
-                    <div class="tech-item">
-                        <strong>Plotly</strong>
-                        Interactive web-based visualizations and dashboards
-                    </div>
-                    <div class="tech-item">
-                        <strong>Scipy</strong>
-                        Advanced statistical functions and hypothesis testing
-                    </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h4>Pandas & NumPy</h4>
+                    <p>High-performance data manipulation and numerical routines for efficient EDA.</p>
                 </div>
 
-                <h3>🏗️ Architecture Design</h3>
-                <p>Modular architecture with clear separation of concerns, enabling easy extension and customization of analysis components while maintaining code readability and performance.</p>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Matplotlib, Seaborn & Plotly</h4>
+                    <p>Static and interactive visualizations for distribution, correlation and time-series analysis.</p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>Scipy & ML Tools</h4>
+                    <p>Advanced statistics and clustering algorithms for deeper insights.</p>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    Analysis Pipeline
-                </h2>
-
-                <p>Systematic workflow that guides users through comprehensive data exploration with automated checks and quality assurance at each step.</p>
-
-                <div class="workflow-steps">
-                    <div class="workflow-step">
-                        <div class="step-number">1</div>
-                        <h3>Data Ingestion</h3>
-                        <p>Load and validate datasets from multiple formats (CSV, JSON, Excel) with automatic type inference and encoding detection.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">2</div>
-                        <h3>Data Profiling</h3>
-                        <p>Generate comprehensive data quality reports including missing values, duplicates, and data type analysis.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">3</div>
-                        <h3>Univariate Analysis</h3>
-                        <p>Analyze individual variables through distribution plots, summary statistics, and outlier identification.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">4</div>
-                        <h3>Bivariate Analysis</h3>
-                        <p>Explore relationships between variable pairs using correlation analysis and scatter plots.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">5</div>
-                        <h3>Multivariate Analysis</h3>
-                        <p>Advanced pattern detection through dimensionality reduction and clustering techniques.</p>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">6</div>
-                        <h3>Insight Generation</h3>
-                        <p>Automated report generation with key findings, recommendations, and actionable insights.</p>
-                    </div>
-                </div>
-
-                <div class="code-snippet">
-# Example: Automated EDA Pipeline
+            <div style="margin-top:1.5rem;">
+                <div class="code-container" id="codeContent">
+                    <div class="code-block"># Example: Automated EDA Pipeline
 import pandas as pd
 import numpy as np
 from eda_toolkit import EDAAnalyzer
@@ -476,127 +192,112 @@ df = pd.read_csv('dataset.csv')
 results = analyzer.analyze(df)
 
 # Generate interactive report
-analyzer.generate_report(
-    output_format='html',
-    include_recommendations=True,
-    interactive=True
-)
+analyzer.generate_report(output_format='html', include_recommendations=True, interactive=True)
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="section-divider">
-            <h2>📊 Results & Performance</h2>
-            <p>Proven effectiveness in extracting actionable insights from complex datasets</p>
-        </div>
+    <!-- Results -->
+    <section class="content-section fade-in metrics-section">
+        <div class="container">
+            <h2 class="section-title">Results & Performance</h2>
+            <p class="section-subtitle">Key findings and system performance metrics.</p>
 
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M9 11H7v6h2v-6zm4 2h-2v4h2v-4zm4-4h-2v8h2V9zm2-7H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                    </svg>
-                    Key Discoveries
-                </h2>
-
-                <h3>🎯 Pattern Recognition Results</h3>
-                <ul>
-                    <li><strong>Distribution Insights:</strong> Identified normal, skewed, and multimodal distributions across key variables with statistical significance testing</li>
-                    <li><strong>Correlation Patterns:</strong> Discovered strong linear and non-linear relationships with correlation coefficients and p-values</li>
-                    <li><strong>Outlier Analysis:</strong> Detected critical anomalies that could impact downstream modeling with confidence intervals</li>
-                    <li><strong>Segment Discovery:</strong> Identified natural data clusters and customer segments through unsupervised learning techniques</li>
-                </ul>
-
-                <div class="highlight">
-                    <strong>💡 Primary Insight:</strong> The analysis revealed distinct behavioral patterns and data segments that can be leveraged for targeted strategies and more accurate predictive modeling approaches.
+            <div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-top:1.5rem;">
+                <div class="metric-card">
+                    <div class="metric-number">95%</div>
+                    <div class="metric-label">Analysis Accuracy</div>
                 </div>
-
-                <h3>📈 Business Impact</h3>
-                <p>Insights from this EDA provided a solid foundation for data-driven decision making and guided the development of specific strategies based on discovered patterns in the data.</p>
-            </div>
-
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    Performance Metrics
-                </h2>
-
-                <p>Comprehensive evaluation of system performance and analysis quality across multiple dimensions and dataset types.</p>
-
-                <div class="metrics-grid">
-                    <div class="metric">
-                        <div class="metric-value">95%</div>
-                        <div class="metric-label">Analysis Accuracy</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">15+</div>
-                        <div class="metric-label">Visualization Types</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">100K+</div>
-                        <div class="metric-label">Records Processed</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">< 2min</div>
-                        <div class="metric-label">Analysis Runtime</div>
-                    </div>
+                <div class="metric-card">
+                    <div class="metric-number">15+</div>
+                    <div class="metric-label">Visualization Types</div>
                 </div>
-
-                <h3>🔍 Quality Assurance</h3>
-                <p>Rigorous testing framework ensures reliable results across diverse datasets with automated validation of statistical computations and visualization accuracy.</p>
-            </div>
-        </div>
-
-        <div class="section-divider">
-            <h2>🚀 Future Enhancements</h2>
-            <p>Planned improvements to expand capabilities and usability</p>
-        </div>
-
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    Roadmap & Extensions
-                </h2>
-
-                <p>Based on insights from this comprehensive EDA framework, future developments will include enhanced automation and advanced analytical capabilities.</p>
-
-                <div class="two-column">
-                    <div>
-                        <h3>🤖 Advanced Features</h3>
-                        <ul>
-                            <li><strong>Auto-ML Integration:</strong> Automated feature engineering and model recommendations</li>
-                            <li><strong>Real-time Analytics:</strong> Streaming data analysis capabilities</li>
-                            <li><strong>NLP Integration:</strong> Text data analysis and sentiment mining</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>🎨 User Experience</h3>
-                        <ul>
-                            <li><strong>Interactive Dashboard:</strong> Web-based interface for non-technical users</li>
-                            <li><strong>Custom Templates:</strong> Industry-specific analysis templates</li>
-                            <li><strong>Export Options:</strong> Professional report generation</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="highlight">
-                    <strong>🔮 Vision:</strong> Transform this EDA toolkit into a comprehensive data analysis platform that democratizes advanced analytics for users across all technical skill levels.
-                </div>
-
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="#" class="btn">→ Explore Source Code</a>
-                    <a href="https://exploratory-data-analysis-titanic.streamlit.app/" class="btn" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> ▶ Try Live Demo
-                    </a>
-                    <a href="#" class="btn">📖 View Full Tutorial</a>
+                <div class="metric-card">
+                    <div class="metric-number">100K+</div>
+                    <div class="metric-label">Records Processed</div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Roadmap & Future Enhancements</h2>
+            <p class="section-subtitle">Planned improvements to expand automation, real-time analysis and UX.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h4>Auto-ML Integration</h4>
+                    <p>Automated feature engineering and model selection to accelerate prototyping.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-stream"></i>
+                    <h4>Real-time Analytics</h4>
+                    <p>Streaming support for near real-time data monitoring and analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h4>Interactive Dashboards</h4>
+                    <p>Improved Streamlit/Plotly dashboards with templates for non-technical users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background:#2d3748; color:white; text-align:center; padding:3.5rem 0;">
+        <div class="container">
+            <h3 style="margin-bottom:1rem;">Want to try it?</h3>
+            <p style="opacity:0.9; max-width:700px; margin:0 auto 1.5rem;">Explore the source, run the demo, or contact me to discuss data projects.</p>
+            <div class="project-links">
+                <a href="#" class="btn btn-primary" style="margin-right:0.6rem;"><i class="fab fa-github"></i> View Source</a>
+                <a href="https://exploratory-data-analysis-titanic.streamlit.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            </div>
+            <div style="margin-top:2rem; opacity:0.8;">&copy; 2025 Bruno Galvão</div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in sections
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver(function(entries){ entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, observerOptions);
+        document.querySelectorAll('.fade-in').forEach(el => { observer.observe(el); });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 80) {
+                header.style.boxShadow = '0 2px 30px rgba(0,0,0,0.12)';
+            } else {
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.06)';
+            }
+        });
+
+        // Simple metrics animation
+        function animateMetrics() {
+            const metrics = document.querySelectorAll('.metric-number');
+            metrics.forEach((metric, idx) => {
+                const finalValue = metric.textContent.trim();
+                const target = parseFloat(finalValue) || 0;
+                let current = 0;
+                const step = Math.max(1, target / 40);
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) { metric.textContent = finalValue; clearInterval(timer); }
+                    else metric.textContent = Math.floor(current);
+                }, 20 + idx*30);
+            });
+        }
+
+        const metricsSection = document.querySelector('.metrics-section');
+        if (metricsSection) {
+            const mObs = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { animateMetrics(); mObs.unobserve(entry.target); } }); }, {threshold:0.5});
+            mObs.observe(metricsSection);
+        }
+    </script>
 </body>
 </html>
