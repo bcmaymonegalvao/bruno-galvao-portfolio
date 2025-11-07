@@ -27,12 +27,12 @@
         .nav-links a:hover { color:#667eea; }
 
         /* Hero */
-        .hero { min-height: 48vh; display:flex; align-items:center; color:white; padding-top:100px; padding-bottom:40px; position:relative; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+    .hero { min-height: 48vh; display:flex; align-items:center; color:white; padding-top:100px; padding-bottom:40px; position:relative; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         .hero::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.05); z-index:1; }
         .hero .container { position:relative; z-index:2; }
         .hero h1 { font-size: 2.8rem; margin-bottom:0.5rem; }
         .hero .subtitle { font-size:1.1rem; opacity:0.95; margin-bottom:1.2rem; }
-        .project-links { display:flex; gap:1rem; flex-wrap:wrap; }
+    .project-links { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
 
         .btn { padding: 12px 26px; border-radius: 50px; text-decoration:none; font-weight:600; display:inline-flex; gap:0.6rem; align-items:center; }
         .btn-primary { background:white; color:#fa709a; }
@@ -63,6 +63,17 @@
         .metrics-section { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color:white; padding:60px 0; text-align:center; }
         .metric-card { background: rgba(255,255,255,0.12); padding:1.4rem; border-radius:12px; backdrop-filter: blur(6px); }
 
+    /* Results visuals */
+    .result-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:1.2rem; margin-top:1.6rem; }
+    .result-card { background: white; padding:1rem; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.06); text-align:center; }
+    .result-card svg { width:100%; height:80px; display:block; margin-bottom:0.6rem; }
+    .result-card h5 { margin-bottom:0.4rem; color:#2d3748; }
+    .result-card p { color:#4a5568; font-size:0.95rem; }
+
+        /* Back buttons */
+        .back-hero { display:inline-flex; align-items:center; gap:0.6rem; text-decoration:none; color:white; background:rgba(0,0,0,0.12); padding:8px 14px; border-radius:999px; font-weight:600; }
+        .back-fixed { position:fixed; right:20px; bottom:20px; background:#2d3748; color:white; padding:12px 18px; border-radius:999px; text-decoration:none; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+
         @media (max-width:768px) {
             .hero h1 { font-size:1.8rem; }
             .nav-links { display:none; }
@@ -83,15 +94,22 @@
         </nav>
     </header>
 
-    <!-- Back Button -->
-    <a href="index.html" class="back-btn" style="position:fixed; top:100px; left:20px; z-index:999; background:white; color:#fa709a; border:2px solid #fa709a; padding:10px 18px; border-radius:50px; text-decoration:none; font-weight:600;"> <i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    <!-- Back button (fixed bottom-right) -->
+    <a href="index.html" class="back-fixed" aria-label="Back to Portfolio"> <i class="fas fa-arrow-left"></i> Back</a>
 
     <!-- Hero -->
     <section class="hero">
         <div class="container">
+            <!-- Static back button above title -->
+            <div style="margin-bottom:1rem; text-align:left;">
+                <a href="index.html" class="back-hero" aria-label="Back to Portfolio"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+            </div>
+
             <h1>🔍 Exploratory Data Analysis</h1>
             <div class="subtitle">A comprehensive Python-based EDA framework with interactive visualizations, statistical techniques, and automated pattern detection for complex datasets.</div>
-            <div class="project-links">
+
+            <!-- center project action buttons -->
+            <div class="project-links" style="justify-content:center; margin-top:1rem;">
                 <a href="#" class="btn btn-primary"><i class="fab fa-github"></i> View Source</a>
                 <a href="https://exploratory-data-analysis-titanic.streamlit.app/" target="_blank" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
             </div>
@@ -195,6 +213,17 @@ results = analyzer.analyze(df)
 analyzer.generate_report(output_format='html', include_recommendations=True, interactive=True)
                     </div>
                 </div>
+
+                <!-- Additional code example -->
+                <div class="code-container" id="codeContent2" style="margin-top:1rem;">
+                    <div class="code-block"># Visualization example (Plotly)
+import plotly.express as px
+
+# Sample plot
+fig = px.histogram(df, x='age', nbins=30, title='Age Distribution')
+fig.write_html('age_distribution.html')
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -217,6 +246,45 @@ analyzer.generate_report(output_format='html', include_recommendations=True, int
                 <div class="metric-card">
                     <div class="metric-number">100K+</div>
                     <div class="metric-label">Records Processed</div>
+                </div>
+            </div>
+
+            <!-- Visual result cards with mini SVG charts -->
+            <div class="result-grid">
+                <div class="result-card">
+                    <!-- Sparkline / line -->
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+                        <polyline fill="none" stroke="#667eea" stroke-width="2" points="0,20 10,18 20,12 30,10 40,8 50,12 60,7 70,9 80,5 90,6 100,3" />
+                    </svg>
+                    <h5>Distribution (example)</h5>
+                    <p>Distribution shows skew and multimodality across the primary variable.</p>
+                </div>
+
+                <div class="result-card">
+                    <!-- Bar mini chart -->
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+                        <rect x="6" y="10" width="10" height="20" fill="#f093fb" />
+                        <rect x="22" y="6" width="10" height="24" fill="#4facfe" />
+                        <rect x="38" y="2" width="10" height="28" fill="#43e97b" />
+                        <rect x="54" y="12" width="10" height="18" fill="#f6ad55" />
+                        <rect x="70" y="8" width="10" height="22" fill="#667eea" />
+                    </svg>
+                    <h5>Correlation Snapshot</h5>
+                    <p>Example correlation magnitudes across selected variable pairs.</p>
+                </div>
+
+                <div class="result-card">
+                    <!-- Donut chart -->
+                    <svg viewBox="0 0 36 36" class="circular-chart donut" aria-hidden="true">
+                        <path class="circle-bg" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3.8"/>
+                        <path class="circle" stroke="#43e97b" stroke-width="3.8" stroke-dasharray="65,35" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"/>
+                    </svg>
+                    <h5>Segment Share</h5>
+                    <p>Proportion of the dominant segment found during clustering.</p>
                 </div>
             </div>
         </div>
