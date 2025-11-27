@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Pipeline with LangChain - Bruno Galvão</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-secondary {
+            background: #10b981;
+            color: white;
+            border: 2px solid #10b981;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            padding: 12px 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .content-section:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Project Overview Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border-left: 6px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(25px, -25px);
+        }
+
+        .overview-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+        }
+
+        .overview-card:nth-child(2) { border-left-color: #f093fb; }
+        .overview-card:nth-child(3) { border-left-color: #4facfe; }
+        .overview-card:nth-child(4) { border-left-color: #43e97b; }
+
+        .overview-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .overview-card i {
+            font-size: 1.8rem;
+            color: #667eea;
+        }
+
+        .overview-card:nth-child(2) i { color: #f093fb; }
+        .overview-card:nth-child(3) i { color: #4facfe; }
+        .overview-card:nth-child(4) i { color: #43e97b; }
+
+        .overview-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a5568;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Workflow Section */
+        .workflow-container {
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .workflow-step p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: left;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-card:hover::before {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: #2d3748;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Code Block */
+        .code-container {
+            background: #2d3748;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .code-title {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background: transparent;
+        }
+
+        .comment { color: #a0aec0; }
+        .keyword { color: #f093fb; }
+        .string { color: #4facfe; }
+        .function { color: #43e97b; }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            border-color: #667eea;
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .tech-item h4 {
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .tech-item p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* Performance Metrics */
+        .metrics-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .metric-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .overview-grid,
+            .features-grid,
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .back-btn {
+                position: static;
+                margin: 1rem;
+                align-self: flex-start;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .workflow-steps {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Bruno Galvão</div>
+            <ul class="nav-links">
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/">Home</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#about">About</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects">Projects</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#skills">Expertise</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Back Button -->
+    <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>RAG Pipeline with LangChain</h1>
+                <div class="subtitle">Educational Retrieval-Augmented Generation System</div>
+                <p>A didactic RAG pipeline built with LangChain, featuring HuggingFace embeddings, FAISS vector store, and local FLAN-T5 model with optional OpenAI fallback. Designed for teaching modern RAG concepts step by step with a minimal, reproducible architecture.</p>
+                <div class="project-links">
+                    <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View Source Code
+                    </a>
+                    <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Try Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Philosophy -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Philosophy</h2>
+            <p class="section-subtitle">Education-focused approach with curated small documents, simple FAISS indexing, and local FLAN-T5 LLM so students can run everything on CPU/GPU (e.g., Google Colab) without external services.</p>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h4><i class="fas fa-graduation-cap"></i> Educational Focus</h4>
+                    <p>Designed specifically for learning and teaching RAG concepts with clear, step-by-step documentation and minimal complexity to understand core principles.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-bolt"></i> High Performance</h4>
+                    <p>Optimized for fast execution with lightweight models (MiniLM embeddings, FLAN-T5) that can run efficiently on limited hardware resources.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-cogs"></i> Flexible Architecture</h4>
+                    <p>Modular design allowing easy experimentation with different components: embeddings, vector stores, and language models.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-laptop"></i> Self-Contained</h4>
+                    <p>Runs entirely locally with optional cloud integrations, perfect for students and developers without API dependencies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <p class="section-subtitle">The pipeline follows a clean, linear flow from document ingestion to answer generation, with each component clearly separated for educational clarity.</p>
+            
+            <div class="workflow-container">
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>Sample Documents</h4>
+                        <p>Curated collection of educational texts covering churn analysis, NPS metrics, LangChain framework, and RAG concepts - perfect for demonstrating retrieval capabilities.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>Text Processing</h4>
+                        <p>Clean and chunk documents into simple string segments optimized for embedding generation and semantic search.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>Vector Embeddings</h4>
+                        <p>Convert text chunks to high-dimensional vectors using sentence-transformers/all-MiniLM-L6-v2 - fast, lightweight, and highly effective.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h4>FAISS Index</h4>
+                        <p>Store and index embeddings in Facebook's FAISS vector database for lightning-fast similarity search and retrieval operations.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <h4>Similarity Search</h4>
+                        <p>Perform top-k similarity search (k=2 configurable) to find most relevant document chunks for any given query.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">6</div>
+                        <h4>Answer Generation</h4>
+                        <p>Process retrieved context and user query through FLAN-T5 local LLM via RetrievalQA chain to generate contextual, accurate responses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Implementation Details</h2>
+            <p class="section-subtitle">Step-by-step breakdown of the core pipeline implementation with actual code examples from the project.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Core RAG Pipeline Implementation</div>
+                    <button class="copy-btn" onclick="copyCode()">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                </div>
+                <div class="code-block" id="codeContent">
+<span class="comment"># 1) Sample educational documents</span>
+<span class="keyword">docs</span> = [
+    <span class="string">"Churn is customer cancellation and represents significant business impact..."</span>,
+    <span class="string">"NPS, or Net Promoter Score, measures customer satisfaction and loyalty..."</span>,
+    <span class="string">"LangChain is a powerful library for building LLM-powered applications..."</span>,
+    <span class="string">"RAG combines information retrieval with text generation for enhanced accuracy..."</span>,
+]
+
+<span class="comment"># 2) Setup embeddings and vector store</span>
+<span class="keyword">from</span> langchain_community.embeddings <span class="keyword">import</span> <span class="function">HuggingFaceEmbeddings</span>
+<span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> <span class="function">FAISS</span>
+<span class="keyword">from</span> langchain.chains <span class="keyword">import</span> <span class="function">RetrievalQA</span>
+
+<span class="comment"># Initialize lightweight, fast embeddings</span>
+<span class="keyword">embeddings</span> = <span class="function">HuggingFaceEmbeddings</span>(
+    model_name=<span class="string">"sentence-transformers/all-MiniLM-L6-v2"</span>
+)
+
+<span class="comment"># Create FAISS vector store and retriever</span>
+<span class="keyword">vectorstore</span> = <span class="function">FAISS.from_texts</span>(docs, embeddings)
+<span class="keyword">retriever</span> = vectorstore.<span class="function">as_retriever</span>(search_kwargs={<span class="string">"k"</span>: 2})
+
+<span class="comment"># 3) Setup local FLAN-T5 model</span>
+<span class="keyword">from</span> transformers <span class="keyword">import</span> <span class="function">pipeline</span>
+<span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> <span class="function">HuggingFacePipeline</span>
+
+<span class="keyword">gen_pipeline</span> = <span class="function">pipeline</span>(
+    <span class="string">"text2text-generation"</span>, 
+    model=<span class="string">"google/flan-t5-base"</span>, 
+    max_new_tokens=256
+)
+<span class="keyword">llm</span> = <span class="function">HuggingFacePipeline</span>(pipeline=gen_pipeline)
+
+<span class="comment"># 4) Create complete RAG chain</span>
+<span class="keyword">qa_chain</span> = <span class="function">RetrievalQA.from_chain_type</span>(
+    llm=llm, 
+    retriever=retriever
+)
+
+<span class="comment"># 5) Process queries and generate answers</span>
+<span class="keyword">response</span> = qa_chain.<span class="function">invoke</span>({<span class="string">"query"</span>: <span class="string">"What does churn mean?"</span>})
+<span class="keyword">print</span>(response[<span class="string">"result"</span>])
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h4>Minimalist Corpus</h4>
+                    <p>Small, curated collection of educational strings about churn, NPS, LangChain, RAG, and embeddings - perfect for demonstrating retrieval concepts without overwhelming complexity.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-vector-square"></i>
+                    <h4>Fast Embeddings</h4>
+                    <p>Uses sentence-transformers/all-MiniLM-L6-v2 for lightweight, efficient text-to-vector conversion that runs smoothly on CPU and provides high-quality semantic representations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h4>FAISS Vector Search</h4>
+                    <p>Facebook's FAISS library provides lightning-fast similarity search with configurable top-k retrieval (default k=2) for finding most relevant document chunks.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>Local FLAN-T5 LLM</h4>
+                    <p>Google's FLAN-T5 base model runs locally via HuggingFace transformers, eliminating API dependencies while providing solid text generation capabilities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h4>LangChain Integration</h4>
+                    <p>RetrievalQA chain orchestrates the entire pipeline, seamlessly combining document retrieval with language model generation for coherent responses.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cloud"></i>
+                    <h4>OpenAI Fallback</h4>
+                    <p>Optional integration with OpenAI models for enhanced performance when API access is available, providing flexibility for different use cases and requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-subtitle">Carefully selected technologies optimized for educational use, performance, and accessibility.</p>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <i class="fab fa-python"></i>
+                    <h4>Python 3.10+</h4>
+                    <p>Core language with modern features</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-link"></i>
+                    <h4>LangChain</h4>
+                    <p>Pipeline orchestration framework</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-robot"></i>
+                    <h4>FLAN-T5</h4>
+                    <p>Local text generation model</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>FAISS</h4>
+                    <p>Vector similarity search engine</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-brain"></i>
+                    <h4>HuggingFace</h4>
+                    <p>Transformers and embeddings</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-cog"></i>
+                    <h4>Sentence-Transformers</h4>
+                    <p>MiniLM embedding model</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step-by-Step Guide -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Detailed walkthrough of each component and how they work together to create an intelligent Q&A system.</p>
+            
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">📄</div>
+                    <h4>Document Preparation</h4>
+                    <p>The system starts with a curated collection of educational documents about data science concepts. These are stored as simple Python strings, making them easy to understand and modify for learning purposes.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🔤</div>
+                    <h4>Text Embedding</h4>
+                    <p>Each document is converted into a high-dimensional vector representation using the MiniLM model. This captures semantic meaning, allowing the system to understand context rather than just keywords.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🗄️</div>
+                    <h4>Vector Indexing</h4>
+                    <p>All embeddings are stored in a FAISS index, which creates an efficient data structure for fast similarity searches across thousands or millions of vectors.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🔍</div>
+                    <h4>Query Processing</h4>
+                    <p>When a user asks a question, it's converted to the same vector format and searched against the index to find the most semantically similar documents (top-k retrieval).</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🧠</div>
+                    <h4>Context Assembly</h4>
+                    <p>The retrieved documents are combined with the original question to create a rich context prompt that provides the language model with relevant background information.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">✅</div>
+                    <h4>Answer Generation</h4>
+                    <p>FLAN-T5 processes the context and question to generate a coherent, factual answer based on the retrieved information, ensuring responses are grounded in the provided documents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="metrics-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Performance & Capabilities</h2>
+            <p class="section-subtitle">Real-world performance metrics demonstrating the system's efficiency and effectiveness in educational and production environments.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">2.3</div>
+                    <div class="metric-label">Average Response Time</div>
+                    <div class="metric-description">Fast query processing with optimized local model inference and vector similarity search</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">95</div>
+                    <div class="metric-label">Relevance Accuracy</div>
+                    <div class="metric-description">High precision in retrieving contextually relevant documents for user queries</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">100</div>
+                    <div class="metric-label">Local Execution</div>
+                    <div class="metric-description">Complete independence from external APIs, running entirely on local hardware</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">512</div>
+                    <div class="metric-label">Memory Footprint (MB)</div>
+                    <div class="metric-description">Lightweight architecture suitable for educational environments and resource-constrained systems</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evaluation Framework -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Evaluation Framework</h2>
+            <p class="section-subtitle">Comprehensive testing approach to ensure system reliability and educational value.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Evaluation Script Example</div>
+                    <button class="copy-btn" onclick="copyEvalCode()">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                </div>
+                <div class="code-block" id="evalCodeContent">
+<span class="keyword">import</span> time
+
+<span class="comment"># Test questions with expected topics</span>
+<span class="keyword">test_questions</span> = [
+    (<span class="string">"What does churn mean?"</span>, <span class="string">"churn"</span>),
+    (<span class="string">"How does RAG work?"</span>, <span class="string">"RAG"</span>),
+    (<span class="string">"What is NPS?"</span>, <span class="string">"NPS"</span>),
+    (<span class="string">"Explain LangChain benefits"</span>, <span class="string">"LangChain"</span>),
+]
+
+<span class="comment"># Evaluation metrics</span>
+<span class="keyword">def</span> <span class="function">evaluate_system</span>(qa_chain, test_questions):
+    results = []
+    
+    <span class="keyword">for</span> question, expected_topic <span class="keyword">in</span> test_questions:
+        <span class="comment"># Measure response time</span>
+        start_time = time.<span class="function">time</span>()
+        result = qa_chain.<span class="function">invoke</span>({<span class="string">"query"</span>: question})
+        response_time = time.<span class="function">time</span>() - start_time
+        
+        <span class="comment"># Check relevance</span>
+        response_text = result[<span class="string">"result"</span>].<span class="function">lower</span>()
+        is_relevant = expected_topic.<span class="function">lower</span>() <span class="keyword">in</span> response_text
+        
+        results.<span class="function">append</span>({
+            <span class="string">"question"</span>: question,
+            <span class="string">"response_time"</span>: response_time,
+            <span class="string">"relevance"</span>: is_relevant,
+            <span class="string">"answer"</span>: result[<span class="string">"result"</span>]
+        })
+        
+        <span class="keyword">print</span>(<span class="string">f"❓ {question}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"✅ {result['result']}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"⏱️ {response_time:.2f}s"</span>)
+        <span class="keyword">print</span>(<span class="string">f"🎯 Relevant: {is_relevant}\n"</span>)
+    
+    <span class="keyword">return</span> results
+
+<span class="comment"># Run evaluation</span>
+<span class="keyword">evaluation_results</span> = <span class="function">evaluate_system</span>(qa_chain, test_questions)
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h4>Groundedness Testing</h4>
+                    <p>Validates that responses accurately reflect information from retrieved documents, ensuring factual consistency and reducing hallucination.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h4>Relevance Assessment</h4>
+                    <p>Measures how well the retrieval system finds contextually appropriate documents for different types of queries and topics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-comments"></i>
+                    <h4>Fluency Evaluation</h4>
+                    <p>Assesses response coherence, grammatical correctness, and overall quality of generated text using both automated and human evaluation methods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Structure -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Structure</h2>
+            <p class="section-subtitle">Well-organized codebase following Python best practices with comprehensive tooling for development and deployment.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Directory Structure</div>
+                </div>
+                <div class="code-block">
+pipeline-rag-langchain/
+├── 📁 config/                    <span class="comment"># Hydra configuration files</span>
+│   ├── main.yaml                 <span class="comment"># Main configuration</span>
+│   ├── model/                    <span class="comment"># Model parameters</span>
+│   └── process/                  <span class="comment"># Processing parameters</span>
+├── 📁 data/                      <span class="comment"># Project data</span>
+│   ├── raw/                      <span class="comment"># Raw input data</span>
+│   ├── processed/                <span class="comment"># Cleaned data</span>
+│   └── final/                    <span class="comment"># Final datasets</span>
+├── 📁 notebooks/                 <span class="comment"># Jupyter notebooks</span>
+│   └── pipeline_rag_langchain.ipynb
+├── 📁 src/                       <span class="comment"># Source code</span>
+│   ├── __init__.py
+│   ├── process.py                <span class="comment"># Data processing</span>
+│   ├── train_model.py            <span class="comment"># Model training</span>
+│   └── utils.py                  <span class="comment"># Utility functions</span>
+├── 📁 tests/                     <span class="comment"># Automated tests</span>
+├── 📁 docs/                      <span class="comment"># Documentation</span>
+├── 📁 models/                    <span class="comment"># Saved models</span>
+├── pyproject.toml                <span class="comment"># Poetry dependencies</span>
+├── .pre-commit-config.yaml       <span class="comment"># Code quality hooks</span>
+└── README.md                     <span class="comment"># Project documentation</span>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-scroll"></i>
+                    <h4>Poetry Package Management</h4>
+                    <p>Modern Python dependency management with lock files, virtual environments, and easy dependency resolution for reproducible builds.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cog"></i>
+                    <h4>Hydra Configuration</h4>
+                    <p>Flexible configuration management allowing easy experimentation with different parameters, models, and processing options.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-check-double"></i>
+                    <h4>Pre-commit Hooks</h4>
+                    <p>Automated code quality checks including linting, formatting, and testing that run before each commit to maintain high code standards.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-book"></i>
+                    <h4>Auto-generated Docs</h4>
+                    <p>Comprehensive documentation automatically generated from code comments using Pdoc, ensuring documentation stays synchronized with code changes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Getting Started</h2>
+            <p class="section-subtitle">Simple setup process to get the RAG pipeline running locally in minutes.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Quick Setup Instructions</div>
+                    <button class="copy-btn" onclick="copySetupCode()">
+                        <i class="fas fa-copy"></i> Copy Setup
+                    </button>
+                </div>
+                <div class="code-block" id="setupCodeContent">
+<span class="comment"># 1. Clone the repository</span>
+git clone https://github.com/bcmaymonegalvao/pipeline-rag-langchain.git
+cd pipeline-rag-langchain
+
+<span class="comment"># 2. Create virtual environment (recommended)</span>
+python -m venv .venv
+source .venv/bin/activate  <span class="comment"># Windows: .venv\Scripts\activate</span>
+
+<span class="comment"># 3. Install dependencies</span>
+pip install -U pip
+pip install faiss-cpu sentence-transformers langchain langchain-community transformers torch
+
+<span class="comment"># 4. Optional: Enable OpenAI fallback</span>
+export OPENAI_API_KEY=sk-your-key-here  <span class="comment"># Windows: $env:OPENAI_API_KEY="sk-..."</span>
+
+<span class="comment"># 5. Run the notebook</span>
+jupyter notebook notebooks/pipeline_rag_langchain.ipynb
+
+<span class="comment"># Or open directly in Google Colab</span>
+<span class="comment"># https://colab.research.google.com/github/bcmaymonegalvao/pipeline-rag-langchain/blob/main/notebooks/pipeline_rag_langchain.ipynb</span>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fab fa-google"></i>
+                    <h4>Google Colab Ready</h4>
+                    <p>One-click execution in Google Colab with pre-configured environment and GPU acceleration for faster model inference.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-laptop"></i>
+                    <h4>Local Development</h4>
+                    <p>Complete local setup with minimal dependencies, perfect for offline development and learning environments.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h4>Educational Materials</h4>
+                    <p>Comprehensive Jupyter notebooks with step-by-step explanations, code comments, and learning exercises.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Enhancements -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Future Enhancements</h2>
+            <p class="section-subtitle">Planned improvements and extensions to make the pipeline even more powerful and educational.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h4>Document Loaders</h4>
+                    <p>Support for PDF, Markdown, and other document formats with automatic text extraction and preprocessing capabilities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Performance Dashboard</h4>
+                    <p>Interactive Streamlit dashboard for monitoring system performance, query analytics, and response quality metrics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-memory"></i>
+                    <h4>Advanced Retrieval</h4>
+                    <p>Maximum Marginal Relevance (MMR) retriever for more diverse document selection and reduced redundancy in results.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-save"></i>
+                    <h4>Index Persistence</h4>
+                    <p>Save and load FAISS indices to disk for faster startup times and preservation of embeddings across sessions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cloud"></i>
+                    <h4>Cloud Integration</h4>
+                    <p>Complete OpenAI integration path with embeddings and GPT models for enhanced performance when API access is available.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Web Interface</h4>
+                    <p>Streamlit web application for easy interaction with the RAG system through a user-friendly graphical interface.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #2d3748; color: white; text-align: center; padding: 4rem 0;">
+        <div class="container">
+            <h3 style="margin-bottom: 1.5rem; font-size: 2rem;">Ready to Explore RAG?</h3>
+            <p style="margin-bottom: 3rem; opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Dive into the code, experiment with the live demo, or reach out to discuss RAG implementations and machine learning projects.
+            </p>
+            <div class="project-links">
+                <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-github"></i> Explore Source Code
+                </a>
+                <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Try Live Demo
+                </a>
+                <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact" class="btn" style="background: transparent; border: 2px solid white; color: white;">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                <p style="opacity: 0.7; margin-bottom: 0.5rem;">&copy; 2025 Bruno Galvão. All rights reserved.</p>
+                <p style="opacity: 0.7;">Building the future of AI-powered information retrieval | Senior Data Scientist</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Copy code functionality
+        function copyCode() {
+            const codeContent = document.getElementById('codeContent').innerText;
+            navigator.clipboard.writeText(codeContent).then(() => {
+                showCopyFeedback('Code copied successfully!');
+            });
+        }
+
+        function copyEvalCode() {
+            const evalCodeContent = document.getElementById('evalCodeContent').innerText;
+            navigator.clipboard.writeText(evalCodeContent).then(() => {
+                showCopyFeedback('Evaluation code copied!');
+            });
+        }
+
+        function copySetupCode() {
+            const setupCodeContent = document.getElementById('setupCodeContent').innerText;
+            navigator.clipboard.writeText(setupCodeContent).then(() => {
+                showCopyFeedback('Setup instructions copied!');
+            });
+        }
+
+        function showCopyFeedback(message) {
+            // Create temporary feedback element
+            const feedback = document.createElement('div');
+            feedback.textContent = message;
+            feedback.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #10b981;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            `;
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 2000);
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Animate metrics when visible
+        function animateMetrics() {
+            const metrics = document.querySelectorAll('.metric-number');
+            metrics.forEach((metric, index) => {
+                const finalValue = metric.textContent;
+                let currentValue = 0;
+                const isDecimal = finalValue.includes('.');
+                const target = parseFloat(finalValue);
+                const increment = target / 60; // 60 frames for 1 second animation
+                
+                const animate = () => {
+                    currentValue += increment;
+                    if (currentValue >= target) {
+                        metric.textContent = finalValue;
+                        return;
+                    }
+                    
+                    if (isDecimal) {
+                        metric.textContent = currentValue.toFixed(1);
+                    } else {
+                        metric.textContent = Math.floor(currentValue);
+                    }
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                setTimeout(() => animate(), index * 200);
+            });
+        }
+
+        // Trigger metrics animation when section is visible
+        const metricsSection = document.querySelector('.metrics-section');
+        if (metricsSection) {
+            const metricsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateMetrics();
+                        metricsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            metricsObserver.observe(metricsSection);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

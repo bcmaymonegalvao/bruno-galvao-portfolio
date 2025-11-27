@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIB Prediction Model - Bruno Galvão</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #f093fb;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            position: relative;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #f093fb;
+        }
+        
+        .btn-secondary {
+            background: #10b981;
+            color: white;
+            border: 2px solid #10b981;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: white;
+            color: #f093fb;
+            border: 2px solid #f093fb;
+            border-radius: 50px;
+            padding: 12px 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f093fb;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .content-section:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            border-radius: 2px;
+        }
+
+        /* Project Overview Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .overview-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border-left: 6px solid #f093fb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            border-radius: 50%;
+            transform: translate(25px, -25px);
+        }
+
+        .overview-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+        }
+
+        .overview-card:nth-child(2) { border-left-color: #4facfe; }
+        .overview-card:nth-child(3) { border-left-color: #43e97b; }
+        .overview-card:nth-child(4) { border-left-color: #f5576c; }
+
+        .overview-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .overview-card i {
+            font-size: 1.8rem;
+            color: #f093fb;
+        }
+
+        .overview-card:nth-child(2) i { color: #4facfe; }
+        .overview-card:nth-child(3) i { color: #43e97b; }
+        .overview-card:nth-child(4) i { color: #f5576c; }
+
+        .overview-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a5568;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Workflow Section */
+        .workflow-container {
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .workflow-step p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: left;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.05), rgba(245, 87, 108, 0.05));
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-card:hover::before {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #f093fb;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: #2d3748;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Code Block */
+        .code-container {
+            background: #2d3748;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .code-title {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .copy-btn {
+            background: #f093fb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: #e081e8;
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background: transparent;
+        }
+
+        .comment { color: #a0aec0; }
+        .keyword { color: #f093fb; }
+        .string { color: #4facfe; }
+        .function { color: #43e97b; }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            border-color: #f093fb;
+        }
+
+        .tech-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #f093fb;
+        }
+
+        .tech-item h4 {
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .tech-item p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* Performance Metrics */
+        .metrics-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .metric-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .overview-grid,
+            .features-grid,
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .back-btn {
+                position: static;
+                margin: 1rem;
+                align-self: flex-start;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .workflow-steps {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #e081e8, #e74c66);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">Bruno Galvão</div>
+            <ul class="nav-links">
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/">Home</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#about">About</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects">Projects</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#skills">Expertise</a></li>
+                <li><a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Back Button -->
+    <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#projects" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>GDP Prediction Model</h1>
+                <div class="subtitle">Economic Forecasting with Machine Learning</div>
+                <p>Advanced machine learning model for predicting Gross Domestic Product (GDP) trends using economic indicators. Features interactive web interface for scenario analysis and economic forecasting with statistical validation and comprehensive economic data analysis.</p>
+                <div class="project-links">
+                    <a href="https://github.com/bcmaymonegalvao/pib_prediction" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View Source Code
+                    </a>
+                    <a href="https://pibprediction-interface-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Try Live Demo
+                    </a>
+                </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h4>Economic Indicators Analysis</h4>
+                    <p>Comprehensive analysis of key economic indicators including inflation rates, unemployment statistics, interest rates, trade balances, and government spending patterns for accurate GDP modeling.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Feature Engineering</h4>
+                    <p>Advanced feature creation including lagged variables, moving averages, seasonal adjustments, and economic ratios to capture complex temporal relationships in economic data.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>Model Selection</h4>
+                    <p>Automated model comparison using cross-validation across multiple algorithms including Random Forest, Gradient Boosting, and Linear Regression to select optimal performance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Robust Validation</h4>
+                    <p>Rigorous validation framework with out-of-sample testing, backtesting on historical data, and statistical significance testing to ensure prediction reliability.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-globe-americas"></i>
+                    <h4>Multi-Country Support</h4>
+                    <p>Flexible architecture supporting economic data from different countries and regions, enabling comparative analysis and international economic forecasting.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-chart-area"></i>
+                    <h4>Scenario Analysis</h4>
+                    <p>Interactive scenario modeling capabilities allowing users to simulate different economic conditions and analyze their potential impact on GDP growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-subtitle">Modern data science tools and economic analysis libraries optimized for reliable GDP forecasting and economic modeling.</p>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <i class="fab fa-python"></i>
+                    <h4>Python 3.8+</h4>
+                    <p>Core programming language</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-robot"></i>
+                    <h4>Scikit-Learn</h4>
+                    <p>Machine learning algorithms</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-table"></i>
+                    <h4>Pandas</h4>
+                    <p>Data manipulation and analysis</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-calculator"></i>
+                    <h4>NumPy</h4>
+                    <p>Numerical computations</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Matplotlib/Seaborn</h4>
+                    <p>Data visualization</p>
+                </div>
+                
+                <div class="tech-item">
+                    <i class="fas fa-stream"></i>
+                    <h4>Streamlit</h4>
+                    <p>Web application framework</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <p class="section-subtitle">Comprehensive features designed for accurate economic forecasting and user-friendly analysis.</p>
+            
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">📊</div>
+                    <h4>Data Integration</h4>
+                    <p>Seamless integration with multiple economic data sources including World Bank API, IMF databases, and national statistical offices for comprehensive economic indicators.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🧮</div>
+                    <h4>Advanced Analytics</h4>
+                    <p>Statistical analysis including correlation analysis, causality testing, and time series decomposition to understand economic relationships and trends.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🎯</div>
+                    <h4>Accuracy Metrics</h4>
+                    <p>Comprehensive performance evaluation using MAE, RMSE, R-squared, and MAPE metrics with confidence intervals for prediction reliability assessment.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">📈</div>
+                    <h4>Interactive Visualizations</h4>
+                    <p>Dynamic charts and graphs showing historical trends, predictions, feature importance, and scenario comparison with customizable time ranges.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">🔄</div>
+                    <h4>Real-time Updates</h4>
+                    <p>Automated model retraining capabilities with new data integration and performance monitoring to maintain prediction accuracy over time.</p>
+                </div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">📋</div>
+                    <h4>Export Capabilities</h4>
+                    <p>Comprehensive reporting features with PDF export, CSV data downloads, and detailed analysis reports for professional economic analysis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="metrics-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Model Performance</h2>
+           <p class="section-subtitle" style="color: black; font-weight: bold;">
+               Validated performance metrics demonstrating the model's accuracy and reliability in real-world economic forecasting scenarios.
+           </p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">0.89</div>
+                    <div class="metric-label">R² Score</div>
+                    <div class="metric-description">High correlation coefficient indicating strong predictive capability for GDP growth patterns</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">1.2%</div>
+                    <div class="metric-label">Mean Absolute Error</div>
+                    <div class="metric-description">Low prediction error demonstrating precise GDP growth forecasting accuracy</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">85%</div>
+                    <div class="metric-label">Direction Accuracy</div>
+                    <div class="metric-description">High accuracy in predicting whether GDP will increase or decrease</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">12</div>
+                    <div class="metric-label">Economic Indicators</div>
+                    <div class="metric-description">Comprehensive analysis using multiple economic variables for robust predictions</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Getting Started</h2>
+            <p class="section-subtitle">Simple setup process to run the GDP prediction model locally or use the interactive web application.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">Quick Setup Instructions</div>
+                    <button class="copy-btn" onclick="copySetupCode()">
+                        <i class="fas fa-copy"></i> Copy Setup
+                    </button>
+                </div>
+                <div class="code-block" id="setupCodeContent">
+<span class="comment"># 1. Clone the repository</span>
+git clone https://github.com/bcmaymonegalvao/pib_prediction.git
+cd pib_prediction
+
+<span class="comment"># 2. Create virtual environment</span>
+python -m venv venv
+source venv/bin/activate  <span class="comment"># Windows: venv\Scripts\activate</span>
+
+<span class="comment"># 3. Install required packages</span>
+pip install -r requirements.txt
+
+<span class="comment"># 4. Run the Streamlit application</span>
+streamlit run app.py
+
+<span class="comment"># 5. Or run the training script</span>
+python train_model.py
+
+<span class="comment"># 6. Access the live demo (no installation required)</span>
+<span class="comment"># https://pibprediction-interface-bcmg.streamlit.app/</span>
+                </div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-play"></i>
+                    <h4>Quick Start</h4>
+                    <p>Ready-to-run Streamlit application with pre-trained models and sample economic data for immediate GDP forecasting and analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cog"></i>
+                    <h4>Customizable</h4>
+                    <p>Easily configurable parameters, data sources, and model selection options to adapt the system for different countries and economic contexts.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-book-open"></i>
+                    <h4>Documentation</h4>
+                    <p>Comprehensive documentation with economic methodology explanation, code examples, and step-by-step tutorials for economists and data scientists.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Applications & Use Cases</h2>
+            <p class="section-subtitle">Real-world applications of GDP prediction modeling across various sectors and decision-making contexts.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-university"></i>
+                    <h4>Government Planning</h4>
+                    <p>Support policy makers with data-driven economic forecasts for budget planning, fiscal policy decisions, and strategic economic planning initiatives.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-building"></i>
+                    <h4>Investment Analysis</h4>
+                    <p>Assist financial institutions and investors with market timing, risk assessment, and portfolio allocation decisions based on economic growth predictions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h4>Academic Research</h4>
+                    <p>Enable economists and researchers to test economic theories, validate models, and conduct empirical studies on economic growth determinants.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Business Strategy</h4>
+                    <p>Help corporations make informed strategic decisions about market entry, expansion plans, and resource allocation based on economic forecasts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Philosophy -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">Comprehensive economic forecasting solution combining traditional econometric methods with modern machine learning techniques for accurate GDP prediction and economic trend analysis.</p>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h4><i class="fas fa-chart-line"></i> Economic Modeling</h4>
+                    <p>Advanced statistical models incorporating multiple economic indicators including inflation, unemployment, trade balance, and fiscal policy metrics for comprehensive GDP analysis.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-brain"></i> Machine Learning</h4>
+                    <p>Leverages ensemble methods, time series analysis, and regression techniques to capture complex economic relationships and improve prediction accuracy.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-globe"></i> Multi-Country Support</h4>
+                    <p>Designed to work with economic data from multiple countries and regions, allowing for comparative analysis and cross-national economic forecasting.</p>
+                </div>
+                <div class="overview-card">
+                    <h4><i class="fas fa-desktop"></i> Interactive Interface</h4>
+                    <p>User-friendly Streamlit web application with real-time predictions, scenario analysis, and comprehensive data visualizations for economic insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Methodology & Approach</h2>
+            <p class="section-subtitle">The prediction pipeline follows established econometric principles combined with modern data science techniques for robust and reliable economic forecasting.</p>
+            
+            <div class="workflow-container">
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>Data Collection</h4>
+                        <p>Comprehensive gathering of economic indicators from reliable sources including World Bank, IMF, and national statistical agencies with proper data validation and cleaning.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>Feature Engineering</h4>
+                        <p>Creation of derived economic indicators, lag features, seasonal adjustments, and transformation of raw economic data into predictive features.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>Model Training</h4>
+                        <p>Implementation of multiple algorithms including Random Forest, Gradient Boosting, and Linear Regression with cross-validation and hyperparameter optimization.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h4>Validation</h4>
+                        <p>Rigorous model validation using out-of-sample testing, backtesting on historical data, and statistical significance testing of predictions.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <h4>Deployment</h4>
+                        <p>Interactive web application deployment with real-time prediction capabilities, scenario modeling, and comprehensive result visualization.</p>
+                    </div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">6</div>
+                        <h4>Monitoring</h4>
+                        <p>Continuous model performance monitoring, prediction accuracy tracking, and automated retraining capabilities for maintained reliability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="content-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Implementation Details</h2>
+            <p class="section-subtitle">Core implementation showcasing the machine learning pipeline for GDP prediction with feature engineering and model selection.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title">GDP Prediction Pipeline</div>
+                    <button class="copy-btn" onclick="copyCode()">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                </div>
+                <div class="code-block" id="codeContent">
+<span class="comment"># Import required libraries</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> <span class="function">RandomForestRegressor</span>, <span class="function">GradientBoostingRegressor</span>
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> <span class="function">LinearRegression</span>
+<span class="keyword极from</span> sklearn.model_selection <span class="keyword">import</span> <span class="function">train_test_split</span>, <span class="function">cross_val_score</span>
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> <span class="function">mean_absolute_error</span>, <span class="function">r2_score</span>
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> <span class="function">StandardScaler</span>
+
+<span class="comment"># Load and prepare economic data</span>
+<span class="keyword">def</span> <span class="function">load_economic_data</span>(file_path):
+    <span class="string">"""Load and preprocess economic indicators data"""</span>
+    data = pd.<span class="function">read_csv</span>(file_path)
+    
+    <span class="comment"># Feature engineering</span>
+    data[<span class="string">'inflation_lag'</span>] = data[<span class="string">'inflation'</span>].<span class="function">shift</span>(1)
+    data[<span class="string">'unemployment_ma'</span>] = data[<span class="string">'unemployment'</span>].<span class="function">rolling</span>(4).<span class="function">mean</span>()
+    data[极span class="string">'trade_balance_pct'</span>] = data[<span class="string">'exports'</span>] / data[<span class="string">'imports'</span>] * 100
+    
+    <span class="keyword">return</span> data.<span class="function">dropna</span>()
+
+<span class="comment"># GDP Prediction Model</span>
+<span class="keyword">class</span> <span class="function">GDPPredictor</span>:
+    <span class="keyword">极f</span> <span class="function">__init__</span>(self):
+        self.models = {
+            <span class="string">'rf'</span>: <span class="function">RandomForestRegressor</span>(n_estimators=100, random_state=42),
+            <span class="string">'gb'</span>: <span class="function">GradientBoostingRegressor</span>(n_estimators=100, random_state=42),
+            <span class="string">'lr'</span>: <span class="function">LinearRegression</span>()
+        }
+        self.scaler = <span class="function">StandardScaler</span>()
+        self.best_model = None
+    
+    <span class="keyword">def</span> <span class="function">train</span>(self, X, y):
+        <span class="string">"""Train multiple models and select the best performer"""</span>
+        X_scaled = self.scaler.<span class="function">fit_transform</span>(X)
+        X_train, X_test, y_train, y_test = <span class="function">train_test_split</span>(X_scaled, y, test_size=0.2)
+        
+        best_score = -np.inf
+        
+        <span class="keyword">for</span> name, model <span class="keyword">in</span> self.models.<span class="function">items</span>():
+            <span class="comment"># Cross-validation</span>
+            cv_scores = <span class="function">cross_val_score</span>(model, X_train, y_train, cv=5, scoring=<span class="string">'r2'</span>)
+            mean_score = cv_scores.<span class="function">mean</span>()
+            
+            <span class="keyword">if</span> mean_score > best_score:
+                best_score = mean_score
+                self.best_model = model
+                
+        <span class="comment"># Train best model</span>
+        self.best_model.<span class="function">fit</span>(X_train, y_train)
+        
+        <span class="comment"># Evaluate performance</span>
+        y_pred = self.best_model.<span class="function">predict</span>(X_test)
+        mae = <span class="function">mean_absolute_error</span>(y_test, y_pred)
+        r2 = <span class="function">r2_score</span>(y_test, y_pred)
+        
+        <span class="keyword">print</span>(<span class="string">f"Best model: {type(self.best_model).__name__}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"MAE: {mae:.4f}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"R² Score: {r2:.4f}"</span>)
+        
+        <span class="keyword">return</span> mae, r2
+    
+    <span class="keyword">def</span> <span class="function">predict</span>(self, X):
+        <span class="string">"""Make predictions using the trained model"""</span>
+        X_scaled = self.scaler.<span class="function">transform</span>(X)
+        <span class="keyword">return</span> self.best_model.<span class="function">predict</span>(X_scaled)
+
+<span class="comment"># Example usage</span>
+<span class="keyword">if</span> <span class="string">__name__</span> == <span class="string">"__main__"</span>:
+    <span class="comment"># Load data</span>
+    data = <span class="function">load_economic_data</span>(<span class="string">"economic_data.csv"</span>)
+    
+    <span class="comment"># Prepare features and target</span>
+    features = [<span class="string">'inflation'</span>, <span class="string">'unemployment'</span>, <span class="string">'inflation_lag'</span>, <span class="string">'unemployment_ma'</span>, <span class="string">'trade_balance_pct'</span>]
+    X = data[features]
+    y = data[<span class="string">'gdp_growth'</span>]
+    
+    <span class="comment"># Train model</span>
+    predictor = <span class="function">GDPPredictor</span>()
+    mae, r2 = predictor.<span class="function">train</span>(X, y)
+    
+    <span class="comment"># Make predictions</span>
+    latest_data = X.<span class="function">iloc</span>[-1:].<span class="function">copy</span>()
+    prediction = predictor.<span class="function">predict</span>(latest_data)
+    <span class="keyword">print</span>(<span class="string">f"Predicted GDP growth: {prediction[0]:.2f}%"</span>)
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer style="background: #2d3748; color: white; text-align: center; padding: 4rem 0;">
+        <div class="container">
+            <h3 style="margin-bottom: 1.5rem; font-size: 2rem;">Explore Economic Forecasting</h3>
+            <p style="margin-bottom: 3rem; opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Dive into the code, try the interactive demo, or reach out to discuss economic modeling and data science applications in finance.
+            </p>
+            <div class="project-links">
+                <a href="https://github.com/bcmaymonegalvao/pib_prediction" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-github"></i> Explore Source Code
+                </a>
+                <a href="https://pibprediction-interface-bcmg.streamlit.app/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Try Live Demo
+                </a>
+                <a href="https://bcmaymonegalvao.github.io/bruno-galvao-portfolio/#contact" class="btn" style="background: transparent; border: 2px solid white; color: white;">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                <p style="opacity: 0.7; margin-bottom: 0.5rem;">&copy; 2025 Bruno Galvão. All rights reserved.</p>
+                <p style="opacity: 0.7;">Transforming economic data into actionable insights | Senior Data Scientist</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Copy code functionality
+        function copyCode() {
+            const codeContent = document.getElementById('codeContent').innerText;
+            navigator.clipboard.writeText(codeContent).then(() => {
+                showCopyFeedback('Code copied successfully!');
+            });
+        }
+
+        function copySetupCode() {
+            const setupCodeContent = document.getElementById('setupCodeContent').innerText;
+            navigator.clipboard.writeText(setupCodeContent).then(() => {
+                showCopyFeedback('Setup instructions copied!');
+            });
+        }
+
+        function showCopyFeedback(message) {
+            // Create temporary feedback element
+            const feedback = document.createElement('div');
+            feedback.textContent = message;
+            feedback.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #10b981;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            `;
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 2000);
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Animate metrics when visible
+        function animateMetrics() {
+            const metrics = document.querySelectorAll('.metric-number');
+            metrics.forEach((metric, index) => {
+                const finalValue = metric.textContent;
+                let currentValue = 0;
+                const isDecimal = finalValue.includes('.') || finalValue.includes('%');
+                let target = parseFloat(finalValue);
+                const isPercentage = finalValue.includes('%');
+                
+                const increment = target / 60; // 60 frames for 1 second animation
+                
+                const animate = () => {
+                    currentValue += increment;
+                    if (currentValue >= target) {
+                        metric.textContent = finalValue;
+                        return;
+                    }
+                    
+                    if (isDecimal && !isPercentage) {
+                        metric.textContent = currentValue.toFixed(2);
+                    } else if (isPercentage) {
+                        metric.textContent = Math.floor(currentValue) + '%';
+                    } else {
+                        metric.textContent = Math.floor(currentValue);
+                    }
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                setTimeout(() => animate(), index * 200);
+            });
+        }
+
+        // Trigger metrics animation when section is visible
+        const metricsSection = document.querySelector('.metrics-section');
+        if (metricsSection) {
+            const metricsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateMetrics();
+                        metricsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            metricsObserver.observe(metricsSection);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

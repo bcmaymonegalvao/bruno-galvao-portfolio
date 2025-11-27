@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             min-height: 100vh;
         }
 
@@ -26,7 +26,6 @@
             padding: 0 20px;
         }
 
-        /* Header */
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -69,7 +68,6 @@
             color: #667eea;
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -77,26 +75,39 @@
             text-align: center;
             color: white;
             padding-top: 80px;
-            position: relative; /* necessário pro overlay funcionar */
-            background: url("Background.webp") center/cover no-repeat;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%), url("Background.webp") center/cover no-repeat;
+           /* animation: bgZoomPulse 10s infinite alternate; */
+            background-blend-mode: overlay;
             overflow: hidden;
         }
         
-        /* Overlay transparente por cima da imagem */
+        /*@keyframes bgZoomPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.07); }
+        }*/
+
+        .hero-to-about-transition {
+            background: linear-gradient(to bottom, transparent 0%, #f8fafc 100%);
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 3;
+        }
+        
         .hero::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4); /* preto 40% transparente */
+            background: rgba(0,0,0,0.4);
             z-index: 1;
         }
         
-        /* Mantém o conteúdo acima do overlay */
         .hero .container {
             position: relative;
             z-index: 2;
         }
-
 
         .hero-content h1 {
             font-size: 3.5rem;
@@ -145,17 +156,17 @@
             background: white;
             color: #667eea;
         }
-        
+
         .btn-secondary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
             color: white;
-            border: none;
+            box-shadow: 0 8px 20px rgba(56, 249, 215, 0.3);
         }
         
         .btn-secondary:hover {
-            background: linear-gradient(135deg, #764ba2, #667eea);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #38f9d7, #43e97b);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(56, 249, 215, 0.45);
         }
 
         .btn:hover {
@@ -163,23 +174,66 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        /* Professional Summary Section */
+        .btn-floating {
+            background: #10b981;
+            color: white;
+            border-radius: 50px;
+            padding: 14px 35px;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-floating:hover {
+            background: #059669;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
         .professional-summary {
-            background: white;
-            padding: 60px 0;
-            text-align: left;
+            background: #f8fafc;
+            padding: 80px 0;
         }
 
         .summary-content {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .summary-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-content:hover::before {
+            transform: rotate(45deg) translate(20px, 20px);
         }
 
         .summary-content h2 {
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
             color: #2d3748;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .summary-content p {
@@ -188,9 +242,10 @@
             color: #4a5568;
             margin-bottom: 1.5rem;
             text-align: justify;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Badges Section */
         .badges {
             background: #f8fafc;
             padding: 60px 0;
@@ -220,7 +275,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Sections */
         section {
             padding: 80px 0;
             background: white;
@@ -246,7 +300,6 @@
             border-radius: 2px;
         }
 
-        /* Projects Section - Now comes early */
         .projects {
             background: white;
             padding: 80px 0;
@@ -254,8 +307,9 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            align-items: stretch;
         }
 
         .project-card {
@@ -265,6 +319,11 @@
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
             transition: all 0.4s ease;
             border: 3px solid transparent;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
         }
 
         .project-card:hover {
@@ -272,7 +331,6 @@
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
         }
 
-        /* Different colors for each project */
         .project-card:nth-child(1) .project-header {
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
@@ -336,20 +394,24 @@
 
         .project-body {
             padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .project-description {
             color: #4a5568;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.8;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            flex-grow: 1;
         }
 
         .project-tech {
             display: flex;
             flex-wrap: wrap;
             gap: 0.6rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .tech-tag {
@@ -368,64 +430,49 @@
             transform: translateY(-3px);
         }
 
-        /* Two-row layout for project links on desktop */
-        .project-links {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        .about {
+            background: #f8fafc;
         }
 
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            padding: 0.8rem 1.2rem;
-            border-radius: 30px;
-            border: 2px solid #667eea;
-            background: transparent;
-            text-align: center;
-        }
-
-        .project-link:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .project-link.demo {
-            background: #10b981;
-            border-color: #10b981;
-            color: white;
-        }
-
-        .project-link.demo:hover {
-            background: #059669;
-            border-color: #059669;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Single column for single link */
-        .project-links.single-link {
-            grid-template-columns: 1fr;
-        }
-
-        /* About Section */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 3rem;
             align-items: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .about-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-content:hover::before {
+            transform: rotate(45deg) translate(20px, 20px);
         }
 
         .about-image {
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .profile-img {
@@ -435,6 +482,11 @@
             object-fit: cover;
             border: 6px solid #667eea;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-text {
+            position: relative;
+            z-index: 2;
         }
 
         .about-text h3 {
@@ -450,7 +502,6 @@
             font-size: 1.05rem;
         }
 
-        /* Skills Section - Updated for 4 expertise areas */
         .skills {
             background: #f8fafc;
         }
@@ -523,7 +574,6 @@
         .skill-category:nth-child(3) .skill-list li::before { color: #4facfe; }
         .skill-category:nth-child(4) .skill-list li::before { color: #43e97b; }
 
-        /* Contact Section */
         .contact {
             background: #2d3748;
             color: white;
@@ -601,7 +651,6 @@
             resize: vertical;
         }
 
-        /* Footer */
         footer {
             background: #1a202c;
             color: white;
@@ -640,7 +689,6 @@
         .social-link.email:hover { background: #ea4335; }
         .social-link.resume:hover { background: #28a745; }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -652,7 +700,6 @@
             }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -688,11 +735,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .project-links {
-                grid-template-columns: 1fr;
-                gap: 0.8rem;
-            }
-
             .badges-container {
                 gap: 0.4rem;
             }
@@ -702,12 +744,10 @@
             }
         }
 
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Scroll animations */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -718,7 +758,7 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* Dropdown */
+        
         .dropdown {
             position: relative;
         }
@@ -759,30 +799,12 @@
             border-radius: 4px;
         }
         
-        /* Mostrar menu ao passar o mouse */
         .dropdown:hover .dropdown-menu {
             display: block;
         }
-        .btn-floating {
-        background: #10b981; /* verde */
-        color: white;
-        border-radius: 50px;
-        padding: 14px 35px;
-        font-weight: bold;
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-        transition: all 0.3s ease;
-        }
-        
-        .btn-floating:hover {
-            background: #059669;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
-        }
-
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <nav class="container">
             <div class="logo">Bruno Galvão</div>
@@ -792,7 +814,6 @@
                 <li><a onclick="scrollToSection('projects')">Projects</a></li>
                 <li><a onclick="scrollToSection('skills')">Expertise</a></li>
                 <li><a onclick="scrollToSection('contact')">Contact</a></li>
-                <!-- Novo Dropdown -->
                 <li class="dropdown">
                     <a href="#">Connect ▾</a>
                     <ul class="dropdown-menu">
@@ -806,7 +827,6 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
     <section id="hero" class="hero">
         <div class="container">
             <div class="hero-content">
@@ -822,322 +842,13 @@
                     </a>
                     <a href="#contact" class="btn btn-floating">
                         <i class="fas fa-comments"></i> Connect
-                    </a>
+                    </a>   
                 </div>
             </div>
         </div>
+        <div class="hero-to-about-transition"></div>
     </section>
 
-    <!-- Professional Summary Section -->
-    <section class="professional-summary fade-in">
-        <div class="container">
-            <div class="summary-content">
-                <h2>Professional Summary</h2>
-                <p>I'm a Data Scientist with over 10 years of experience at BB Tecnologia e Serviços, where I apply data science to solve complex business problems and drive operational excellence.</p>
-                
-                <p>My expertise spans data visualization, predictive modeling, causal inference, NLP, deep learning, computer vision, pipeline automation, MLOps, large language models (LLMs), and artificial intelligence.</p>
-                
-                <p>Over the last year, I led a project that reduced unproductive team visits by 43% through machine learning, causal inference, and demand prediction. Additionally, I published over 130 technical reports employing data science techniques to identify bottlenecks and maximize team performance. My work also includes developing analytical dossiers from extensive data and business rules — delivering a 35% improvement in operational efficiency and earning several corporate accolades.</p>
-                
-                <p>I'm proficient in Python, Java, Javascript, C, C++, SQL, Git, DAX, Markdown, HTML, PHP, and CSS, and I frequently leverage libraries and frameworks such as Scikit-Learn, TensorFlow, Keras, Seaborn, Matplotlib, Streamlit, Plotly, Pandas, NumpY, SciPy, Dash, and more.</p>
-                
-                <p>I'm also skilled in a range of tools and platforms, including VSCode, Power BI, Jupyter Notebook, Google Colaboratory, SSIS, AWS, Azure, Databricks, BigQuery, Jira, Trello, Azure DevOps, Power Apps, Power Automate, Excel, MySQL, PostgreSQL, SQLite, and SQLServer.</p>
-                
-                <p>Currently, I'm pursuing a Master's degree in Physics with a concentration in Data Scientist, Generative AI, and Robotics for Math and science education. I hold an MBA in Data Scientist, Governance, and IT Management, and a degree in Physics from IFCE (Federal Institute of Ceará), where I researched computer-assisted education and peer strunction.</p>
-                
-                <p>I bring extensive experience in Information Technology, predominantly with Banco do Brasil — the largest bank in Brazil — delivering innovative, data-informed solutions to aid its operations.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Badges Section -->
-    <section class="badges fade-in">
-        <div class="container">
-            <h3 style="margin-bottom: 2rem; color: #2d3748; font-size: 1.8rem;">Technologies & Tools</h3>
-            <div class="badges-container">
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white" alt="C">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/SciPy-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white" alt="SciPy">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=plotly&logoColor=white" alt="Matplotlib">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Seaborn-76B900?style=for-the-badge&logo=python&logoColor=white" alt="Seaborn">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white" alt="Plotly">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white" alt="Keras">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/PySpark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white" alt="PySpark">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white" alt="Databricks">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Azure%20DevOps-0078D7?style=for-the-badge&logo=azuredevops&logoColor=white" alt="Azure DevOps">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white" alt="Jira">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Delta%20Lake-00A3E0?style=for-the-badge&logo=databricks&logoColor=white" alt="Delta Lake">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" alt="SQL Server">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/VS%20Code-0078D4?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="VS Code">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=black" alt="Colab">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white" alt="Excel">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/PowerPoint-B7472A?style=for-the-badge&logo=microsoftpowerpoint&logoColor=white" alt="PowerPoint">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Office-D83B01?style=for-the-badge&logo=microsoftoffice&logoColor=white" alt="Office">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
-                </div>
-                <div class="badge">
-                    <img src="https://img.shields.io/badge/Mermaid-1B6AC6?style=for-the-badge&logo=markdown&logoColor=white" alt="Mermaid">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects fade-in">
-        <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>RAG Pipeline with LangChain</h4>
-                        <p>Advanced Retrieval-Augmented Generation system</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            A sophisticated RAG (Retrieval-Augmented Generation) pipeline built with LangChain for intelligent document processing and question-answering. Features vector databases, semantic search, and LLM integration for enhanced information retrieval.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">LangChain</span>
-                            <span class="tech-tag">OpenAI</span>
-                            <span class="tech-tag">Vector DB</span>
-                            <span class="tech-tag">Streamlit</span>
-                            <span class="tech-tag">RAG</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao/pipeline-rag-langchain" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://pipeline-rag-langchain-bcmg.streamlit.app/" class="project-link demo" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>GDP Prediction Model</h4>
-                        <p>Economic forecasting with machine learning</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Advanced machine learning model for predicting Gross Domestic Product (GDP) trends using economic indicators. Features interactive web interface for scenario analysis and economic forecasting with statistical validation.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Scikit-learn</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">Time Series</span>
-                            <span class="tech-tag">Streamlit</span>
-                            <span class="tech-tag">Economic Analysis</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao/pib_prediction" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://pibprediction-interface-bcmg.streamlit.app/" class="project-link demo" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Trading Platform</h4>
-                        <p>Financial data analysis and trading interface</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Comprehensive trading platform with real-time financial data analysis, portfolio management, and algorithmic trading strategies. Features interactive charts, risk assessment, and performance analytics for informed investment decisions.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Financial Analysis</span>
-                            <span class="tech-tag">Plotly</span>
-                            <span class="tech-tag">Streamlit</span>
-                            <span class="tech-tag">API Integration</span>
-                            <span class="tech-tag">Portfolio Management</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/bcmaymonegalvao/plataforma_corretora" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://plataformacorretora-brunogalvao.streamlit.app/" class="project-link demo" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Life Expectancy Prediction</h4>
-                        <p>ML model for health and demographic analysis</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Machine learning model that predicts life expectancy based on various health, economic, and social factors. Uses WHO data to analyze relationships between lifestyle, healthcare quality, and longevity across different countries.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Scikit-learn</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">Seaborn</span>
-                            <span class="tech-tag">WHO Data</span>
-                            <span class="tech-tag">Health Analytics</span>
-                        </div>
-                        <div class="project-links single-link">
-                            <a href="https://github.com/bcmaymonegalvao/Life-Expectancy-Predicting-Model" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub Repository
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>Exploratory Data Analysis</h4>
-                        <p>Comprehensive data exploration techniques</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Collection of advanced exploratory data analysis techniques and methodologies. Demonstrates statistical analysis, data visualization best practices, and insights discovery from complex datasets using Python's data science ecosystem.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">Matplotlib</span>
-                            <span class="tech-tag">Seaborn</span>
-                            <span class="tech-tag">Statistical Analysis</span>
-                            <span class="tech-tag">Data Visualization</span>
-                        </div>
-                        <div class="project-links single-link">
-                            <a href="https://github.com/bcmaymonegalvao/Exploratory-Data-Analysis" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub Repository
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>E-commerce Data Analysis</h4>
-                        <p>Business intelligence for retail insights</p>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-description">
-                            Comprehensive analysis of e-commerce data focusing on customer behavior, sales patterns, and business performance metrics. Includes customer segmentation, sales forecasting, and actionable business recommendations.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">Customer Analytics</span>
-                            <span class="tech-tag">Business Intelligence</span>
-                            <span class="tech-tag">Sales Analysis</span>
-                            <span class="tech-tag">Visualization</span>
-                        </div>
-                        <div class="project-links single-link">
-                            <a href="https://github.com/bcmaymonegalvao/ecommerce-data-analysis" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i> GitHub Repository
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
     <section id="about" class="about fade-in">
         <div class="container">
             <h2 class="section-title">About Me</h2>
@@ -1163,7 +874,199 @@
         </div>
     </section>
 
-    <!-- Skills Section - Updated for 4 expertise areas -->
+    <section class="badges fade-in">
+        <div class="container">
+            <h3 style="margin-bottom: 2rem; color: #2d3748; font-size: 1.8rem;">Technologies & Tools</h3>
+            <div class="badges-container">
+                <div class="badge"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white" alt="C"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/SciPy-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white" alt="SciPy"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=plotly&logoColor=white" alt="Matplotlib"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Seaborn-76B900?style=for-the-badge&logo=python&logoColor=white" alt="Seaborn"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white" alt="Plotly"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white" alt="Keras"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/PySpark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white" alt="PySpark"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white" alt="Databricks"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Azure%20DevOps-0078D7?style=for-the-badge&logo=azuredevops&logoColor=white" alt="Azure DevOps"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white" alt="Jira"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Delta%20Lake-00A3E0?style=for-the-badge&logo=databricks&logoColor=white" alt="Delta Lake"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" alt="SQL Server"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/VS%20Code-0078D4?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="VS Code"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=black" alt="Colab"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white" alt="Excel"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/PowerPoint-B7472A?style=for-the-badge&logo=microsoftpowerpoint&logoColor=white" alt="PowerPoint"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Office-D83B01?style=for-the-badge&logo=microsoftoffice&logoColor=white" alt="Office"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown"></div>
+                <div class="badge"><img src="https://img.shields.io/badge/Mermaid-1B6AC6?style=for-the-badge&logo=markdown&logoColor=white" alt="Mermaid"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects fade-in">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <a href="rag_pipeline_project.html" class="project-card">
+                    <div class="project-header">
+                        <h4>RAG Pipeline with LangChain</h4>
+                        <p>Advanced Retrieval-Augmented Generation system</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            A sophisticated RAG (Retrieval-Augmented Generation) pipeline built with LangChain for intelligent document processing and question-answering. Features vector databases, semantic search, and LLM integration for enhanced information retrieval.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">OpenAI</span>
+                            <span class="tech-tag">Vector DB</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">RAG</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="pib_prediction_project.html" class="project-card">
+                    <div class="project-header">
+                        <h4>GDP Prediction Model</h4>
+                        <p>Economic forecasting with machine learning</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Advanced machine learning model for predicting Gross Domestic Product (GDP) trends using economic indicators. Features interactive web interface for scenario analysis and economic forecasting with statistical validation.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Time Series</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Economic Analysis</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="trading_platform_project.html" class="project-card">
+                    <div class="project-header">
+                        <h4>Trading Platform</h4>
+                        <p>Financial data analysis and trading interface</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Comprehensive trading platform with real-time financial data analysis, portfolio management, and algorithmic trading strategies. Features interactive charts, risk assessment, and performance analytics for informed investment decisions.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Financial Analysis</span>
+                            <span class="tech-tag">Plotly</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">API Integration</span>
+                            <span class="tech-tag">Portfolio Management</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="life_expectancy_project.html" class="project-card">
+                    <div class="project-header">
+                        <h4>Life Expectancy Prediction</h4>
+                        <p>ML model for health and demographic analysis</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Machine learning model that predicts life expectancy based on various health, economic, and social factors. Uses WHO data to analyze relationships between lifestyle, healthcare quality, and longevity across different countries.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Seaborn</span>
+                            <span class="tech-tag">WHO Data</span>
+                            <span class="tech-tag">Health Analytics</span>
+                        </div>
+                    </div>
+                </a>
+                        
+                <a href="exploratory-data-analysis.html" class="project-card">
+                    <div class="project-header">
+                        <h4>Exploratory Data Analysis</h4>
+                        <p>Comprehensive data exploration techniques</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Collection of advanced exploratory data analysis techniques and methodologies. Demonstrates statistical analysis, data visualization best practices, and insights discovery from complex datasets using Python's data science ecosystem.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Matplotlib</span>
+                            <span class="tech-tag">Seaborn</span>
+                            <span class="tech-tag">Statistical Analysis</span>
+                            <span class="tech-tag">Data Visualization</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/bcmaymonegalvao/ecommerce-data-analysis" target="_blank" class="project-card">
+                    <div class="project-header">
+                        <h4>E-commerce Data Analysis</h4>
+                        <p>Business intelligence for retail insights</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-description">
+                            Comprehensive analysis of e-commerce data focusing on customer behavior, sales patterns, and business performance metrics. Includes customer segmentation, sales forecasting, and actionable business recommendations.
+                        </div>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">Customer Analytics</span>
+                            <span class="tech-tag">Business Intelligence</span>
+                            <span class="tech-tag">Sales Analysis</span>
+                            <span class="tech-tag">Visualization</span>
+                        </div>
+                    </div>
+                </a>              
+            </div>
+        </div>
+    </section>
+
+    <section class="professional-summary fade-in">
+        <div class="container">
+            <div class="summary-content">
+                <h2>Professional Summary</h2>
+                <p>I'm a Data Scientist with over 10 years of experience at BB Tecnologia e Serviços, where I apply data science to solve complex business problems and drive operational excellence.</p>
+                
+                <p>My expertise spans data visualization, predictive modeling, causal inference, NLP, deep learning, computer vision, pipeline automation, MLOps, large language models (LLMs), and artificial intelligence.</p>
+                
+                <p>Over the last year, I led a project that reduced unproductive team visits by 43% through machine learning, causal inference, and demand prediction. Additionally, I published over 130 technical reports employing data science techniques to identify bottlenecks and maximize team performance. My work also includes developing analytical dossiers from extensive data and business rules — delivering a 35% improvement in operational efficiency and earning several corporate accolades.</p>
+                
+                <p>I'm proficient in Python, Java, Javascript, C, C++, SQL, Git, DAX, Markdown, HTML, PHP, and CSS, and I frequently leverage libraries and frameworks such as Scikit-Learn, TensorFlow, Keras, Seaborn, Matplotlib, Streamlit, Plotly, Pandas, NumpY, SciPy, Dash, and more.</p>
+                
+                <p>I'm also skilled in a range of tools and platforms, including VSCode, Power BI, Jupyter Notebook, Google Colaboratory, SSIS, AWS, Azure, Databricks, BigQuery, Jira, Trello, Azure DevOps, Power Apps, Power Automate, Excel, MySQL, PostgreSQL, SQLite, and SQLServer.</p>
+                
+                <p>Currently, I'm pursuing a Master's degree in Physics with a concentration in Data Scientist, Generative AI, and Robotics for Math and science education. I hold an MBA in Data Scientist, Governance, and IT Management, and a degree in Physics from IFCE (Federal Institute of Ceará), where I researched computer-assisted education and peer strunction.</p>
+                
+                <p>I bring extensive experience in Information Technology, predominantly with Banco do Brasil — the largest bank in Brazil — delivering innovative, data-informed solutions to aid its operations.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="skills" class="skills fade-in">
         <div class="container">
             <h2 class="section-title">Areas of Expertise</h2>
@@ -1235,7 +1138,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact fade-in">
         <div class="container">
             <h2 class="section-title">Let's Connect</h2>
@@ -1258,7 +1160,7 @@
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-file-alt"></i>
-                        <a href="https://www.linkedin.com/in/bruno-cesar-galvao/overlay/1750051560790/single-media-viewer/?profileId=ACoAABBz8kYB34lh1RS-YLcHEPnefQdDwJB-xtA" target="_blank">View Resume/CV</a>
+                        <a href="https://www.linkedin.com/in/bruno-cesar-galvao/details/featured/1760299677340/single-media-viewer/?profileId=ACoAABBz8kYB34lh1RS-YLcHEPnefQdDwJB-xtA" target="_blank">View Resume/CV</a>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
@@ -1294,7 +1196,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="social-links">
@@ -1307,7 +1208,7 @@
                 <a href="mailto:bcmaymone.galvao@gmail.com" class="social-link email" title="Email">
                     <i class="fas fa-envelope"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/bruno-cesar-galvao/overlay/1750051560790/single-media-viewer/?profileId=ACoAABBz8kYB34lh1RS-YLcHEPnefQdDwJB-xtA" target="_blank" class="social-link resume" title="Resume/CV">
+                <a href="https://www.linkedin.com/in/bruno-cesar-galvao/details/featured/1760299677340/single-media-viewer/?profileId=ACoAABBz8kYB34lh1RS-YLcHEPnefQdDwJB-xtA" target="_blank" class="social-link resume" title="Resume/CV">
                     <i class="fas fa-file-alt"></i>
                 </a>
             </div>
@@ -1317,15 +1218,11 @@
     </footer>
 
     <script>
-        // Smooth scrolling function
         function scrollToSection(sectionId) {
             const element = document.getElementById(sectionId);
-            element.scrollIntoView({
-                behavior: 'smooth'
-            });
+            element.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Header scroll effect
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
@@ -1337,7 +1234,6 @@
             }
         });
 
-        // Intersection Observer for fade-in animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
@@ -1351,65 +1247,30 @@
             });
         }, observerOptions);
 
-        // Observe all elements with fade-in class
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
 
-        // Form submission handler
         document.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
             
-            // Simple validation
             if (!name || !email || !subject || !message) {
                 alert('Please fill in all fields.');
                 return;
             }
             
-            // Create mailto link
             const mailtoLink = `mailto:bcmaymone.galvao@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
             
-            // Show success message
             alert('Thank you for your message! Redirecting to your email client...');
-            
-            // Open email client
             window.location.href = mailtoLink;
-            
-            // Reset form
             this.reset();
         });
 
-        // Add typing animation to hero text
-        function typeWriter(element, text, speed = 50) {
-            let i = 0;
-            element.innerHTML = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
-
-        // Initialize typing animation when page loads
-        window.addEventListener('load', function() {
-            const heroTitle = document.querySelector('.hero h1');
-            const originalText = heroTitle.textContent;
-            setTimeout(() => {
-                typeWriter(heroTitle, originalText, 100);
-            }, 500);
-        });
-
-        // Parallax effect for hero section
         window.addEventListener('scroll', function() {
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
@@ -1420,56 +1281,6 @@
             }
         });
 
-        // Add particle effect to hero background
-        function createParticles() {
-            const hero = document.querySelector('.hero');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.cssText = `
-                    position: absolute;
-                    width: 3px;
-                    height: 3px;
-                    background: rgba(255, 255, 255, 0.6);
-                    border-radius: 50%;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    animation: particleFloat ${4 + Math.random() * 6}s linear infinite;
-                    animation-delay: ${Math.random() * 5}s;
-                `;
-                hero.appendChild(particle);
-            }
-        }
-
-        // Add particle animation CSS
-        const particleStyle = document.createElement('style');
-        particleStyle.textContent = `
-            @keyframes particleFloat {
-                0% {
-                    transform: translateY(0px) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(-120px) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(particleStyle);
-
-        // Initialize particles
-        createParticles();
-
-        // Add smooth hover effects to buttons and badges
-        document.querySelectorAll('.btn, .project-link, .social-link, .badge').forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-            });
-        });
-
-        // Badge hover effects with enhanced animation
         document.querySelectorAll('.badge img').forEach(badge => {
             badge.addEventListener('mouseenter', function() {
                 this.style.filter = 'brightness(1.3) saturate(1.4) drop-shadow(0 4px 8px rgba(0,0,0,0.2))';
